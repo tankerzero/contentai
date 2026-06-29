@@ -39,8 +39,8 @@ export function detectCurrency(): CurrencyCode {
 export function formatPrice(cadPrice: number, currencyCode: CurrencyCode): string {
   const c = CURRENCIES.find(x => x.code === currencyCode)!
   const converted = cadPrice * c.rateFromCAD
-  const rounded = Math.round(converted)
-  return `${c.symbol}${rounded}`
+  const isWhole = Math.abs(converted - Math.round(converted)) < 0.005
+  return `${c.symbol}${isWhole ? Math.round(converted) : converted.toFixed(2)}`
 }
 
 export function getCurrency(code: CurrencyCode): Currency {
