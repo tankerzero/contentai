@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
         content_type: type,
         topic,
         tone,
+        language,
         content,
         ...(platform ? { platform } : {}),
       })

@@ -23,8 +23,8 @@ export interface SeasonalTemplate {
 const RAMADAN_WINDOWS: SeasonalWindow[] = [
   { start: '2024-02-26', end: '2024-04-10' },
   { start: '2025-02-16', end: '2025-03-31' },
-  { start: '2026-02-06', end: '2026-03-22' },
-  { start: '2027-01-26', end: '2027-03-10' },
+  { start: '2026-02-03', end: '2026-03-22' },
+  { start: '2027-01-22', end: '2027-03-10' },
   { start: '2028-01-14', end: '2028-02-28' },
   { start: '2029-01-03', end: '2029-02-17' },
 ]
