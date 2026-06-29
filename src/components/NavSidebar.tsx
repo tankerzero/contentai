@@ -86,7 +86,7 @@ export default function NavSidebar({ email }: { email: string }) {
 
   return (
     <aside
-      className={`w-60 bg-white flex flex-col shrink-0 ${isRTL ? 'border-l' : 'border-r'} border-gray-100`}
+      className={`hidden md:flex w-60 bg-white flex-col shrink-0 ${isRTL ? 'border-l' : 'border-r'} border-gray-100`}
     >
       {/* Logo */}
       <div className="px-5 py-5 border-b border-gray-100">

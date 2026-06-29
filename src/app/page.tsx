@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { PLANS } from '@/lib/plans'
 import { useUILang, type UILang } from '@/contexts/UILanguageContext'
 import { CURRENCIES, type CurrencyCode, loadCurrency, saveCurrency, formatPrice } from '@/lib/currency'
+import DemoModal from '@/components/DemoModal'
 
 // ── Translations ────────────────────────────────────────────────────────────
 
@@ -304,6 +305,7 @@ export default function LandingPage() {
   const [visible, setVisible] = useState(true)
   const [yearly, setYearly] = useState(false)
   const [currency, setCurrency] = useState<CurrencyCode>('CAD')
+  const [demoOpen, setDemoOpen] = useState(false)
 
   useEffect(() => {
     setCurrency(loadCurrency())
@@ -396,9 +398,12 @@ export default function LandingPage() {
               <Link href="/signup" className="bg-brand-600 text-white px-7 py-3.5 rounded-2xl font-semibold text-base hover:bg-brand-700 transition-all shadow-lg hover:shadow-brand-200 hover:-translate-y-0.5">
                 {t.hero.cta}
               </Link>
-              <Link href="#features" className="text-gray-600 px-7 py-3.5 rounded-2xl font-semibold text-base border border-gray-200 hover:border-brand-300 hover:text-brand-700 transition-all">
+              <button
+                onClick={() => setDemoOpen(true)}
+                className="text-gray-600 px-7 py-3.5 rounded-2xl font-semibold text-base border border-gray-200 hover:border-brand-300 hover:text-brand-700 transition-all"
+              >
                 {t.hero.ctaSecondary}
-              </Link>
+              </button>
             </div>
 
             {/* Badges */}
@@ -651,6 +656,7 @@ export default function LandingPage() {
           <p className="text-xs text-gray-300">© 2026 ContentAI</p>
         </div>
       </footer>
+      <DemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   )
 }
