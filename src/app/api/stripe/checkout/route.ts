@@ -47,10 +47,10 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
 
-  const session = await stripe.checkout.sessions.create({
+  const sessionParams = {
     customer: customerId,
-    mode: 'subscription',
-    payment_method_types: ['card'],
+    mode: 'subscription' as const,
+    payment_method_types: ['card' as const],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${appUrl}/billing?success=true`,
     cancel_url: `${appUrl}/billing?canceled=true`,
@@ -58,9 +58,24 @@ export async function POST(req: NextRequest) {
     custom_text: {
       submit: { message: 'You will be charged in CAD. Cancel anytime from your Billing page.' },
     },
-  })
+  }
 
-  console.log('[stripe] checkout session created:', session.id, '| user:', user.id, '| plan:', planId, '| url:', session.url)
+  let session
+  try {
+    session = await stripe.checkout.sessions.create(sessionParams)
+  } catch (err: unknown) {
+    // Stored customer ID is from test mode and doesn't exist in live mode — create a fresh one
+    if ((err as { code?: string }).code === 'resource_missing') {
+      console.log('[stripe] customer not found in live mode (stale test-mode ID), creating new customer for user:', user.id)
+      const newCustomer = await stripe.customers.create({ email: user.email! })
+      await supabase.from('profiles').update({ stripe_customer_id: newCustomer.id }).eq('id', user.id)
+      session = await stripe.checkout.sessions.create({ ...sessionParams, customer: newCustomer.id })
+    } else {
+      throw err
+    }
+  }
+
+  console.log('[stripe] checkout session created:', session.id, '| user:', user.id, '| plan:', planId)
 
   return NextResponse.json({ url: session.url })
 }
