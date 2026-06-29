@@ -24,7 +24,7 @@ const UI = {
           icon: '⚡',
           title: 'Content Pack',
           desc: '500 extra generations added to your account instantly.',
-          price: '$4.99',
+          basePriceCAD: 4.99,
           cta: 'Buy now',
           href: 'mailto:support@contentai.ca?subject=Content Pack',
         },
@@ -32,7 +32,7 @@ const UI = {
           icon: '🎨',
           title: 'Brand Voice Setup',
           desc: 'We configure your brand voice for you — one call, done forever.',
-          price: '$19',
+          basePriceCAD: 19,
           cta: 'Book setup',
           href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
         },
@@ -61,7 +61,7 @@ const UI = {
           icon: '⚡',
           title: 'Pack Contenu',
           desc: '500 générations supplémentaires ajoutées instantanément.',
-          price: '4,99€',
+          basePriceCAD: 4.99,
           cta: 'Acheter',
           href: 'mailto:support@contentai.ca?subject=Pack Contenu',
         },
@@ -69,7 +69,7 @@ const UI = {
           icon: '🎨',
           title: 'Configuration Ton de Marque',
           desc: 'Nous configurons votre ton de marque — un appel, fini pour toujours.',
-          price: '19€',
+          basePriceCAD: 19,
           cta: 'Réserver',
           href: 'mailto:support@contentai.ca?subject=Configuration Ton de Marque',
         },
@@ -98,7 +98,7 @@ const UI = {
           icon: '⚡',
           title: 'حزمة المحتوى',
           desc: '500 توليد إضافي يُضاف لحسابك فوراً.',
-          price: '$4.99',
+          basePriceCAD: 4.99,
           cta: 'اشتر الآن',
           href: 'mailto:support@contentai.ca?subject=Content Pack',
         },
@@ -106,7 +106,7 @@ const UI = {
           icon: '🎨',
           title: 'إعداد صوت العلامة',
           desc: 'نُعد صوت علامتك التجارية — مكالمة واحدة، انتهى للأبد.',
-          price: '$19',
+          basePriceCAD: 19,
           cta: 'احجز الإعداد',
           href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
         },
@@ -294,7 +294,7 @@ export default function BillingPage() {
               <div className="flex-1 min-w-0">
                 <div className={`flex items-center justify-between gap-2 mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <h3 className="text-sm font-bold text-gray-900">{addon.title}</h3>
-                  <span className="text-base font-bold text-brand-700 shrink-0">{addon.price}</span>
+                  <span className="text-base font-bold text-brand-700 shrink-0">{formatPrice(addon.basePriceCAD, currency)}</span>
                 </div>
                 <p className="text-xs text-gray-500 leading-relaxed mb-4">{addon.desc}</p>
                 <a
