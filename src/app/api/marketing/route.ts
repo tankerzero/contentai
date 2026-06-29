@@ -4,7 +4,13 @@ import { checkRateLimit, rateLimitKey } from '@/lib/rateLimit'
 import { sanitize, sanitizeShort } from '@/lib/sanitize'
 import Anthropic from '@anthropic-ai/sdk'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+function getAnthropicClient(): Anthropic {
+  const apiKey = process.env.ANTHROPIC_API_KEY
+  if (!apiKey) throw new Error(
+    'Missing ANTHROPIC_API_KEY. Add it in Vercel → Project Settings → Environment Variables.'
+  )
+  return new Anthropic({ apiKey })
+}
 
 const PLATFORMS = ['Instagram', 'LinkedIn', 'Twitter', 'Facebook', 'TikTok']
 
@@ -27,7 +33,7 @@ export async function POST(req: NextRequest) {
 
   const results = await Promise.allSettled(
     PLATFORMS.map(async platform => {
-      const msg = await anthropic.messages.create({
+      const msg = await getAnthropicClient().messages.create({
         model: 'claude-sonnet-4-6',
         max_tokens: 300,
         messages: [{

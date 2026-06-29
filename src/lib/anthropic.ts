@@ -1,8 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk'
 
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-})
+function getClient(): Anthropic {
+  const apiKey = process.env.ANTHROPIC_API_KEY
+  if (!apiKey) throw new Error(
+    'Missing ANTHROPIC_API_KEY. Add it in Vercel → Project Settings → Environment Variables.'
+  )
+  return new Anthropic({ apiKey })
+}
 
 export type ContentType =
   | 'blog_post'
@@ -78,7 +82,7 @@ Language: ${languageInstructions[language]}${daySection}${brandSection}
 
 Produce only the content itself, no meta-commentary.`
 
-  const message = await anthropic.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 2048,
     system: systemPrompts[type],
