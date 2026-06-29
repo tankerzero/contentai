@@ -45,7 +45,11 @@ export async function POST(req: NextRequest) {
     await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
+  // Derive the base URL from the request so it's always correct in all environments
+  // (avoids .env.local NEXT_PUBLIC_APP_URL=localhost overriding Vercel env vars)
+  const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host') ?? 'contentai.ca'
+  const proto = req.headers.get('x-forwarded-proto') ?? 'https'
+  const appUrl = host.startsWith('localhost') ? `http://${host}` : `${proto}://${host}`
 
   const sessionParams = {
     customer: customerId,
