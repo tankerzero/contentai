@@ -6,7 +6,7 @@ export const metadata = {
 }
 
 const LAST_UPDATED = 'June 1, 2025'
-const EMAIL = 'legal@contentai.app'
+const EMAIL = 'support@contentai.ca'
 
 export default function TermsPage() {
   return (
@@ -73,7 +73,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">6. Subscriptions and Payments</h2>
             <ul className="list-disc pl-6 text-gray-600 space-y-2">
               <li>Paid plans are billed monthly or annually in advance.</li>
-              <li>All prices are in USD and exclude applicable taxes.</li>
+              <li>All prices are in CAD and exclude applicable taxes.</li>
               <li>Subscriptions auto-renew unless cancelled before the renewal date.</li>
               <li>No refunds for partial months, except where required by law.</li>
               <li>We reserve the right to change pricing with 30 days&apos; notice.</li>

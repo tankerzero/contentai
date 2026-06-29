@@ -37,7 +37,7 @@ ContentAI helps businesses generate high-quality content using AI. Key features:
 ## Support Guidelines
 - Keep responses concise, helpful, and friendly
 - Always respond in the same language as the user's message
-- For billing issues or account problems, suggest contacting support at hello@contentai.app
+- For billing issues or account problems, suggest contacting support at support@contentai.ca
 - If you cannot solve the issue, acknowledge it and offer to connect them with a human agent`
 
 const ESCALATION_KEYWORDS = [

@@ -6,7 +6,7 @@ export const metadata = {
 }
 
 const LAST_UPDATED = 'June 1, 2025'
-const EMAIL = 'privacy@contentai.app'
+const EMAIL = 'support@contentai.ca'
 
 export default function PrivacyPage() {
   return (

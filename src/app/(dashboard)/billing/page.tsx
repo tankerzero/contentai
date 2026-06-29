@@ -26,7 +26,7 @@ const UI = {
           desc: '500 extra generations added to your account instantly.',
           price: '$4.99',
           cta: 'Buy now',
-          href: 'mailto:hello@contentai.app?subject=Content Pack',
+          href: 'mailto:support@contentai.ca?subject=Content Pack',
         },
         {
           icon: '🎨',
@@ -34,7 +34,7 @@ const UI = {
           desc: 'We configure your brand voice for you — one call, done forever.',
           price: '$19',
           cta: 'Book setup',
-          href: 'mailto:hello@contentai.app?subject=Brand Voice Setup',
+          href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
         },
       ],
     },
@@ -63,7 +63,7 @@ const UI = {
           desc: '500 générations supplémentaires ajoutées instantanément.',
           price: '4,99€',
           cta: 'Acheter',
-          href: 'mailto:hello@contentai.app?subject=Pack Contenu',
+          href: 'mailto:support@contentai.ca?subject=Pack Contenu',
         },
         {
           icon: '🎨',
@@ -71,7 +71,7 @@ const UI = {
           desc: 'Nous configurons votre ton de marque — un appel, fini pour toujours.',
           price: '19€',
           cta: 'Réserver',
-          href: 'mailto:hello@contentai.app?subject=Configuration Ton de Marque',
+          href: 'mailto:support@contentai.ca?subject=Configuration Ton de Marque',
         },
       ],
     },
@@ -100,7 +100,7 @@ const UI = {
           desc: '500 توليد إضافي يُضاف لحسابك فوراً.',
           price: '$4.99',
           cta: 'اشتر الآن',
-          href: 'mailto:hello@contentai.app?subject=Content Pack',
+          href: 'mailto:support@contentai.ca?subject=Content Pack',
         },
         {
           icon: '🎨',
@@ -108,7 +108,7 @@ const UI = {
           desc: 'نُعد صوت علامتك التجارية — مكالمة واحدة، انتهى للأبد.',
           price: '$19',
           cta: 'احجز الإعداد',
-          href: 'mailto:hello@contentai.app?subject=Brand Voice Setup',
+          href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
         },
       ],
     },
@@ -268,7 +268,7 @@ export default function BillingPage() {
                 <div className="text-center text-xs text-brand-600 font-semibold py-2">{ui.active}</div>
               ) : isAgency ? (
                 <a
-                  href="mailto:hello@contentai.app?subject=Agency Plan"
+                  href="mailto:support@contentai.ca?subject=Agency Plan"
                   className="block text-center py-2.5 rounded-xl font-semibold text-xs bg-gray-900 text-white hover:bg-gray-800 transition-colors"
                 >
                   {ui.contactUs}
