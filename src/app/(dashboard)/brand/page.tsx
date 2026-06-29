@@ -61,7 +61,8 @@ const UI = {
 
 export default function BrandPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [form, setForm] = useState<BrandProfile>({
     company_name: '',
@@ -126,8 +127,8 @@ export default function BrandPage() {
     )
   }
 
-  const industries = INDUSTRIES[lang]
-  const writingStyles = WRITING_STYLES[lang]
+  const industries = INDUSTRIES[uiLang]
+  const writingStyles = WRITING_STYLES[uiLang]
 
   return (
     <div className={`p-8 max-w-2xl ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>

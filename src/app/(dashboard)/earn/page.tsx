@@ -84,7 +84,8 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function EarnPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [referralCode, setReferralCode] = useState<string | null>(null)
   const [balance, setBalance] = useState(0)

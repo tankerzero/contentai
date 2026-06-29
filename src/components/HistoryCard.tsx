@@ -30,8 +30,9 @@ const UI = {
 
 export default function HistoryCard({ generation }: { generation: Generation }) {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
-  const typeLabels = TYPE_LABELS[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
+  const typeLabels = TYPE_LABELS[uiLang]
 
   const [isFavorite, setIsFavorite] = useState(generation.is_favorite ?? false)
   const [copied, setCopied] = useState(false)

@@ -214,7 +214,8 @@ function topEntry(map: Map<string, number>): string {
 
 export default function ContentPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
   const dir = isRTL ? 'rtl' : 'ltr'
 
   // Data

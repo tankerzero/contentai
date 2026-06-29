@@ -122,7 +122,8 @@ const UI = {
 
 export default function BillingPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [currentPlan, setCurrentPlan] = useState<PlanId>('free')
   const [loading, setLoading] = useState(true)

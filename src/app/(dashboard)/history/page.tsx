@@ -26,7 +26,8 @@ const UI = {
 
 export default function HistoryPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [generations, setGenerations] = useState<Generation[]>([])
   const [loading, setLoading] = useState(true)

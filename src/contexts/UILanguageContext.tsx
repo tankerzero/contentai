@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-export type UILang = 'en' | 'fr' | 'ar'
+export type UILang = 'en' | 'fr' | 'ar' | 'es' | 'zh'
 
 const STORAGE_KEY = 'contentai_ui_lang'
 
@@ -24,11 +24,11 @@ export function UILanguageProvider({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as UILang | null
-    if (saved && ['en', 'fr', 'ar'].includes(saved)) setLangState(saved)
+    if (saved && ['en', 'fr', 'ar', 'es', 'zh'].includes(saved)) setLangState(saved)
   }, [])
 
   useEffect(() => {
-    document.documentElement.lang = lang
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr'
     document.documentElement.classList.toggle('font-arabic', isRTL)
   }, [lang, isRTL])

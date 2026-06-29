@@ -5,24 +5,31 @@ import type { ContentType, OutputLanguage } from '@/lib/content-types'
 import { TEMPLATES } from '@/lib/templates'
 import { useUILang } from '@/contexts/UILanguageContext'
 
-const CONTENT_TYPES: { value: ContentType; label: string; labelAr: string; labelFr: string; icon: string }[] = [
-  { value: 'blog_post',           label: 'Blog Post',           labelFr: 'Article de Blog',    labelAr: 'مقال مدونة',     icon: '✍️' },
-  { value: 'social_media',        label: 'Social Media',        labelFr: 'Réseaux Sociaux',    labelAr: 'منشور اجتماعي',  icon: '📱' },
-  { value: 'email',               label: 'Email',               labelFr: 'Email',              labelAr: 'بريد إلكتروني',  icon: '📧' },
-  { value: 'product_description', label: 'Product Description', labelFr: 'Description Produit',labelAr: 'وصف منتج',       icon: '🛒' },
-  { value: 'ad_copy',             label: 'Ad Copy',             labelFr: 'Texte Pub',          labelAr: 'نص إعلاني',      icon: '📣' },
+const CONTENT_TYPES: {
+  value: ContentType; icon: string
+  label: string; labelFr: string; labelAr: string; labelEs: string; labelZh: string
+}[] = [
+  { value: 'blog_post',           icon: '✍️', label: 'Blog Post',           labelFr: 'Article de Blog',    labelAr: 'مقال مدونة',    labelEs: 'Artículo de Blog',         labelZh: '博客文章' },
+  { value: 'social_media',        icon: '📱', label: 'Social Media',        labelFr: 'Réseaux Sociaux',    labelAr: 'منشور اجتماعي', labelEs: 'Redes Sociales',           labelZh: '社交媒体' },
+  { value: 'email',               icon: '📧', label: 'Email',               labelFr: 'Email',              labelAr: 'بريد إلكتروني', labelEs: 'Email',                    labelZh: '电子邮件' },
+  { value: 'product_description', icon: '🛒', label: 'Product Description', labelFr: 'Description Produit',labelAr: 'وصف منتج',      labelEs: 'Descripción de Producto',  labelZh: '产品描述' },
+  { value: 'ad_copy',             icon: '📣', label: 'Ad Copy',             labelFr: 'Texte Pub',          labelAr: 'نص إعلاني',     labelEs: 'Texto Publicitario',       labelZh: '广告文案' },
 ]
 
-const TONES = {
+const TONES: Record<OutputLanguage, string[]> = {
   en: ['Professional', 'Casual', 'Friendly', 'Formal', 'Humorous', 'Inspirational'],
   fr: ['Professionnel', 'Décontracté', 'Amical', 'Formel', 'Humoristique', 'Inspirant'],
   ar: ['احترافي', 'غير رسمي', 'ودّي', 'رسمي', 'فكاهي', 'ملهِم'],
+  es: ['Profesional', 'Casual', 'Amigable', 'Formal', 'Humorístico', 'Inspirador'],
+  zh: ['专业', '随意', '友好', '正式', '幽默', '励志'],
 }
 
 const LANGUAGES: { value: OutputLanguage; label: string; dir: 'ltr' | 'rtl'; flag: string }[] = [
   { value: 'en', label: 'English',  dir: 'ltr', flag: '🇬🇧' },
   { value: 'fr', label: 'Français', dir: 'ltr', flag: '🇫🇷' },
   { value: 'ar', label: 'العربية',  dir: 'rtl', flag: '🇸🇦' },
+  { value: 'es', label: 'Español',  dir: 'ltr', flag: '🇪🇸' },
+  { value: 'zh', label: '中文',     dir: 'ltr', flag: '🇨🇳' },
 ]
 
 const UI = {
@@ -37,6 +44,7 @@ const UI = {
     generating: 'Generating…', generatingOutput: 'Generating your content…',
     generate: '✨ Generate', copy: 'Copy', copied: '✓ Copied!', languageLabel: 'Output language',
     templatesLabel: 'Templates', brandToggle: 'Apply brand voice',
+    openPlatform: 'Copy & open platform',
   },
   fr: {
     title: 'Générer du Contenu', subtitle: "Décrivez ce dont vous avez besoin et laissez l'IA écrire.",
@@ -49,6 +57,7 @@ const UI = {
     generating: 'Génération en cours…', generatingOutput: 'Génération de votre contenu…',
     generate: '✨ Générer', copy: 'Copier', copied: '✓ Copié !', languageLabel: 'Langue de sortie',
     templatesLabel: 'Modèles', brandToggle: 'Ton de marque',
+    openPlatform: 'Copier & ouvrir la plateforme',
   },
   ar: {
     title: 'توليد المحتوى', subtitle: 'صِف ما تحتاجه ودع الذكاء الاصطناعي يكتب.',
@@ -61,6 +70,33 @@ const UI = {
     generating: 'جارٍ التوليد…', generatingOutput: 'جارٍ توليد محتواك…',
     generate: '✨ توليد', copy: 'نسخ', copied: '✓ تم النسخ!', languageLabel: 'لغة المخرجات',
     templatesLabel: 'القوالب', brandToggle: 'صوت العلامة التجارية',
+    openPlatform: 'نسخ وفتح المنصة',
+  },
+  es: {
+    title: 'Generar Contenido', subtitle: 'Describe lo que necesitas y deja que la IA escriba.',
+    contentTypeLabel: 'Tipo de contenido', topicLabel: 'Tema / brief',
+    topicPlaceholder: 'ej. Los beneficios del trabajo remoto para ingenieros de software',
+    toneLabel: 'Tono', keywordsLabel: 'Palabras clave', keywordsOptional: '(opcional)',
+    keywordsPlaceholder: 'ej. productividad, equilibrio trabajo-vida, colaboración',
+    wordCountLabel: 'Número de palabras objetivo', outputLabel: 'Resultado',
+    outputPlaceholder: 'Tu contenido generado aparecerá aquí.',
+    generating: 'Generando…', generatingOutput: 'Generando tu contenido…',
+    generate: '✨ Generar', copy: 'Copiar', copied: '✓ ¡Copiado!', languageLabel: 'Idioma de salida',
+    templatesLabel: 'Plantillas', brandToggle: 'Aplicar voz de marca',
+    openPlatform: 'Copiar y abrir plataforma',
+  },
+  zh: {
+    title: '生成内容', subtitle: '描述您的需求，让AI来写作。',
+    contentTypeLabel: '内容类型', topicLabel: '主题 / 简介',
+    topicPlaceholder: '例如：远程办公对软件工程师的好处',
+    toneLabel: '语调', keywordsLabel: '关键词', keywordsOptional: '（可选）',
+    keywordsPlaceholder: '例如：生产力、工作生活平衡、协作',
+    wordCountLabel: '目标字数', outputLabel: '输出',
+    outputPlaceholder: '您生成的内容将显示在这里。',
+    generating: '生成中…', generatingOutput: '正在生成您的内容…',
+    generate: '✨ 生成', copy: '复制', copied: '✓ 已复制！', languageLabel: '输出语言',
+    templatesLabel: '模板', brandToggle: '应用品牌声音',
+    openPlatform: '复制并打开平台',
   },
 }
 
@@ -89,8 +125,8 @@ export default function GeneratePage() {
     fetch('/api/brand').then(r => r.json()).then(({ profile }) => setHasBrand(!!profile))
   }, [])
 
-  function handleLanguageChange(lang: OutputLanguage) {
-    setLanguage(lang)
+  function handleLanguageChange(newLang: OutputLanguage) {
+    setLanguage(newLang)
     setTone('')
   }
 
@@ -106,6 +142,8 @@ export default function GeneratePage() {
   function getContentTypeLabel(ct: typeof CONTENT_TYPES[0]) {
     if (language === 'ar') return ct.labelAr
     if (language === 'fr') return ct.labelFr
+    if (language === 'es') return ct.labelEs
+    if (language === 'zh') return ct.labelZh
     return ct.label
   }
 
@@ -189,7 +227,7 @@ export default function GeneratePage() {
           {/* Language selector */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">{ui.languageLabel}</label>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {LANGUAGES.map(l => (
                 <button
                   key={l.value}
@@ -339,7 +377,7 @@ export default function GeneratePage() {
                   <button
                     onClick={toggleFavorite}
                     className={`text-xl leading-none transition-colors ${isFavorite ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-300'}`}
-                    title={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+                    title={isFavorite ? 'Remove from favourites' : 'Add to favourites'}
                   >
                     ★
                   </button>
@@ -376,9 +414,7 @@ export default function GeneratePage() {
           {/* Copy & Open social buttons */}
           {result && (
             <div className="px-5 pb-5 border-t border-gray-50 pt-4">
-              <p className="text-xs text-gray-400 mb-3">
-                {lang === 'ar' ? 'نسخ وفتح المنصة' : lang === 'fr' ? 'Copier & Ouvrir la plateforme' : 'Copy & Open platform'}
-              </p>
+              <p className="text-xs text-gray-400 mb-3">{ui.openPlatform}</p>
               <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {[
                   { name: 'Instagram', url: 'https://www.instagram.com/', color: 'bg-pink-50 text-pink-600 border-pink-200 hover:bg-pink-100' },

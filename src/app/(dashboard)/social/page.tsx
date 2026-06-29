@@ -142,7 +142,8 @@ const PLATFORMS = [
 
 export default function SocialPage() {
   const { lang } = useUILang()
-  const t = T[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const t = T[uiLang]
 
   const [connections, setConnections] = useState<SocialConnection[]>([])
   const [posts, setPosts] = useState<SocialPost[]>([])

@@ -28,12 +28,28 @@ const NAV_T = {
     brand:   'صوت العلامة', billing: 'الاشتراك',        social: 'التواصل',
     marketing: 'تسويق',
   },
+  es: {
+    dashboard: 'Inicio',     generate: 'Generar',       history: 'Historial',
+    content:   'Mi Contenido', planner: 'Planificador', earn: 'Ganar',
+    brandSection: 'Marca',   signOut: 'Cerrar sesión',
+    brand:   'Voz de Marca', billing: 'Suscripción',    social: 'Social',
+    marketing: 'Marketing',
+  },
+  zh: {
+    dashboard: '仪表盘',    generate: '生成',            history: '历史记录',
+    content:   '我的内容',  planner:  '计划',             earn: '赚取',
+    brandSection: '品牌',   signOut: '退出登录',
+    brand:   '品牌声音',    billing: '订阅',              social: '社交',
+    marketing: '营销',
+  },
 }
 
 const LANG_LABELS: { value: UILang; label: string; flag: string }[] = [
   { value: 'en', label: 'EN', flag: '🇬🇧' },
   { value: 'fr', label: 'FR', flag: '🇫🇷' },
   { value: 'ar', label: 'AR', flag: '🇸🇦' },
+  { value: 'es', label: 'ES', flag: '🇪🇸' },
+  { value: 'zh', label: '中', flag: '🇨🇳' },
 ]
 
 export default function NavSidebar({ email }: { email: string }) {
@@ -105,20 +121,21 @@ export default function NavSidebar({ email }: { email: string }) {
         <NavLink href="/earn"      label={t.earn}      icon="💸" />
       </nav>
 
-      {/* Language switcher */}
+      {/* Language switcher — two rows of flags to fit 5 languages */}
       <div className="px-4 py-3 border-t border-gray-100">
-        <div className={`flex gap-1 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className="flex flex-wrap gap-1 mb-3">
           {LANG_LABELS.map(l => (
             <button
               key={l.value}
               onClick={() => setLang(l.value)}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              title={l.label}
+              className={`flex-1 min-w-[2rem] py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 lang === l.value
                   ? 'bg-brand-600 text-white shadow-sm'
                   : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
               }`}
             >
-              {l.flag} {l.label}
+              {l.flag}
             </button>
           ))}
         </div>

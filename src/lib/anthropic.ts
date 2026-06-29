@@ -40,6 +40,8 @@ const languageInstructions: Record<OutputLanguage, string> = {
   en: 'Write the content in English.',
   fr: 'Rédigez le contenu entièrement en français, avec un style naturel et fluide.',
   ar: 'اكتب المحتوى باللغة العربية الفصحى المعاصرة (Modern Standard Arabic). يجب أن يكون النص من اليمين إلى اليسار ومُنسّقاً بشكل صحيح.',
+  es: 'Escribe el contenido completamente en español, con un estilo natural y fluido. Usa español neutro adecuado para audiencias de habla hispana en general.',
+  zh: '请用中文（简体中文）撰写内容，语言自然流畅，表达清晰，适合普通话受众阅读。',
 }
 
 function buildBrandSection(bv: BrandVoice): string {

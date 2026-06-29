@@ -4,7 +4,7 @@ import { generateContent, type OutputLanguage, type BrandVoice } from '@/lib/ant
 import { checkRateLimit, rateLimitKey } from '@/lib/rateLimit'
 import { sanitize, sanitizeShort } from '@/lib/sanitize'
 
-const DAYS = {
+const DAYS: Record<OutputLanguage, { key: string; label: string; focus: string }[]> = {
   fr: [
     { key: 'mon', label: 'Lundi',    focus: "post d'ouverture accrocheur qui lance la semaine sur le bon ton" },
     { key: 'tue', label: 'Mardi',    focus: 'contenu éducatif, astuce ou conseil pratique' },
@@ -31,6 +31,24 @@ const DAYS = {
     { key: 'fri', label: 'Friday',    focus: 'weekly highlight or achievement to celebrate' },
     { key: 'sat', label: 'Saturday',  focus: 'lighter, community-focused weekend content' },
     { key: 'sun', label: 'Sunday',    focus: 'reflection, inspiration, or preview of the week ahead' },
+  ],
+  es: [
+    { key: 'mon', label: 'Lunes',     focus: 'publicación de apertura atractiva para empezar la semana con buen pie' },
+    { key: 'tue', label: 'Martes',    focus: 'consejo educativo o guía práctica' },
+    { key: 'wed', label: 'Miércoles', focus: 'publicación de participación con una pregunta abierta a la comunidad' },
+    { key: 'thu', label: 'Jueves',    focus: 'contenido de historia o detrás de cámaras' },
+    { key: 'fri', label: 'Viernes',   focus: 'resumen semanal o logro para celebrar' },
+    { key: 'sat', label: 'Sábado',    focus: 'contenido ligero y comunitario de fin de semana' },
+    { key: 'sun', label: 'Domingo',   focus: 'reflexión, inspiración o vista previa de la semana siguiente' },
+  ],
+  zh: [
+    { key: 'mon', label: '周一', focus: '吸引人的开场帖子，为本周定下积极基调' },
+    { key: 'tue', label: '周二', focus: '教育性技巧或实用指南' },
+    { key: 'wed', label: '周三', focus: '互动帖子，向社区提出开放性问题' },
+    { key: 'thu', label: '周四', focus: '幕后故事或品牌叙事内容' },
+    { key: 'fri', label: '周五', focus: '每周亮点或值得庆祝的成就' },
+    { key: 'sat', label: '周六', focus: '轻松愉快的周末内容，贴近社区' },
+    { key: 'sun', label: '周日', focus: '思考、灵感或下周预告' },
   ],
 }
 

@@ -7,16 +7,20 @@ import { useUILang } from '@/contexts/UILanguageContext'
 
 const PLATFORMS = ['Instagram', 'LinkedIn', 'Twitter / X', 'Facebook', 'TikTok']
 
-const TONES = {
+const TONES: Record<OutputLanguage, string[]> = {
   fr: ['Professionnel', 'Décontracté', 'Amical', 'Inspirant', 'Humoristique'],
   ar: ['احترافي', 'غير رسمي', 'ودّي', 'ملهِم', 'فكاهي'],
   en: ['Professional', 'Casual', 'Friendly', 'Inspirational', 'Humorous'],
+  es: ['Profesional', 'Casual', 'Amigable', 'Inspirador', 'Humorístico'],
+  zh: ['专业', '随意', '友好', '励志', '幽默'],
 }
 
 const LANGUAGES: { value: OutputLanguage; label: string; flag: string }[] = [
   { value: 'fr', label: 'Français', flag: '🇫🇷' },
   { value: 'ar', label: 'العربية', flag: '🇸🇦' },
   { value: 'en', label: 'English',  flag: '🇬🇧' },
+  { value: 'es', label: 'Español',  flag: '🇪🇸' },
+  { value: 'zh', label: '中文',     flag: '🇨🇳' },
 ]
 
 const UI = {
@@ -60,7 +64,8 @@ const UI = {
 
 export default function PlannerPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [platform, setPlatform] = useState('Instagram')
   const [topic, setTopic] = useState('')

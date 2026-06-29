@@ -126,7 +126,8 @@ const EMAIL_STEPS = [0, 3, 7, 30]
 
 export default function MarketingPage() {
   const { lang } = useUILang()
-  const t = T[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const t = T[uiLang]
 
   const [tab, setTab] = useState<'posts' | 'email'>('posts')
   const [topic, setTopic] = useState('')

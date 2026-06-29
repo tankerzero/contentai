@@ -27,7 +27,8 @@ const UI = {
 
 export default function HistoryList({ generations }: { generations: Generation[] }) {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
   const [filter, setFilter] = useState<'all' | 'favorites'>('all')
 
   const visible = filter === 'favorites'

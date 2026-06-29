@@ -48,7 +48,8 @@ interface Profile {
 
 export default function DashboardPage() {
   const { lang, isRTL } = useUILang()
-  const ui = UI[lang]
+  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
+  const ui = UI[uiLang]
 
   const [email, setEmail] = useState('')
   const [generations, setGenerations] = useState<Generation[]>([])

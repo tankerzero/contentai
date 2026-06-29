@@ -15,14 +15,14 @@ const T = {
       headline: 'Create content that',
       headlineAccent: ' stands out',
       cycling: ['Instagram captions', 'blog posts', 'ad copy', 'Arabic content'],
-      subtitle: 'Generate professional content in English, French & Arabic — in seconds.',
+      subtitle: 'Generate professional content in 5 languages — English, French, Arabic, Spanish & Chinese.',
       cta: 'Start for free', ctaSecondary: 'See demo',
-      badge1: '🤖 Claude AI', badge2: '🌍 3 languages', badge3: '✦ RTL Arabic',
+      badge1: '🤖 Claude AI', badge2: '🌍 5 languages', badge3: '✦ RTL Arabic',
     },
     proof: {
       stats: [
         { value: '10K+', label: 'Pieces generated' },
-        { value: '3',    label: 'Languages' },
+        { value: '5',    label: 'Languages' },
         { value: '500+', label: 'Creators' },
       ],
       testimonials: [
@@ -33,7 +33,7 @@ const T = {
     },
     features: {
       title: 'Everything you need to create great content',
-      subtitle: 'One platform. Three languages. Unlimited creativity.',
+      subtitle: 'One platform. Five languages. Unlimited creativity.',
       items: [
         { icon: '✍️', title: 'Blog Posts',          desc: 'SEO-optimised long-form content with proper structure.' },
         { icon: '📱', title: 'Social Media',         desc: 'Punchy posts with hashtags for any platform.' },
@@ -52,13 +52,13 @@ const T = {
       cta: 'Get started', ctaFree: 'Start free',
       perMonth: '/mo', perYear: '/yr',
       features: {
-        free: ['5 generations/month', 'All content types', '3 languages', 'Standard quality'],
-        basic: ['30 generations/month', 'All content types', '3 languages', 'Brand voice', 'Priority generation'],
-        pro: ['100 generations/month', 'All content types', '3 languages', 'Brand voice', 'Priority generation', 'Weekly planner'],
+        free: ['5 generations/month', 'All content types', '5 languages', 'Standard quality'],
+        basic: ['30 generations/month', 'All content types', '5 languages', 'Brand voice', 'Priority generation'],
+        pro: ['100 generations/month', 'All content types', '5 languages', 'Brand voice', 'Priority generation', 'Weekly planner'],
       },
     },
     footer: {
-      tagline: 'Made with ❤️ for MENA & Francophone creators',
+      tagline: 'Made with ❤️ for MENA, Francophone & global creators',
       privacy: 'Privacy', terms: 'Terms', blog: 'Blog',
     },
     langToggle: 'FR | AR',
@@ -70,32 +70,32 @@ const T = {
       headline: 'Créez du contenu qui',
       headlineAccent: ' se démarque',
       cycling: ['captions Instagram', 'articles de blog', 'textes publicitaires', 'contenu en arabe'],
-      subtitle: 'Générez du contenu professionnel en français, anglais & arabe — en quelques secondes.',
+      subtitle: 'Générez du contenu professionnel en 5 langues — français, anglais, arabe, espagnol et chinois.',
       cta: 'Commencer gratuitement', ctaSecondary: 'Voir la démo',
-      badge1: '🤖 Claude AI', badge2: '🌍 3 langues', badge3: '✦ Arabe RTL',
+      badge1: '🤖 Claude AI', badge2: '🌍 5 langues', badge3: '✦ Arabe RTL',
     },
     proof: {
       stats: [
         { value: '10K+', label: 'Contenus générés' },
-        { value: '3',    label: 'Langues' },
+        { value: '5',    label: 'Langues' },
         { value: '500+', label: 'Créateurs' },
       ],
       testimonials: [
         { name: 'Sophie M.',   location: 'Montréal', text: 'ContentAI a doublé ma fréquence de publication. Le contenu en français est parfait, rien à retoucher.', rating: 5 },
-        { name: 'Ahmed K.',    location: 'Dubaï',    text: 'Enfin une IA qui génère du contenu arabe RTL correct. Je l\'utilise tous les jours pour mes réseaux sociaux.', rating: 5 },
+        { name: 'Ahmed K.',    location: 'Dubaï',    text: "Enfin une IA qui génère du contenu arabe RTL correct. Je l'utilise tous les jours pour mes réseaux sociaux.", rating: 5 },
         { name: 'Leila B.',    location: 'Paris',    text: 'Le ton de marque est révolutionnaire. Mes clients reçoivent toujours un contenu qui leur ressemble vraiment.', rating: 5 },
       ],
     },
     features: {
-      title: 'Tout ce qu\'il faut pour créer du contenu remarquable',
-      subtitle: 'Une plateforme. Trois langues. Une créativité sans limites.',
+      title: "Tout ce qu'il faut pour créer du contenu remarquable",
+      subtitle: 'Une plateforme. Cinq langues. Une créativité sans limites.',
       items: [
         { icon: '✍️', title: 'Articles de Blog',       desc: 'Contenu long format optimisé SEO avec structure claire.' },
         { icon: '📱', title: 'Réseaux Sociaux',         desc: 'Publications percutantes avec hashtags pour toutes les plateformes.' },
-        { icon: '📧', title: 'Campagnes Email',         desc: 'Emails persuasifs avec des appels à l\'action forts.' },
+        { icon: '📧', title: 'Campagnes Email',         desc: "Emails persuasifs avec des appels à l'action forts." },
         { icon: '🛒', title: 'Descriptions Produits',   desc: 'Textes axés sur la conversion qui vendent.' },
         { icon: '🌙', title: 'Arabe RTL',               desc: 'Contenu arabe natif, direction correcte.' },
-        { icon: '🎨', title: 'Ton de Marque',           desc: 'Cohérence de ton sur l\'ensemble de votre contenu.' },
+        { icon: '🎨', title: 'Ton de Marque',           desc: "Cohérence de ton sur l'ensemble de votre contenu." },
       ],
     },
     pricing: {
@@ -107,13 +107,13 @@ const T = {
       cta: 'Commencer', ctaFree: 'Gratuit',
       perMonth: '/mois', perYear: '/an',
       features: {
-        free: ['5 générations/mois', 'Tous les types', '3 langues', 'Qualité standard'],
-        basic: ['30 générations/mois', 'Tous les types', '3 langues', 'Ton de marque', 'Priorité'],
-        pro: ['100 générations/mois', 'Tous les types', '3 langues', 'Ton de marque', 'Priorité', 'Planificateur semaine'],
+        free: ['5 générations/mois', 'Tous les types', '5 langues', 'Qualité standard'],
+        basic: ['30 générations/mois', 'Tous les types', '5 langues', 'Ton de marque', 'Priorité'],
+        pro: ['100 générations/mois', 'Tous les types', '5 langues', 'Ton de marque', 'Priorité', 'Planificateur semaine'],
       },
     },
     footer: {
-      tagline: 'Fait avec ❤️ pour les créateurs MENA & francophones',
+      tagline: 'Fait avec ❤️ pour les créateurs MENA, francophones et du monde entier',
       privacy: 'Confidentialité', terms: 'Conditions', blog: 'Blog',
     },
     langToggle: 'EN | AR',
@@ -125,14 +125,14 @@ const T = {
       headline: 'أنشئ محتوى',
       headlineAccent: ' يتميّز بالفعل',
       cycling: ['تعليقات إنستغرام', 'مقالات المدونة', 'نصوص إعلانية', 'محتوى عربي أصيل'],
-      subtitle: 'أنشئ محتوى احترافياً بالعربية والفرنسية والإنجليزية — في ثوانٍ معدودة.',
+      subtitle: 'أنشئ محتوى احترافياً بـ5 لغات — العربية والفرنسية والإنجليزية والإسبانية والصينية.',
       cta: 'ابدأ مجاناً', ctaSecondary: 'شاهد العرض',
-      badge1: '🤖 Claude AI', badge2: '🌍 3 لغات', badge3: '✦ عربي RTL',
+      badge1: '🤖 Claude AI', badge2: '🌍 5 لغات', badge3: '✦ عربي RTL',
     },
     proof: {
       stats: [
         { value: '+10K', label: 'محتوى مولَّد' },
-        { value: '3',    label: 'لغات' },
+        { value: '5',    label: 'لغات' },
         { value: '+500', label: 'مبدع' },
       ],
       testimonials: [
@@ -143,7 +143,7 @@ const T = {
     },
     features: {
       title: 'كل ما تحتاجه لإنشاء محتوى رائع',
-      subtitle: 'منصة واحدة. ثلاث لغات. إبداع بلا حدود.',
+      subtitle: 'منصة واحدة. خمس لغات. إبداع بلا حدود.',
       items: [
         { icon: '✍️', title: 'مقالات المدونة',     desc: 'محتوى طويل محسّن لمحركات البحث مع هيكل واضح.' },
         { icon: '📱', title: 'وسائل التواصل',      desc: 'منشورات مؤثرة مع هاشتاقات لجميع المنصات.' },
@@ -162,23 +162,135 @@ const T = {
       cta: 'ابدأ الآن', ctaFree: 'مجاني',
       perMonth: '/شهر', perYear: '/سنة',
       features: {
-        free: ['5 توليدات/شهر', 'جميع الأنواع', '3 لغات', 'جودة قياسية'],
-        basic: ['30 توليداً/شهر', 'جميع الأنواع', '3 لغات', 'صوت العلامة', 'أولوية'],
-        pro: ['100 توليد/شهر', 'جميع الأنواع', '3 لغات', 'صوت العلامة', 'أولوية', 'مخطط أسبوعي'],
+        free: ['5 توليدات/شهر', 'جميع الأنواع', '5 لغات', 'جودة قياسية'],
+        basic: ['30 توليداً/شهر', 'جميع الأنواع', '5 لغات', 'صوت العلامة', 'أولوية'],
+        pro: ['100 توليد/شهر', 'جميع الأنواع', '5 لغات', 'صوت العلامة', 'أولوية', 'مخطط أسبوعي'],
       },
     },
     footer: {
-      tagline: 'صُنع بـ ❤️ للمبدعين في منطقة الشرق الأوسط والمجتمع الناطق بالفرنسية',
+      tagline: 'صُنع بـ ❤️ للمبدعين حول العالم',
       privacy: 'الخصوصية', terms: 'الشروط', blog: 'المدونة',
+    },
+    langToggle: 'EN | FR',
+  },
+  es: {
+    nav:    { signIn: 'Iniciar sesión', getStarted: 'Empezar gratis' },
+    hero: {
+      eyebrow: 'Impulsado por Claude AI',
+      headline: 'Crea contenido que',
+      headlineAccent: ' destaca',
+      cycling: ['captions de Instagram', 'artículos de blog', 'textos publicitarios', 'contenido en árabe'],
+      subtitle: 'Genera contenido profesional en 5 idiomas — español, inglés, francés, árabe y chino.',
+      cta: 'Comenzar gratis', ctaSecondary: 'Ver demo',
+      badge1: '🤖 Claude AI', badge2: '🌍 5 idiomas', badge3: '✦ Árabe RTL',
+    },
+    proof: {
+      stats: [
+        { value: '10K+', label: 'Contenidos generados' },
+        { value: '5',    label: 'Idiomas' },
+        { value: '500+', label: 'Creadores' },
+      ],
+      testimonials: [
+        { name: 'Sophie M.',   location: 'Montréal',  text: 'ContentAI duplicó mi frecuencia de publicación. El contenido en francés es perfecto, sin retoques.', rating: 5 },
+        { name: 'Ahmed K.',    location: 'Dubái',     text: 'Por fin una IA que genera contenido árabe RTL correcto. Lo uso todos los días para mis redes sociales.', rating: 5 },
+        { name: 'Leila B.',    location: 'París',     text: 'La función de voz de marca es revolucionaria. Mis clientes siempre reciben contenido que los representa.', rating: 5 },
+      ],
+    },
+    features: {
+      title: 'Todo lo que necesitas para crear gran contenido',
+      subtitle: 'Una plataforma. Cinco idiomas. Creatividad ilimitada.',
+      items: [
+        { icon: '✍️', title: 'Artículos de Blog',        desc: 'Contenido largo optimizado para SEO con estructura clara.' },
+        { icon: '📱', title: 'Redes Sociales',            desc: 'Posts impactantes con hashtags para cualquier plataforma.' },
+        { icon: '📧', title: 'Campañas de Email',         desc: 'Emails persuasivos con llamadas a la acción claras.' },
+        { icon: '🛒', title: 'Descripciones de Producto', desc: 'Textos orientados a la conversión que venden.' },
+        { icon: '🌙', title: 'Árabe RTL',                 desc: 'Contenido árabe nativo con dirección correcta.' },
+        { icon: '🎨', title: 'Voz de Marca',              desc: 'Tono consistente en todo tu contenido.' },
+      ],
+    },
+    pricing: {
+      title: 'Precios simples y transparentes',
+      subtitle: 'Empieza gratis. Mejora cuando necesites más.',
+      monthly: 'Mensual', yearly: 'Anual',
+      save: 'Ahorra 2 meses',
+      recommended: 'Más popular',
+      cta: 'Comenzar', ctaFree: 'Gratis',
+      perMonth: '/mes', perYear: '/año',
+      features: {
+        free: ['5 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Calidad estándar'],
+        basic: ['30 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Voz de marca', 'Prioridad'],
+        pro: ['100 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Voz de marca', 'Prioridad', 'Planificador semanal'],
+      },
+    },
+    footer: {
+      tagline: 'Hecho con ❤️ para creadores de todo el mundo',
+      privacy: 'Privacidad', terms: 'Términos', blog: 'Blog',
+    },
+    langToggle: 'EN | FR',
+  },
+  zh: {
+    nav:    { signIn: '登录', getStarted: '免费开始' },
+    hero: {
+      eyebrow: '由 Claude AI 驱动',
+      headline: '创作',
+      headlineAccent: '出众的内容',
+      cycling: ['Instagram 标题', '博客文章', '广告文案', '阿拉伯语内容'],
+      subtitle: '用5种语言生成专业内容 — 中文、英语、法语、阿拉伯语和西班牙语，只需几秒钟。',
+      cta: '免费开始', ctaSecondary: '查看演示',
+      badge1: '🤖 Claude AI', badge2: '🌍 5种语言', badge3: '✦ 阿拉伯语RTL',
+    },
+    proof: {
+      stats: [
+        { value: '10K+', label: '已生成内容' },
+        { value: '5',    label: '支持语言' },
+        { value: '500+', label: '创作者' },
+      ],
+      testimonials: [
+        { name: 'Sophie M.',  location: '蒙特利尔', text: 'ContentAI让我的发布频率翻倍。法语内容质量堪比母语写作，无需修改。', rating: 5 },
+        { name: 'Ahmed K.',   location: '迪拜',     text: '终于有一款AI能正确生成阿拉伯语RTL内容。我每天都用它来管理社交媒体。', rating: 5 },
+        { name: 'Leila B.',   location: '巴黎',     text: '品牌声音功能彻底改变了我的工作方式。客户总能收到真正代表他们的内容。', rating: 5 },
+      ],
+    },
+    features: {
+      title: '创作优质内容所需的一切',
+      subtitle: '一个平台。五种语言。无限创意。',
+      items: [
+        { icon: '✍️', title: '博客文章',   desc: '结构清晰、SEO优化的长篇内容。' },
+        { icon: '📱', title: '社交媒体',   desc: '适合各平台的精彩帖子，含热门标签。' },
+        { icon: '📧', title: '邮件营销',   desc: '带有明确行动号召的说服性邮件。' },
+        { icon: '🛒', title: '产品描述',   desc: '以转化为导向、提升销售的文案。' },
+        { icon: '🌙', title: '阿拉伯语RTL', desc: '方向正确的原生阿拉伯语内容。' },
+        { icon: '🎨', title: '品牌声音',   desc: '所有内容保持一致的品牌风格。' },
+      ],
+    },
+    pricing: {
+      title: '简单透明的定价',
+      subtitle: '免费开始，按需升级。',
+      monthly: '按月', yearly: '按年',
+      save: '省2个月',
+      recommended: '最受欢迎',
+      cta: '立即开始', ctaFree: '免费',
+      perMonth: '/月', perYear: '/年',
+      features: {
+        free: ['5次生成/月', '所有内容类型', '5种语言', '标准质量'],
+        basic: ['30次生成/月', '所有内容类型', '5种语言', '品牌声音', '优先生成'],
+        pro: ['100次生成/月', '所有内容类型', '5种语言', '品牌声音', '优先生成', '每周计划'],
+      },
+    },
+    footer: {
+      tagline: '用 ❤️ 为全球创作者打造',
+      privacy: '隐私政策', terms: '服务条款', blog: '博客',
     },
     langToggle: 'EN | FR',
   },
 } as const
 
-const LANG_OPTIONS: { value: UILang; flag: string }[] = [
-  { value: 'en', flag: '🇬🇧' },
-  { value: 'fr', flag: '🇫🇷' },
-  { value: 'ar', flag: '🇸🇦' },
+const LANG_OPTIONS: { value: UILang; flag: string; label: string }[] = [
+  { value: 'en', flag: '🇬🇧', label: 'EN' },
+  { value: 'fr', flag: '🇫🇷', label: 'FR' },
+  { value: 'ar', flag: '🇸🇦', label: 'AR' },
+  { value: 'es', flag: '🇪🇸', label: 'ES' },
+  { value: 'zh', flag: '🇨🇳', label: '中' },
 ]
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -224,12 +336,12 @@ export default function LandingPage() {
                 <button
                   key={l.value}
                   onClick={() => setLang(l.value)}
-                  className={`w-8 h-8 rounded-lg text-base transition-all ${
-                    lang === l.value ? 'bg-brand-50 ring-1 ring-brand-300' : 'hover:bg-gray-50'
+                  className={`h-8 px-2 rounded-lg text-xs font-semibold transition-all ${
+                    lang === l.value ? 'bg-brand-50 ring-1 ring-brand-300 text-brand-700' : 'text-gray-500 hover:bg-gray-50'
                   }`}
-                  title={l.value.toUpperCase()}
+                  title={l.label}
                 >
-                  {l.flag}
+                  {l.flag} {l.label}
                 </button>
               ))}
             </div>
@@ -299,9 +411,9 @@ export default function LandingPage() {
               </div>
               {/* Mock UI */}
               <div className="space-y-3">
-                <div className="flex gap-2">
-                  {(['🇬🇧 EN', '🇫🇷 FR', '🇸🇦 AR'] as const).map((label, i) => (
-                    <div key={label} className={`h-7 px-2 rounded-lg text-xs flex items-center gap-1 font-medium ${i === 0 ? 'bg-brand-50 border border-brand-200 text-brand-700' : 'bg-gray-50 border border-gray-100 text-gray-400'}`}>
+                <div className="flex gap-1.5">
+                  {(['EN', 'FR', 'AR'] as const).map((label, i) => (
+                    <div key={label} className={`h-7 px-2.5 rounded-lg text-xs flex items-center font-semibold ${i === 0 ? 'bg-brand-100 border border-brand-300 text-brand-700' : 'bg-gray-100 border border-gray-200 text-gray-600'}`}>
                       {label}
                     </div>
                   ))}

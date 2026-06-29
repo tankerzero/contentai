@@ -5,7 +5,7 @@ export type ContentType =
   | 'product_description'
   | 'ad_copy'
 
-export type OutputLanguage = 'en' | 'fr' | 'ar'
+export type OutputLanguage = 'en' | 'fr' | 'ar' | 'es' | 'zh'
 
 export interface BrandVoice {
   companyName?: string

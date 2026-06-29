@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
   try {
     const content = await generateContent({ type, topic, tone, language, keywords, wordCount, brandVoice })
 
-    const { data: saved } = await supabase
+    const { data: saved, error: saveError } = await supabase
       .from('generations')
       .insert({
         user_id: user.id,
@@ -84,6 +84,10 @@ export async function POST(req: NextRequest) {
         ...(platform ? { platform } : {}),
       })
       .select('id').single()
+
+    if (saveError) {
+      console.error('[generate] Failed to save to history:', saveError.message, saveError.code, saveError.details)
+    }
 
     return NextResponse.json({ content, id: saved?.id ?? null })
   } catch (err) {
