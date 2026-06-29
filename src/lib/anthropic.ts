@@ -1,4 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
+import type { ContentType, OutputLanguage, BrandVoice } from './content-types'
+
+export type { ContentType, OutputLanguage, BrandVoice } from './content-types'
 
 function getClient(): Anthropic {
   const apiKey = process.env.ANTHROPIC_API_KEY
@@ -6,23 +9,6 @@ function getClient(): Anthropic {
     'Missing ANTHROPIC_API_KEY. Add it in Vercel → Project Settings → Environment Variables.'
   )
   return new Anthropic({ apiKey })
-}
-
-export type ContentType =
-  | 'blog_post'
-  | 'social_media'
-  | 'email'
-  | 'product_description'
-  | 'ad_copy'
-
-export type OutputLanguage = 'en' | 'fr' | 'ar'
-
-export interface BrandVoice {
-  companyName?: string
-  industry?: string
-  values?: string
-  writingStyle?: string
-  toneExamples?: string
 }
 
 export interface GenerateContentParams {

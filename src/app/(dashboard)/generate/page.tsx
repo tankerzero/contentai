@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import type { ContentType, OutputLanguage } from '@/lib/anthropic'
+import type { ContentType, OutputLanguage } from '@/lib/content-types'
 import { TEMPLATES } from '@/lib/templates'
 import { useUILang } from '@/contexts/UILanguageContext'
 

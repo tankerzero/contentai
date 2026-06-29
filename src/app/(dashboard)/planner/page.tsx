@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import type { OutputLanguage } from '@/lib/anthropic'
+import type { OutputLanguage } from '@/lib/content-types'
 import type { PlannerDay } from '@/app/api/planner/route'
 import { useUILang } from '@/contexts/UILanguageContext'
 
