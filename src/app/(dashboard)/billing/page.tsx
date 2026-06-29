@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { PLANS, type PlanId } from '@/lib/plans'
 import CheckoutButton from '@/components/CheckoutButton'
 import { useUILang } from '@/contexts/UILanguageContext'
+import { CURRENCIES, type CurrencyCode, loadCurrency, saveCurrency, formatPrice } from '@/lib/currency'
 
 const UI = {
   en: {
@@ -127,6 +128,16 @@ export default function BillingPage() {
 
   const [currentPlan, setCurrentPlan] = useState<PlanId>('free')
   const [loading, setLoading] = useState(true)
+  const [currency, setCurrencyState] = useState<CurrencyCode>('CAD')
+
+  useEffect(() => {
+    setCurrencyState(loadCurrency())
+  }, [])
+
+  function handleCurrencyChange(code: CurrencyCode) {
+    setCurrencyState(code)
+    saveCurrency(code)
+  }
 
   useEffect(() => {
     const supabase = createClient()
@@ -151,11 +162,32 @@ export default function BillingPage() {
 
   return (
     <div className={`p-8 max-w-5xl ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">{ui.title}</h1>
-      <p className="text-gray-500 text-sm mb-8">
-        {ui.current}{' '}
-        <span className="font-semibold text-brand-700 capitalize">{currentPlan}</span>
-      </p>
+      <div className={`flex items-start justify-between gap-4 mb-6 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">{ui.title}</h1>
+          <p className="text-gray-500 text-sm">
+            {ui.current}{' '}
+            <span className="font-semibold text-brand-700 capitalize">{currentPlan}</span>
+          </p>
+        </div>
+        {/* Currency selector */}
+        <div className={`flex flex-col items-end gap-1 ${isRTL ? 'items-start' : ''}`}>
+          <select
+            value={currency}
+            onChange={e => handleCurrencyChange(e.target.value as CurrencyCode)}
+            className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+          >
+            {CURRENCIES.map(c => (
+              <option key={c.code} value={c.code}>{c.flag} {c.code} — {c.name}</option>
+            ))}
+          </select>
+          {currency !== 'CAD' && (
+            <p className="text-xs text-gray-400">
+              Prices shown in {currency}. Charged in CAD.
+            </p>
+          )}
+        </div>
+      </div>
 
       {/* Plan cards */}
       <div className="grid md:grid-cols-4 gap-4 mb-10">
@@ -187,7 +219,7 @@ export default function BillingPage() {
               <h3 className="text-base font-bold text-gray-900 mb-1">{plan.name}</h3>
               <div className="mb-4">
                 <span className="text-3xl font-bold text-gray-900">
-                  {plan.price === 0 ? '0' : `$${plan.price}`}
+                  {plan.price === 0 ? '0' : formatPrice(plan.price, currency)}
                 </span>
                 {plan.price > 0 && <span className="text-gray-400 text-xs">{ui.perMonth}</span>}
               </div>

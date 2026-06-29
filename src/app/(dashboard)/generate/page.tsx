@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import type { ContentType, OutputLanguage } from '@/lib/content-types'
 import { TEMPLATES } from '@/lib/templates'
+import { getActiveSeasonalTemplates, type SeasonalTemplate } from '@/lib/seasonal'
 import { useUILang } from '@/contexts/UILanguageContext'
 
 const CONTENT_TYPES: {
@@ -121,6 +122,9 @@ export default function GeneratePage() {
   const ui = UI[lang]
   const tones = TONES[language]
 
+  const locale = typeof navigator !== 'undefined' ? navigator.language : 'en'
+  const activeSeasonal = getActiveSeasonalTemplates(locale, lang)
+
   useEffect(() => {
     fetch('/api/brand').then(r => r.json()).then(({ profile }) => setHasBrand(!!profile))
   }, [])
@@ -132,11 +136,19 @@ export default function GeneratePage() {
 
   function applyTemplate(tpl: typeof TEMPLATES[0]) {
     setContentType(tpl.contentType)
-    setTopic(language === 'ar' ? tpl.topic.ar : tpl.topic.fr)
+    const topicLang = (tpl.topic as Record<string, string>)[lang] ?? tpl.topic.fr ?? tpl.topic.ar ?? ''
+    setTopic(topicLang)
     setTone(tpl.tone)
     setLanguage(tpl.language)
     if (tpl.keywords) setKeywords(tpl.keywords)
     if (tpl.wordCount) setWordCount(tpl.wordCount)
+  }
+
+  function applySeasonalTemplate(tpl: SeasonalTemplate) {
+    setContentType(tpl.contentType)
+    setTopic(tpl.topic[lang] ?? tpl.topic.en ?? tpl.topic.fr)
+    setTone(tpl.tone)
+    setLanguage(tpl.language)
   }
 
   function getContentTypeLabel(ct: typeof CONTENT_TYPES[0]) {
@@ -201,22 +213,46 @@ export default function GeneratePage() {
           {ui.templatesLabel}
         </p>
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-          {TEMPLATES.map(tpl => (
+          {/* Seasonal templates first */}
+          {activeSeasonal.map(tpl => (
             <button
               key={tpl.id}
               type="button"
-              onClick={() => applyTemplate(tpl)}
-              className="shrink-0 flex flex-col items-start gap-1 bg-white border border-gray-100 rounded-xl px-4 py-3 hover:border-brand-300 hover:bg-brand-50 transition-colors text-left min-w-36"
+              onClick={() => applySeasonalTemplate(tpl)}
+              className="shrink-0 flex flex-col items-start gap-1 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 hover:border-amber-400 hover:bg-amber-100 transition-colors text-left w-[180px]"
             >
-              <span className="text-xl">{tpl.icon}</span>
-              <span className="text-xs font-semibold text-gray-700 leading-tight">
-                {lang === 'ar' ? tpl.name.ar : tpl.name.fr}
-              </span>
-              <span className="text-xs text-gray-400 leading-tight line-clamp-2">
-                {lang === 'ar' ? tpl.description.ar : tpl.description.fr}
+              <div className="flex items-center gap-1.5 w-full">
+                <span className="text-lg shrink-0">{tpl.icon}</span>
+                <span className="text-xs font-bold text-amber-700 truncate">
+                  {tpl.name[lang] ?? tpl.name.en ?? tpl.name.fr}
+                </span>
+              </div>
+              <span className="text-xs text-amber-600 leading-tight line-clamp-2 w-full">
+                {tpl.description[lang] ?? tpl.description.en ?? tpl.description.fr}
               </span>
             </button>
           ))}
+          {/* Static templates */}
+          {TEMPLATES.map(tpl => {
+            const nameStr = (tpl.name as Record<string, string>)[lang] ?? tpl.name.fr ?? tpl.name.ar ?? ''
+            const descStr = (tpl.description as Record<string, string>)[lang] ?? tpl.description.fr ?? tpl.description.ar ?? ''
+            return (
+              <button
+                key={tpl.id}
+                type="button"
+                onClick={() => applyTemplate(tpl)}
+                className="shrink-0 flex flex-col items-start gap-1 bg-white border border-gray-100 rounded-xl px-4 py-3 hover:border-brand-300 hover:bg-brand-50 transition-colors text-left w-[180px]"
+              >
+                <span className="text-xl">{tpl.icon}</span>
+                <span className="text-xs font-semibold text-gray-700 leading-tight w-full">
+                  {nameStr}
+                </span>
+                <span className="text-xs text-gray-400 leading-tight line-clamp-2 w-full">
+                  {descStr}
+                </span>
+              </button>
+            )
+          })}
         </div>
       </div>
 

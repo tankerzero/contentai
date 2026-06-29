@@ -12,35 +12,35 @@ const NAV_T = {
     content:   'My Content', planner: 'Planner',        earn: 'Earn',
     brandSection: 'Brand',   signOut: 'Sign out',
     brand:   'Brand Voice',  billing: 'Billing',        social: 'Social',
-    marketing: 'Marketing',
+    marketing: 'Marketing',  support: 'Support',        campaigns: 'Campaigns',
   },
   fr: {
     dashboard: 'Dashboard',  generate: 'Générer',       history: 'Historique',
     content:   'Mon Contenu',planner: 'Planificateur',  earn: 'Gagner',
     brandSection: 'Marque',  signOut: 'Déconnexion',
     brand:   'Ton de marque',billing: 'Abonnement',     social: 'Social',
-    marketing: 'Marketing',
+    marketing: 'Marketing',  support: 'Support',        campaigns: 'Campagnes',
   },
   ar: {
     dashboard: 'الرئيسية',  generate: 'توليد',          history: 'السجل',
     content:   'محتواي',    planner:  'المخطط',          earn: 'الكسب',
     brandSection: 'العلامة', signOut: 'تسجيل خروج',
     brand:   'صوت العلامة', billing: 'الاشتراك',        social: 'التواصل',
-    marketing: 'تسويق',
+    marketing: 'تسويق',     support: 'الدعم',           campaigns: 'الحملات',
   },
   es: {
     dashboard: 'Inicio',     generate: 'Generar',       history: 'Historial',
     content:   'Mi Contenido', planner: 'Planificador', earn: 'Ganar',
     brandSection: 'Marca',   signOut: 'Cerrar sesión',
     brand:   'Voz de Marca', billing: 'Suscripción',    social: 'Social',
-    marketing: 'Marketing',
+    marketing: 'Marketing',  support: 'Soporte',        campaigns: 'Campañas',
   },
   zh: {
     dashboard: '仪表盘',    generate: '生成',            history: '历史记录',
     content:   '我的内容',  planner:  '计划',             earn: '赚取',
     brandSection: '品牌',   signOut: '退出登录',
     brand:   '品牌声音',    billing: '订阅',              social: '社交',
-    marketing: '营销',
+    marketing: '营销',      support: '客服',              campaigns: '邮件营销',
   },
 }
 
@@ -114,11 +114,13 @@ export default function NavSidebar({ email }: { email: string }) {
           <p className="text-xs font-semibold text-gray-300 uppercase tracking-widest">{t.brandSection}</p>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
-        <NavLink href="/social"    label={t.social}    icon="📱" />
-        <NavLink href="/marketing" label={t.marketing} icon="📣" />
-        <NavLink href="/brand"     label={t.brand}     icon="🎨" />
-        <NavLink href="/billing"   label={t.billing}   icon="💳" />
-        <NavLink href="/earn"      label={t.earn}      icon="💸" />
+        <NavLink href="/social"     label={t.social}     icon="📱" />
+        <NavLink href="/marketing"  label={t.marketing}  icon="📣" />
+        <NavLink href="/campaigns"  label={t.campaigns}  icon="✉️" />
+        <NavLink href="/brand"      label={t.brand}      icon="🎨" />
+        <NavLink href="/billing"    label={t.billing}    icon="💳" />
+        <NavLink href="/earn"       label={t.earn}       icon="💸" />
+        <NavLink href="/support"    label={t.support}    icon="💬" />
       </nav>
 
       {/* Language switcher — two rows of flags to fit 5 languages */}
