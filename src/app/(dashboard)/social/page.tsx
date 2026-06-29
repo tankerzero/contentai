@@ -2,6 +2,44 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useUILang } from '@/contexts/UILanguageContext'
 
+const TIMEZONES = [
+  { value: 'UTC',                  label: 'UTC' },
+  { value: 'America/Toronto',      label: 'Toronto (ET)' },
+  { value: 'America/New_York',     label: 'New York (ET)' },
+  { value: 'America/Chicago',      label: 'Chicago (CT)' },
+  { value: 'America/Los_Angeles',  label: 'Los Angeles (PT)' },
+  { value: 'America/Vancouver',    label: 'Vancouver (PT)' },
+  { value: 'America/Sao_Paulo',    label: 'São Paulo (BRT)' },
+  { value: 'Europe/London',        label: 'London (GMT/BST)' },
+  { value: 'Europe/Paris',         label: 'Paris (CET)' },
+  { value: 'Africa/Casablanca',    label: 'Casablanca (WET)' },
+  { value: 'Asia/Dubai',           label: 'Dubai (GST)' },
+  { value: 'Asia/Riyadh',          label: 'Riyadh (AST)' },
+  { value: 'Asia/Shanghai',        label: 'Shanghai (CST)' },
+  { value: 'Asia/Tokyo',           label: 'Tokyo (JST)' },
+  { value: 'Asia/Kolkata',         label: 'Mumbai (IST)' },
+  { value: 'Australia/Sydney',     label: 'Sydney (AEDT)' },
+]
+
+const HOURS = Array.from({ length: 24 }, (_, i) => ({
+  value: i,
+  label: i === 0 ? '12:00 AM' : i < 12 ? `${i}:00 AM` : i === 12 ? '12:00 PM' : `${i - 12}:00 PM`,
+}))
+
+interface PostingSchedule {
+  id: string
+  platform: string
+  frequency: string
+  post_hour: number
+  timezone: string
+  content_type: string
+  language: string
+  topic: string
+  is_active: boolean
+  last_posted_at: string | null
+  created_at: string
+}
+
 const T = {
   en: {
     title: 'Social Connections',
@@ -150,18 +188,88 @@ export default function SocialPage() {
   const [loading, setLoading] = useState(true)
   const [copying, setCopying] = useState<string | null>(null)
 
+  // Schedule state
+  const [schedule, setSchedule] = useState<PostingSchedule | null>(null)
+  const [scheduleForm, setScheduleForm] = useState({
+    platform: 'twitter', frequency: '1x_week', post_hour: 9,
+    timezone: 'America/Toronto', content_type: 'social_media',
+    language: 'en', topic: '',
+  })
+  const [scheduleSaving, setScheduleSaving] = useState(false)
+  const [scheduleMsg, setScheduleMsg] = useState('')
+
   const load = useCallback(async () => {
     setLoading(true)
-    const [connRes, postRes] = await Promise.all([
+    const [connRes, postRes, schedRes] = await Promise.all([
       fetch('/api/social').then(r => r.json()),
       fetch('/api/social/post').then(r => r.json()),
+      fetch('/api/schedule').then(r => r.json()),
     ])
     setConnections(connRes.connections ?? [])
     setPosts(postRes.posts ?? [])
+    const saved: PostingSchedule | undefined = (schedRes.schedules ?? [])[0]
+    if (saved) {
+      setSchedule(saved)
+      setScheduleForm({
+        platform: saved.platform, frequency: saved.frequency,
+        post_hour: saved.post_hour, timezone: saved.timezone,
+        content_type: saved.content_type, language: saved.language,
+        topic: saved.topic,
+      })
+    }
     setLoading(false)
   }, [])
 
   useEffect(() => { load() }, [load])
+
+  async function saveSchedule(e: React.FormEvent) {
+    e.preventDefault()
+    setScheduleSaving(true)
+    setScheduleMsg('')
+    try {
+      const res = await fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...scheduleForm, is_active: schedule?.is_active ?? true }),
+      })
+      const d = await res.json()
+      if (!res.ok) { setScheduleMsg(d.error ?? 'Failed to save'); return }
+      setSchedule(d.schedule)
+      setScheduleMsg('Schedule saved!')
+      setTimeout(() => setScheduleMsg(''), 3000)
+    } finally {
+      setScheduleSaving(false)
+    }
+  }
+
+  async function toggleSchedule() {
+    if (!schedule) return
+    const res = await fetch('/api/schedule', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: schedule.id, is_active: !schedule.is_active }),
+    })
+    const d = await res.json()
+    if (res.ok) setSchedule(d.schedule)
+  }
+
+  async function deleteSchedule() {
+    if (!schedule) return
+    if (!confirm('Delete this auto-post schedule?')) return
+    await fetch('/api/schedule', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: schedule.id }),
+    })
+    setSchedule(null)
+    setScheduleForm({ platform: 'twitter', frequency: '1x_week', post_hour: 9, timezone: 'America/Toronto', content_type: 'social_media', language: 'en', topic: '' })
+  }
+
+  function nextPostLabel(s: PostingSchedule): string {
+    const hourLabel = HOURS.find(h => h.value === s.post_hour)?.label ?? `${s.post_hour}:00`
+    const freqLabel = { '1x_day': 'Daily', '3x_week': 'Mon/Wed/Fri', '1x_week': 'Weekly' }[s.frequency] ?? s.frequency
+    return `${freqLabel} at ${hourLabel} (${s.timezone})`
+  }
 
   const connectedMap = new Map(connections.map(c => [c.platform, c]))
 
@@ -265,6 +373,166 @@ export default function SocialPage() {
         >
           Open Buffer →
         </a>
+      </div>
+
+      {/* ── Auto-Post Schedule ───────────────────────────── */}
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Auto-Post Schedule</h2>
+            <p className="text-sm text-gray-400">Generate and post content automatically on a schedule</p>
+          </div>
+          {schedule && (
+            <div className="flex items-center gap-3">
+              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${schedule.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                {schedule.is_active ? '● Active' : '○ Paused'}
+              </span>
+              <button onClick={toggleSchedule} className="text-xs text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg px-3 py-1.5 transition">
+                {schedule.is_active ? 'Pause' : 'Resume'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          {schedule && (
+            <div className="mb-5 flex items-center gap-2 bg-brand-50 text-brand-700 rounded-xl px-4 py-3 text-sm">
+              <span>🕐</span>
+              <span><strong>Next post:</strong> {nextPostLabel(schedule)}</span>
+              {schedule.last_posted_at && (
+                <span className="text-brand-500 ml-auto text-xs">Last: {new Date(schedule.last_posted_at).toLocaleDateString()}</span>
+              )}
+            </div>
+          )}
+
+          <form onSubmit={saveSchedule} className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Platform</label>
+              <select
+                value={scheduleForm.platform}
+                onChange={e => setScheduleForm(f => ({ ...f, platform: e.target.value }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="twitter">Twitter / X (direct posting)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Frequency</label>
+              <select
+                value={scheduleForm.frequency}
+                onChange={e => setScheduleForm(f => ({ ...f, frequency: e.target.value }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="1x_day">Every day (1×/day)</option>
+                <option value="3x_week">Mon, Wed & Fri (3×/week)</option>
+                <option value="1x_week">Once a week (1×/week)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Post time</label>
+              <select
+                value={scheduleForm.post_hour}
+                onChange={e => setScheduleForm(f => ({ ...f, post_hour: parseInt(e.target.value, 10) }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {HOURS.map(h => <option key={h.value} value={h.value}>{h.label}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Timezone</label>
+              <select
+                value={scheduleForm.timezone}
+                onChange={e => setScheduleForm(f => ({ ...f, timezone: e.target.value }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {TIMEZONES.map(tz => <option key={tz.value} value={tz.value}>{tz.label}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Content type</label>
+              <select
+                value={scheduleForm.content_type}
+                onChange={e => setScheduleForm(f => ({ ...f, content_type: e.target.value }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="social_media">Social media post</option>
+                <option value="ad_copy">Ad copy</option>
+                <option value="blog_post">Blog excerpt</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Language</label>
+              <select
+                value={scheduleForm.language}
+                onChange={e => setScheduleForm(f => ({ ...f, language: e.target.value }))}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="ar">العربية</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
+              </select>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-gray-600 mb-1.5">Topic / niche</label>
+              <input
+                type="text"
+                value={scheduleForm.topic}
+                onChange={e => setScheduleForm(f => ({ ...f, topic: e.target.value }))}
+                placeholder="e.g. restaurant, fashion, tech startup, real estate…"
+                maxLength={200}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+
+            <div className="sm:col-span-2 flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={scheduleSaving}
+                className="bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-brand-700 transition disabled:opacity-60"
+              >
+                {scheduleSaving ? 'Saving…' : schedule ? 'Update schedule' : 'Create schedule'}
+              </button>
+              {schedule && (
+                <button
+                  type="button"
+                  onClick={deleteSchedule}
+                  className="text-sm text-red-500 hover:text-red-700 px-3 py-2.5 transition"
+                >
+                  Delete
+                </button>
+              )}
+              {scheduleMsg && (
+                <span className={`text-sm font-medium ${scheduleMsg.includes('!') ? 'text-green-600' : 'text-red-600'}`}>
+                  {scheduleMsg}
+                </span>
+              )}
+            </div>
+          </form>
+        </div>
+
+        {/* Last 5 auto-posts */}
+        {posts.filter(p => (p as SocialPost & { is_scheduled?: boolean }).is_scheduled).length > 0 && (
+          <div className="mt-4">
+            <p className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">Last auto-posts</p>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              {posts.filter(p => (p as SocialPost & { is_scheduled?: boolean }).is_scheduled).slice(0, 5).map(post => (
+                <div key={post.id} className="flex items-start gap-3 px-4 py-3 border-b border-gray-50 last:border-0">
+                  <span className={`mt-0.5 w-2 h-2 rounded-full shrink-0 ${post.status === 'posted' ? 'bg-green-400' : post.status === 'failed' ? 'bg-red-400' : 'bg-yellow-400'}`} />
+                  <p className="text-sm text-gray-600 flex-1 line-clamp-1">{post.content}</p>
+                  <span className="text-xs text-gray-400 shrink-0">{new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Post history */}
