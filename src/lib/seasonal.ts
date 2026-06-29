@@ -44,7 +44,7 @@ const CNY_WINDOWS: SeasonalWindow[] = [
   { start: '2024-01-22', end: '2024-02-21' },
   { start: '2025-01-15', end: '2025-02-14' },
   { start: '2026-01-28', end: '2026-02-27' },
-  { start: '2027-01-17', end: '2027-02-16' },
+  { start: '2027-01-15', end: '2027-02-12' },
   { start: '2028-02-06', end: '2028-03-06' },
   { start: '2029-01-26', end: '2029-02-24' },
 ]
@@ -251,7 +251,7 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     id: 'canada_day',
     icon: '🍁',
     contentType: 'social_media',
-    windows: yearWindows(6, 28, 7, 2),
+    windows: yearWindows(6, 25, 7, 3),
     name: { en: 'Canada Day', fr: 'Fête du Canada', ar: 'يوم كندا', es: 'Día de Canadá', zh: '加拿大国庆' },
     description: {
       en: 'Canada Day celebration post',
@@ -278,11 +278,13 @@ export function getActiveSeasonalTemplates(
   uiLang: OutputLanguage
 ): SeasonalTemplate[] {
   const today = new Date().toISOString().slice(0, 10)
-  return SEASONAL_TEMPLATES.filter(t => {
-    const active = t.windows.some(w => today >= w.start && today <= w.end)
-    if (!active) return false
+  const active = SEASONAL_TEMPLATES.filter(t => {
+    const inWindow = t.windows.some(w => today >= w.start && today <= w.end)
+    if (!inWindow) return false
     if (t.locales && !t.locales.some(l => locale.startsWith(l))) return false
     if (t.showForLangs && !t.showForLangs.includes(uiLang)) return false
     return true
   })
+  console.log('[seasonal] today:', today, '| locale:', locale, '| active:', active.map(t => t.id))
+  return active
 }

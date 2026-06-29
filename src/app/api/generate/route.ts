@@ -71,21 +71,27 @@ export async function POST(req: NextRequest) {
   try {
     const content = await generateContent({ type, topic, tone, language, keywords, wordCount, brandVoice })
 
+    console.log('[generate] Attempting insert for user:', user.id, '| type:', type, '| lang:', language)
+
+    const insertPayload = {
+      user_id: user.id,
+      content_type: type,
+      topic,
+      tone,
+      language,
+      content,
+      ...(platform ? { platform } : {}),
+    }
+
     const { data: saved, error: saveError } = await supabase
       .from('generations')
-      .insert({
-        user_id: user.id,
-        content_type: type,
-        topic,
-        tone,
-        language,
-        content,
-        ...(platform ? { platform } : {}),
-      })
+      .insert(insertPayload)
       .select('id').single()
 
     if (saveError) {
-      console.error('[generate] Failed to save to history:', saveError.message, saveError.code, saveError.details)
+      console.error('[generate] INSERT FAILED:', JSON.stringify({ code: saveError.code, message: saveError.message, details: saveError.details, hint: saveError.hint }))
+    } else {
+      console.log('[generate] INSERT OK — saved id:', saved?.id)
     }
 
     return NextResponse.json({ content, id: saved?.id ?? null })
