@@ -64,6 +64,7 @@ export default function BrandPage() {
   const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
   const ui = UI[uiLang]
 
+  const [profileId, setProfileId] = useState<string | null>(null)
   const [form, setForm] = useState<BrandProfile>({
     company_name: '',
     industry: '',
@@ -81,6 +82,7 @@ export default function BrandPage() {
       .then(r => r.json())
       .then(({ profile }) => {
         if (profile) {
+          setProfileId(profile.id ?? null)
           setForm({
             company_name: profile.company_name ?? '',
             industry: profile.industry ?? '',
@@ -106,13 +108,14 @@ export default function BrandPage() {
     const res = await fetch('/api/brand', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, id: profileId }),
     })
 
+    const d = await res.json()
     if (res.ok) {
+      if (d.id) setProfileId(d.id)
       setSaved(true)
     } else {
-      const d = await res.json()
       setError(d.error ?? 'Save error')
     }
     setSaving(false)

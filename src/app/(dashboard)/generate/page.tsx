@@ -118,12 +118,18 @@ export default function GeneratePage() {
   const [useBrandVoice, setUseBrandVoice] = useState(false)
   const [hasBrand, setHasBrand] = useState(false)
 
+  const [activeSeasonal, setActiveSeasonal] = useState<SeasonalTemplate[]>([])
+
   const outputDir = LANGUAGES.find(l => l.value === language)?.dir ?? 'ltr'
   const ui = UI[lang]
   const tones = TONES[language]
 
-  const locale = typeof navigator !== 'undefined' ? navigator.language : 'en'
-  const activeSeasonal = getActiveSeasonalTemplates(locale, lang)
+  // Compute seasonal templates client-side only, so the real browser date and
+  // locale are always used (never a stale SSR date).
+  useEffect(() => {
+    const locale = navigator.language || 'en'
+    setActiveSeasonal(getActiveSeasonalTemplates(locale, lang))
+  }, [lang])
 
   useEffect(() => {
     fetch('/api/brand').then(r => r.json()).then(({ profile }) => setHasBrand(!!profile))
@@ -175,8 +181,9 @@ export default function GeneratePage() {
       })
 
       const data = await res.json()
+      console.log('[generate] API response:', { status: res.status, ok: res.ok, hasContent: !!data.content, contentLen: data.content?.length, id: data.id, error: data.error })
       if (!res.ok) throw new Error(data.error ?? 'Generation failed')
-      setResult(data.content)
+      setResult(data.content ?? '')
       if (data.id) setGenerationId(data.id)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
