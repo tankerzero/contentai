@@ -1,0 +1,23 @@
+{
+  "name": "ContentAI",
+  "short_name": "ContentAI",
+  "description": "AI content generator for French & Arabic markets",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0D7377",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

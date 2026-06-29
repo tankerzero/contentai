@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Noto_Naskh_Arabic } from 'next/font/google'
 import { UILanguageProvider } from '@/contexts/UILanguageContext'
 import CookieBanner from '@/components/CookieBanner'
+import PWAInstallBanner from '@/components/PWAInstallBanner'
 import './globals.css'
 
 const inter = Inter({
@@ -25,10 +26,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0D7377" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="ContentAI" />
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+      </head>
       <body className={`${inter.variable} ${notoNaskhArabic.variable} font-sans`}>
         <UILanguageProvider>
           {children}
           <CookieBanner />
+          <PWAInstallBanner />
         </UILanguageProvider>
       </body>
     </html>
