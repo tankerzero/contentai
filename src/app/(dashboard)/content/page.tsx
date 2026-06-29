@@ -14,7 +14,6 @@ interface Generation {
   language: string
   content: string
   is_favorite: boolean
-  source: string
   platform: string | null
   created_at: string
 }
@@ -257,7 +256,7 @@ export default function ContentPage() {
     const [{ data: gens }, { data: profileData }, { data: brands }] = await Promise.all([
       supabase
         .from('generations')
-        .select('id, content_type, topic, tone, language, content, is_favorite, source, platform, created_at')
+        .select('id, content_type, topic, tone, language, content, is_favorite, platform, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(500),
