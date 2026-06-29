@@ -82,10 +82,10 @@ export async function POST(req: NextRequest) {
         const userPlan = profileData?.plan ?? 'free'
         const userEmail = user.email ?? user.id
 
-        const resend = new Resend(process.env.RESEND_API_KEY)
+        const resendClient = new Resend(process.env.RESEND_API_KEY)
         console.log('[support] sending escalation email to:', SUPPORT_EMAIL, '| replyTo:', userEmail)
-        const { data: emailResult, error: emailError } = await resend.emails.send({
-          from: 'ContentAI Support <noreply@contentai.app>',
+        const emailOpts = {
+          from: 'ContentAI Support <support@contentai.ca>',
           to: [SUPPORT_EMAIL],
           replyTo: userEmail,
           subject: `[ContentAI Support] New escalation from ${userEmail}`,
@@ -105,7 +105,15 @@ export async function POST(req: NextRequest) {
               ).join('\n\n')
             }</pre>
           `,
-        })
+        }
+        let { data: emailResult, error: emailError } = await resendClient.emails.send(emailOpts)
+        if (emailError) {
+          console.warn('[support] Primary sender failed, retrying with fallback:', emailError.message)
+          ;({ data: emailResult, error: emailError } = await resendClient.emails.send({
+            ...emailOpts,
+            from: 'ContentAI <onboarding@resend.dev>',
+          }))
+        }
         if (emailError) {
           console.error('[support] Resend error:', JSON.stringify(emailError))
         } else {

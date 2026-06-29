@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { checkRateLimit, rateLimitKey } from '@/lib/rateLimit'
-import { resend, getEmailTemplate, type EmailStep } from '@/lib/resend'
+import { sendEmail, getEmailTemplate, type EmailStep } from '@/lib/resend'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     name: user.user_metadata?.full_name as string | undefined,
   })
 
-  const { error: sendError } = await resend.emails.send(template)
+  const { error: sendError } = await sendEmail(template)
 
   if (sendError) {
     return NextResponse.json({ error: sendError.message }, { status: 500 })

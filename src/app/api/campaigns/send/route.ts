@@ -113,12 +113,18 @@ export async function POST(req: NextRequest) {
 </html>`
 
     try {
-      const { error } = await resend.emails.send({
-        from: 'ContentAI Campaigns <campaigns@contentai.app>',
+      const emailOpts = {
+        from: 'ContentAI <support@contentai.ca>',
         to: [contact.email],
         subject: campaign.subject,
         html,
-      })
+      }
+      let { error } = await resend.emails.send(emailOpts)
+      if (error) {
+        // Fallback to Resend shared domain
+        const fallback = await resend.emails.send({ ...emailOpts, from: 'ContentAI <onboarding@resend.dev>' })
+        error = fallback.error
+      }
       if (error) {
         failed++
         sends.push({ user_id: user.id, campaign_id: campaignId, contact_id: contact.id, email: contact.email, status: 'failed' })

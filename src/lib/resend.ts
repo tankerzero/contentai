@@ -2,7 +2,18 @@ import { Resend } from 'resend'
 
 export const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM = 'ContentAI <noreply@contentai.app>'
+const FROM = 'ContentAI <support@contentai.ca>'
+const FROM_FALLBACK = 'ContentAI <onboarding@resend.dev>'
+
+/** Send via primary FROM; retry with Resend sandbox domain on failure. */
+export async function sendEmail(opts: Parameters<typeof resend.emails.send>[0]) {
+  const primary = await resend.emails.send(opts)
+  if (primary.error) {
+    console.warn('[resend] Primary sender failed, retrying with fallback:', primary.error.message)
+    return resend.emails.send({ ...opts, from: FROM_FALLBACK })
+  }
+  return primary
+}
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
 
 export interface EmailUser {
