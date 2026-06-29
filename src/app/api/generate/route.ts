@@ -7,7 +7,8 @@ import { sanitize, sanitizeShort } from '@/lib/sanitize'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  console.log('[generate] user:', user?.id ?? 'NOT AUTHENTICATED', authError ? `| authError: ${authError.message}` : '')
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   // Rate limit: 10 req/min
