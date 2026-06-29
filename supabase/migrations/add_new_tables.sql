@@ -103,21 +103,3 @@ DO $$ BEGIN
   END IF;
 END $$;
 
--- ── Language constraint updates (run if not already done) ─────────────────
-ALTER TABLE public.generations
-  DROP CONSTRAINT IF EXISTS generations_language_check;
-ALTER TABLE public.generations
-  ADD CONSTRAINT generations_language_check
-  CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
-
-ALTER TABLE public.marketing_posts
-  DROP CONSTRAINT IF EXISTS marketing_posts_language_check;
-ALTER TABLE public.marketing_posts
-  ADD CONSTRAINT marketing_posts_language_check
-  CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
-
-ALTER TABLE public.marketplace_templates
-  DROP CONSTRAINT IF EXISTS marketplace_templates_language_check;
-ALTER TABLE public.marketplace_templates
-  ADD CONSTRAINT marketplace_templates_language_check
-  CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
