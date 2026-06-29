@@ -1,4 +1,4 @@
-import type { ContentType, OutputLanguage } from './anthropic'
+import type { ContentType, OutputLanguage } from './content-types'
 
 export interface Template {
   id: string

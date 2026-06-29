@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { PlanId } from '@/lib/stripe'
+import type { PlanId } from '@/lib/plans'
 
 export default function CheckoutButton({ planId }: { planId: PlanId }) {
   const [loading, setLoading] = useState(false)

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { PLANS } from '@/lib/stripe'
+import { PLANS } from '@/lib/plans'
 import { useUILang, type UILang } from '@/contexts/UILanguageContext'
 
 // ── Translations ────────────────────────────────────────────────────────────

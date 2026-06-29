@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { PLANS, type PlanId } from '@/lib/stripe'
+import { PLANS, type PlanId } from '@/lib/plans'
 import CheckoutButton from '@/components/CheckoutButton'
 import { useUILang } from '@/contexts/UILanguageContext'
 

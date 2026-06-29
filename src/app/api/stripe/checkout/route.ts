@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { stripe, PLANS, type PlanId } from '@/lib/stripe'
+import { stripe, PLANS, PLAN_PRICE_IDS, type PlanId } from '@/lib/stripe'
 import { checkRateLimit, rateLimitKey } from '@/lib/rateLimit'
 import { sanitizeShort } from '@/lib/sanitize'
 
@@ -23,9 +23,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
   }
 
-  if (!plan.priceId) {
+  const priceId = PLAN_PRICE_IDS[planId]
+  if (!priceId) {
     return NextResponse.json(
-      { error: 'Stripe price not configured for this plan. Add STRIPE_PRO_PRICE_ID / STRIPE_UNLIMITED_PRICE_ID to .env.local.' },
+      { error: 'Stripe price not configured for this plan. Add the price ID env var to Vercel.' },
       { status: 500 }
     )
   }
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     mode: 'subscription',
-    line_items: [{ price: plan.priceId, quantity: 1 }],
+    line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${appUrl}/billing?success=true`,
     cancel_url: `${appUrl}/billing`,
     metadata: { userId: user.id, planId },
