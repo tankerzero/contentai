@@ -6,12 +6,30 @@ ALTER TABLE public.generations
   ADD CONSTRAINT generations_language_check
     CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
 
-ALTER TABLE public.marketing_posts
-  DROP CONSTRAINT IF EXISTS marketing_posts_language_check,
-  ADD CONSTRAINT marketing_posts_language_check
-    CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
+DO $$ BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name   = 'marketing_posts'
+      AND column_name  = 'language'
+  ) THEN
+    ALTER TABLE public.marketing_posts
+      DROP CONSTRAINT IF EXISTS marketing_posts_language_check,
+      ADD CONSTRAINT marketing_posts_language_check
+        CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
+  END IF;
+END $$;
 
-ALTER TABLE public.marketplace_templates
-  DROP CONSTRAINT IF EXISTS marketplace_templates_language_check,
-  ADD CONSTRAINT marketplace_templates_language_check
-    CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
+DO $$ BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name   = 'marketplace_templates'
+      AND column_name  = 'language'
+  ) THEN
+    ALTER TABLE public.marketplace_templates
+      DROP CONSTRAINT IF EXISTS marketplace_templates_language_check,
+      ADD CONSTRAINT marketplace_templates_language_check
+        CHECK (language IN ('en', 'fr', 'ar', 'es', 'zh'));
+  END IF;
+END $$;
