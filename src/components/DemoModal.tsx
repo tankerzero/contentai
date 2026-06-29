@@ -5,101 +5,116 @@ import Link from 'next/link'
 import { useUILang } from '@/contexts/UILanguageContext'
 import type { UILang } from '@/contexts/UILanguageContext'
 
-const DEMO_KEY = 'contentai_demo_count'
-const DEMO_MAX = 3
+// ── Static example outputs ──────────────────────────────────────────────────
 
-const CONTENT_TYPES: { value: string; labels: Record<UILang, string> }[] = [
-  { value: 'social_media', labels: { en: 'Social Post', fr: 'Post Social',   ar: 'منشور',    es: 'Post Social', zh: '社交帖子' } },
-  { value: 'blog_post',    labels: { en: 'Blog Post',   fr: 'Article Blog',  ar: 'مقال',     es: 'Artículo',    zh: '博客文章' } },
-  { value: 'ad_copy',      labels: { en: 'Ad Copy',     fr: 'Texte Pub',     ar: 'إعلان',    es: 'Anuncio',     zh: '广告文案' } },
-]
+const EXAMPLES = [
+  {
+    icon: '📱',
+    typeKey: 'social' as const,
+    topic: 'Promotion été restaurant libanais',
+    lang: 'FR',
+    dir: 'ltr' as const,
+    output:
+      "🌿 L'été est arrivé et notre restaurant libanais vous invite à célébrer ! 🎉\n\n" +
+      "Profitez de nos saveurs authentiques du Moyen-Orient avec notre menu estival spécial :\n" +
+      "✨ Mezze frais au citron et à la menthe\n" +
+      "🧆 Falafels croustillants maison\n" +
+      "🥗 Fattoush croquant aux herbes fraîches\n\n" +
+      "📍 Réservez ce week-end et bénéficiez de -15 % sur l'ensemble du menu !\n\n" +
+      "👉 Lien en bio pour réserver\n" +
+      "#RestaurantLibanais #CuisineMéditerranéenne #PromotionÉté #FoodParis",
+  },
+  {
+    icon: '📝',
+    typeKey: 'blog' as const,
+    topic: '5 tips for MENA entrepreneurs',
+    lang: 'EN',
+    dir: 'ltr' as const,
+    output:
+      "5 Proven Tips for MENA Entrepreneurs to Scale Their Business\n\n" +
+      "The Middle East and North Africa is experiencing an unprecedented entrepreneurial renaissance. " +
+      "From Cairo's tech hubs to Dubai's innovation corridors, a new generation of founders is rewriting the rules of business.\n\n" +
+      "1. Build Trust Before You Build Revenue\n" +
+      "In MENA culture, relationships precede transactions. Before pitching your product, invest time in face-to-face meetings and genuine conversations. Your network is your most valuable asset — nurture it accordingly.\n\n" +
+      "2. Master Bilingual Storytelling\n" +
+      "The most successful MENA brands speak Arabic and English fluently — not just linguistically, but culturally. Craft messaging that resonates across both worlds.",
+  },
+  {
+    icon: '📣',
+    typeKey: 'ad' as const,
+    topic: 'عرض رمضان للملابس',
+    lang: 'AR',
+    dir: 'rtl' as const,
+    output:
+      "✨ عروض رمضان الاستثنائية قد وصلت! ✨\n\n" +
+      "👗 اكتشفي أجمل تشكيلات الأزياء لهذا الموسم المبارك\n\n" +
+      "أطلالة رائعة في كل ليلة رمضانية — من السهرات الأنيقة إلى جلسات العائلة الدافئة، " +
+      "لدينا ما يناسب كل مناسبة.\n\n" +
+      "🌙 خصم يصل إلى 40% على جميع التشكيلات الرمضانية\n" +
+      "🎁 شحن مجاني للطلبات فوق 200 ريال\n" +
+      "⏰ العرض سارٍ حتى نهاية رمضان فقط!\n\n" +
+      "#رمضان_كريم #موضة_رمضان #عروض_رمضان",
+  },
+] as const
 
-const CONTENT_LANGS: { value: UILang; label: string }[] = [
-  { value: 'en', label: '🇬🇧 EN' },
-  { value: 'fr', label: '🇫🇷 FR' },
-  { value: 'ar', label: '🇸🇦 AR' },
-  { value: 'es', label: '🇪🇸 ES' },
-  { value: 'zh', label: '🇨🇳 中' },
-]
+// ── UI translations ──────────────────────────────────────────────────────────
+
+const TYPE_LABELS: Record<'social' | 'blog' | 'ad', Record<UILang, string>> = {
+  social: { en: 'Social Media', fr: 'Réseaux Sociaux', ar: 'وسائل التواصل', es: 'Redes Sociales', zh: '社交媒体' },
+  blog:   { en: 'Blog Post',    fr: 'Article Blog',    ar: 'مقال مدونة',    es: 'Artículo Blog', zh: '博客文章'  },
+  ad:     { en: 'Ad Copy',      fr: 'Texte Publicitaire', ar: 'نص إعلاني',  es: 'Anuncio',       zh: '广告文案'  },
+}
+
+const TAB_LABELS: Record<UILang, [string, string, string]> = {
+  en: ['📱 Social FR', '📝 Blog EN',  '📣 Ad AR'],
+  fr: ['📱 Social FR', '📝 Blog EN',  '📣 Pub AR'],
+  ar: ['📱 سوشيال FR', '📝 مدونة EN', '📣 إعلان AR'],
+  es: ['📱 Social FR', '📝 Blog EN',  '📣 Anuncio AR'],
+  zh: ['📱 社交 FR',   '📝 博客 EN',  '📣 广告 AR'],
+}
 
 const UI: Record<UILang, {
-  title: string; subtitle: string; topicLabel: string; topicPlaceholder: string
-  typeLabel: string; langLabel: string; btn: string; generating: string
-  demosLeft: (n: number) => string; remaining: string
-  resultTitle: string; ctaText: string; ctaBtn: string
-  limitTitle: string; limitText: string; limitBtn: string
+  title: string; badge: string; topicLabel: string; typeLabel: string
+  langLabel: string; disclaimer: string; cta: string
 }> = {
   en: {
-    title: 'Try ContentAI', subtitle: 'No sign-up needed',
-    topicLabel: 'What do you want to write about?',
-    topicPlaceholder: 'e.g. Summer coffee specials for our Montreal café',
-    typeLabel: 'Content type', langLabel: 'Language',
-    btn: 'Generate', generating: 'Generating…',
-    demosLeft: n => `${n} free demo${n !== 1 ? 's' : ''}`, remaining: 'remaining',
-    resultTitle: 'Your generated content',
-    ctaText: 'Like it? Get unlimited generations.',
-    ctaBtn: 'Start free →',
-    limitTitle: 'Demo limit reached',
-    limitText: 'Sign up free to keep generating — 5 generations/month on the free plan.',
-    limitBtn: 'Create free account →',
+    title: 'Try ContentAI',
+    badge: '✨ Sample outputs — sign up to generate your own',
+    topicLabel: 'Topic', typeLabel: 'Type', langLabel: 'Language',
+    disclaimer: 'These are pre-made samples. Sign up free to generate unlimited content in your own voice.',
+    cta: 'Start for free →',
   },
   fr: {
-    title: 'Essayez ContentAI', subtitle: 'Sans inscription',
-    topicLabel: 'Sur quoi voulez-vous écrire ?',
-    topicPlaceholder: 'ex. Offres café d\'été pour notre café montréalais',
-    typeLabel: 'Type de contenu', langLabel: 'Langue',
-    btn: 'Générer', generating: 'Génération…',
-    demosLeft: n => `${n} démo${n !== 1 ? 's' : ''} gratuite${n !== 1 ? 's' : ''}`, remaining: 'restante(s)',
-    resultTitle: 'Votre contenu généré',
-    ctaText: 'Vous aimez ? Obtenez des générations illimitées.',
-    ctaBtn: 'Commencer gratuitement →',
-    limitTitle: 'Limite atteinte',
-    limitText: 'Créez un compte gratuit — 5 générations/mois sur le plan gratuit.',
-    limitBtn: 'Créer un compte gratuit →',
+    title: 'Essayez ContentAI',
+    badge: '✨ Exemples de sorties — inscrivez-vous pour les vôtres',
+    topicLabel: 'Sujet', typeLabel: 'Type', langLabel: 'Langue',
+    disclaimer: 'Ces exemples sont pré-créés. Inscrivez-vous gratuitement pour générer du contenu illimité.',
+    cta: 'Commencer gratuitement →',
   },
   ar: {
-    title: 'جرّب ContentAI', subtitle: 'بدون تسجيل',
-    topicLabel: 'عمَّ تريد الكتابة؟',
-    topicPlaceholder: 'مثال: عروض القهوة الصيفية لمقهانا',
-    typeLabel: 'نوع المحتوى', langLabel: 'اللغة',
-    btn: 'توليد', generating: 'جارٍ التوليد…',
-    demosLeft: n => `${n} تجربة مجانية`, remaining: 'متبقية',
-    resultTitle: 'المحتوى الذي تم توليده',
-    ctaText: 'أعجبك؟ احصل على توليدات غير محدودة.',
-    ctaBtn: 'ابدأ مجاناً ←',
-    limitTitle: 'انتهت التجارب المجانية',
-    limitText: 'أنشئ حساباً مجانياً — 5 توليدات/شهر في الخطة المجانية.',
-    limitBtn: 'إنشاء حساب مجاني ←',
+    title: 'جرّب ContentAI',
+    badge: '✨ نماذج جاهزة — سجّل لإنشاء محتواك الخاص',
+    topicLabel: 'الموضوع', typeLabel: 'النوع', langLabel: 'اللغة',
+    disclaimer: 'هذه نماذج جاهزة. سجّل مجاناً لإنشاء محتوى غير محدود بأسلوبك.',
+    cta: 'ابدأ مجاناً ←',
   },
   es: {
-    title: 'Prueba ContentAI', subtitle: 'Sin registro',
-    topicLabel: '¿Sobre qué quieres escribir?',
-    topicPlaceholder: 'ej. Especiales de café de verano para nuestro café',
-    typeLabel: 'Tipo de contenido', langLabel: 'Idioma',
-    btn: 'Generar', generating: 'Generando…',
-    demosLeft: n => `${n} demo${n !== 1 ? 's' : ''} gratis`, remaining: 'restante(s)',
-    resultTitle: 'Tu contenido generado',
-    ctaText: '¿Te gusta? Obtén generaciones ilimitadas.',
-    ctaBtn: 'Comenzar gratis →',
-    limitTitle: 'Límite alcanzado',
-    limitText: 'Crea una cuenta gratuita — 5 generaciones/mes en el plan gratuito.',
-    limitBtn: 'Crear cuenta gratuita →',
+    title: 'Prueba ContentAI',
+    badge: '✨ Ejemplos predefinidos — regístrate para generar los tuyos',
+    topicLabel: 'Tema', typeLabel: 'Tipo', langLabel: 'Idioma',
+    disclaimer: 'Estos son ejemplos predefinidos. Regístrate gratis para generar contenido ilimitado.',
+    cta: 'Comenzar gratis →',
   },
   zh: {
-    title: '试用 ContentAI', subtitle: '无需注册',
-    topicLabel: '您想写什么？',
-    topicPlaceholder: '例如：蒙特利尔咖啡馆的夏季特惠',
-    typeLabel: '内容类型', langLabel: '输出语言',
-    btn: '生成', generating: '生成中…',
-    demosLeft: n => `剩余 ${n} 次免费体验`, remaining: '',
-    resultTitle: '您生成的内容',
-    ctaText: '喜欢吗？获取无限生成次数。',
-    ctaBtn: '免费开始 →',
-    limitTitle: '体验次数已用完',
-    limitText: '注册免费账户继续使用 — 免费计划每月 5 次。',
-    limitBtn: '创建免费账户 →',
+    title: '试用 ContentAI',
+    badge: '✨ 预设示例 — 注册即可生成您自己的内容',
+    topicLabel: '主题', typeLabel: '类型', langLabel: '语言',
+    disclaimer: '这些是预设示例。免费注册以生成无限内容。',
+    cta: '免费开始 →',
   },
 }
+
+// ── Component ────────────────────────────────────────────────────────────────
 
 interface Props {
   isOpen: boolean
@@ -110,64 +125,42 @@ export default function DemoModal({ isOpen, onClose }: Props) {
   const { lang, isRTL } = useUILang()
   const ui = UI[lang]
 
-  const [topic, setTopic] = useState('')
-  const [contentType, setContentType] = useState('social_media')
-  const [contentLang, setContentLang] = useState(lang)
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [demoCount, setDemoCount] = useState(0)
+  const [selectedIdx, setSelectedIdx] = useState(0)
+  const [displayedChars, setDisplayedChars] = useState(0)
 
+  const example = EXAMPLES[selectedIdx]
+  const fullOutput = example.output
+
+  // Reset + start typing when modal opens or tab changes
   useEffect(() => {
-    const saved = parseInt(localStorage.getItem(DEMO_KEY) ?? '0', 10)
-    setDemoCount(isNaN(saved) ? 0 : saved)
+    if (!isOpen) return
+    setDisplayedChars(0)
+  }, [selectedIdx, isOpen])
+
+  // Typing animation — 3 chars per 10ms ≈ ~2s for a full example
+  useEffect(() => {
+    if (!isOpen || displayedChars >= fullOutput.length) return
+    const t = setTimeout(() => setDisplayedChars(n => Math.min(n + 3, fullOutput.length)), 10)
+    return () => clearTimeout(t)
+  }, [isOpen, displayedChars, fullOutput.length])
+
+  // Reset to first tab when modal re-opens
+  useEffect(() => {
+    if (isOpen) setSelectedIdx(0)
   }, [isOpen])
 
-  useEffect(() => {
-    setContentLang(lang)
-  }, [lang])
-
-  const handleClose = useCallback(() => {
-    onClose()
-    setResult(null)
-    setError(null)
-  }, [onClose])
+  const handleClose = useCallback(() => onClose(), [onClose])
 
   useEffect(() => {
     if (!isOpen) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && handleClose()
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose() }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [isOpen, handleClose])
 
-  const remaining = DEMO_MAX - demoCount
-  const limitReached = remaining <= 0
-
-  async function handleGenerate() {
-    if (!topic.trim() || limitReached || loading) return
-    setLoading(true)
-    setError(null)
-    setResult(null)
-    try {
-      const res = await fetch('/api/demo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: topic.trim(), type: contentType, language: contentLang }),
-      })
-      const data = await res.json()
-      if (!res.ok) { setError(data.error ?? 'Generation failed'); return }
-      const newCount = demoCount + 1
-      localStorage.setItem(DEMO_KEY, String(newCount))
-      setDemoCount(newCount)
-      setResult(data.content)
-    } catch {
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   if (!isOpen) return null
+
+  const tabs = TAB_LABELS[lang]
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -178,7 +171,7 @@ export default function DemoModal({ isOpen, onClose }: Props) {
         dir={isRTL ? 'rtl' : 'ltr'}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-br from-[#0D7377] to-[#0a5f63] rounded-t-2xl px-6 pt-5 pb-7 text-white">
+        <div className="sticky top-0 z-10 bg-gradient-to-br from-[#0D7377] to-[#0a5f63] rounded-t-2xl px-5 pt-5 pb-5 text-white">
           <button
             onClick={handleClose}
             className={`absolute top-4 text-white/60 hover:text-white text-2xl leading-none transition-colors ${isRTL ? 'left-4' : 'right-4'}`}
@@ -186,124 +179,63 @@ export default function DemoModal({ isOpen, onClose }: Props) {
           >
             ×
           </button>
-          <h2 className="text-lg font-bold mb-0.5">{ui.title}</h2>
-          <p className="text-white/70 text-sm">{ui.subtitle}</p>
-          {!limitReached && (
-            <div className="mt-3 inline-flex items-center gap-1.5 bg-white/15 rounded-full px-3 py-1 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-300 shrink-0" />
-              {ui.demosLeft(remaining)} {ui.remaining}
-            </div>
-          )}
+          <h2 className="text-lg font-bold mb-1">{ui.title}</h2>
+          <p className="text-xs text-white/75 leading-snug max-w-xs">{ui.badge}</p>
         </div>
 
-        <div className="px-5 py-5 space-y-4">
-          {limitReached ? (
-            <div className="text-center py-6">
-              <div className="text-4xl mb-3">🎉</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">{ui.limitTitle}</h3>
-              <p className="text-gray-500 text-sm mb-5 leading-relaxed">{ui.limitText}</p>
-              <Link
-                href="/signup"
-                onClick={handleClose}
-                className="inline-block bg-[#0D7377] text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-[#0a5f63] transition-colors"
-              >
-                {ui.limitBtn}
-              </Link>
+        {/* Tabs */}
+        <div className={`flex gap-2 px-4 pt-4 pb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          {tabs.map((label, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedIdx(i)}
+              className={`flex-1 min-h-[44px] text-xs font-semibold py-2 px-1 rounded-xl border transition-all leading-tight ${
+                selectedIdx === i
+                  ? 'border-[#0D7377] bg-teal-50 text-[#0D7377]'
+                  : 'border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="px-4 pb-5 pt-3 space-y-3">
+          {/* Input metadata */}
+          <div className={`bg-gray-50 rounded-xl px-4 py-3 border border-gray-100 ${example.dir === 'rtl' ? 'font-arabic' : ''}`} dir={example.dir}>
+            <div className={`flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 ${example.dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
+              <span><span className="text-gray-400">{ui.topicLabel}: </span><span className="font-medium text-gray-700">{example.topic}</span></span>
+              <span><span className="text-gray-400">{ui.typeLabel}: </span><span className="font-medium text-gray-700">{TYPE_LABELS[example.typeKey][lang]}</span></span>
+              <span><span className="text-gray-400">{ui.langLabel}: </span><span className="font-medium text-gray-700">{example.lang}</span></span>
             </div>
-          ) : (
-            <>
-              {/* Topic */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{ui.topicLabel}</label>
-                <input
-                  type="text"
-                  value={topic}
-                  onChange={e => setTopic(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleGenerate()}
-                  placeholder={ui.topicPlaceholder}
-                  dir="auto"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D7377] focus:border-transparent"
-                />
-              </div>
+          </div>
 
-              {/* Type + Language */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{ui.typeLabel}</p>
-                  <div className="flex flex-col gap-1.5">
-                    {CONTENT_TYPES.map(ct => (
-                      <button
-                        key={ct.value}
-                        type="button"
-                        onClick={() => setContentType(ct.value)}
-                        className={`min-h-[44px] text-sm py-2.5 px-3 rounded-xl border text-start transition-all ${
-                          contentType === ct.value
-                            ? 'border-[#0D7377] bg-teal-50 text-[#0D7377] font-semibold'
-                            : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
-                        }`}
-                      >
-                        {ct.labels[lang]}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{ui.langLabel}</p>
-                  <div className="flex flex-col gap-1.5">
-                    {CONTENT_LANGS.map(cl => (
-                      <button
-                        key={cl.value}
-                        type="button"
-                        onClick={() => setContentLang(cl.value)}
-                        className={`min-h-[44px] text-sm py-2.5 px-3 rounded-xl border text-start transition-all ${
-                          contentLang === cl.value
-                            ? 'border-[#0D7377] bg-teal-50 text-[#0D7377] font-semibold'
-                            : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
-                        }`}
-                      >
-                        {cl.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={handleGenerate}
-                disabled={loading || !topic.trim()}
-                className="w-full min-h-[48px] bg-[#0D7377] text-white py-3 rounded-xl font-semibold text-sm hover:bg-[#0a5f63] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                    {ui.generating}
-                  </span>
-                ) : ui.btn}
-              </button>
-
-              {error && (
-                <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl">{error}</div>
+          {/* Output with typing effect */}
+          <div
+            className={`bg-white border border-teal-100 rounded-xl px-4 py-4 min-h-[180px] ${example.dir === 'rtl' ? 'font-arabic' : ''}`}
+            dir={example.dir}
+          >
+            <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-wrap">
+              {fullOutput.slice(0, displayedChars)}
+              {displayedChars < fullOutput.length && (
+                <span className="inline-block w-0.5 h-4 bg-[#0D7377] animate-pulse ml-0.5 align-middle" />
               )}
-            </>
-          )}
+            </p>
+          </div>
 
-          {/* Result */}
-          {result && (
-            <div className="border border-teal-100 bg-teal-50/30 rounded-xl p-4">
-              <p className="text-xs font-semibold text-[#0D7377] uppercase tracking-wide mb-3">{ui.resultTitle}</p>
-              <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-wrap" dir="auto">{result}</p>
-              <div className={`mt-4 pt-4 border-t border-teal-100 flex items-center justify-between gap-3 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <p className="text-xs text-gray-500">{ui.ctaText}</p>
-                <Link
-                  href="/signup"
-                  onClick={handleClose}
-                  className="shrink-0 bg-[#0D7377] text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-[#0a5f63] transition-colors"
-                >
-                  {ui.ctaBtn}
-                </Link>
-              </div>
-            </div>
-          )}
+          {/* Disclaimer */}
+          <p className={`text-xs text-gray-400 leading-relaxed text-center px-2`}>
+            {ui.disclaimer}
+          </p>
+
+          {/* CTA */}
+          <Link
+            href="/signup"
+            onClick={handleClose}
+            className="flex items-center justify-center w-full min-h-[48px] bg-[#0D7377] text-white rounded-xl font-semibold text-sm hover:bg-[#0a5f63] transition-colors"
+          >
+            {ui.cta}
+          </Link>
         </div>
       </div>
     </div>
