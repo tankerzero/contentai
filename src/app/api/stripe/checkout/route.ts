@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     await supabase.from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
 
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
@@ -53,12 +53,14 @@ export async function POST(req: NextRequest) {
     payment_method_types: ['card'],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${appUrl}/billing?success=true`,
-    cancel_url: `${appUrl}/billing`,
+    cancel_url: `${appUrl}/billing?canceled=true`,
     metadata: { userId: user.id, planId },
     custom_text: {
       submit: { message: 'You will be charged in CAD. Cancel anytime from your Billing page.' },
     },
   })
+
+  console.log('[stripe] checkout session created:', session.id, '| user:', user.id, '| plan:', planId, '| url:', session.url)
 
   return NextResponse.json({ url: session.url })
 }

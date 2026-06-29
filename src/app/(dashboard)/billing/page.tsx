@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PLANS, type PlanId } from '@/lib/plans'
 import CheckoutButton from '@/components/CheckoutButton'
@@ -125,6 +126,9 @@ export default function BillingPage() {
   const { lang, isRTL } = useUILang()
   const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
   const ui = UI[uiLang]
+  const searchParams = useSearchParams()
+  const isSuccess = searchParams.get('success') === 'true'
+  const isCanceled = searchParams.get('canceled') === 'true'
 
   const [currentPlan, setCurrentPlan] = useState<PlanId>('free')
   const [loading, setLoading] = useState(true)
@@ -141,15 +145,24 @@ export default function BillingPage() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) return
-      supabase.from('profiles').select('plan').eq('id', user.id).single()
-        .then(({ data }) => {
-          setCurrentPlan((data?.plan as PlanId) ?? 'free')
-          setLoading(false)
-        })
-    })
-  }, [])
+    function loadPlan() {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) return
+        supabase.from('profiles').select('plan').eq('id', user.id).single()
+          .then(({ data }) => {
+            setCurrentPlan((data?.plan as PlanId) ?? 'free')
+            setLoading(false)
+          })
+      })
+    }
+    loadPlan()
+    // After a successful checkout, the Stripe webhook updates the plan shortly after
+    // redirect. Re-fetch once more after a short delay to catch the update.
+    if (isSuccess) {
+      const t = setTimeout(loadPlan, 3000)
+      return () => clearTimeout(t)
+    }
+  }, [isSuccess])
 
   if (loading) {
     return (
@@ -188,6 +201,26 @@ export default function BillingPage() {
           )}
         </div>
       </div>
+
+      {/* Post-checkout banners */}
+      {isSuccess && (
+        <div className="mb-6 flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl px-5 py-4">
+          <span className="text-green-500 text-lg shrink-0">✓</span>
+          <div>
+            <p className="text-sm font-semibold text-green-800">Payment successful!</p>
+            <p className="text-xs text-green-700 mt-0.5">Your plan is being activated. This page will refresh automatically in a few seconds.</p>
+          </div>
+        </div>
+      )}
+      {isCanceled && (
+        <div className="mb-6 flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-xl px-5 py-4">
+          <span className="text-gray-400 text-lg shrink-0">✕</span>
+          <div>
+            <p className="text-sm font-semibold text-gray-700">Checkout canceled</p>
+            <p className="text-xs text-gray-500 mt-0.5">No charge was made. You can upgrade anytime below.</p>
+          </div>
+        </div>
+      )}
 
       {/* Plan cards */}
       <div className="grid md:grid-cols-4 gap-4 mb-10">
