@@ -72,18 +72,28 @@ export async function POST(req: NextRequest) {
   if (needsEscalation(message)) {
     if (process.env.RESEND_API_KEY) {
       try {
+        const { data: profileData } = await supabase
+          .from('profiles').select('plan').eq('id', user.id).single()
+        const userPlan = profileData?.plan ?? 'free'
+        const userEmail = user.email ?? user.id
+
         const resend = new Resend(process.env.RESEND_API_KEY)
         await resend.emails.send({
           from: 'ContentAI Support <noreply@contentai.app>',
           to: [SUPPORT_EMAIL],
-          subject: `[ContentAI] Support escalation — ${user.email}`,
+          replyTo: userEmail,
+          subject: `[ContentAI Support] New escalation from ${userEmail}`,
           html: `
-            <h2>Support Escalation Request</h2>
-            <p><strong>User:</strong> ${user.email} (${user.id})</p>
-            <p><strong>Message:</strong> ${message}</p>
+            <h2>New Support Escalation</h2>
+            <table style="border-collapse:collapse;margin-bottom:16px">
+              <tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:bold">User:</td><td>${userEmail}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:bold">Plan:</td><td>${userPlan}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:bold">Question:</td><td>${message}</td></tr>
+            </table>
+            <p style="color:#888;font-size:13px">Reply directly to this email to respond to the user.</p>
             <hr/>
             <h3>Chat History</h3>
-            <pre style="background:#f5f5f5;padding:12px;border-radius:6px">${
+            <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-size:12px">${
               rawHistory.map((m: { role: string; content: string }) =>
                 `[${m.role.toUpperCase()}]: ${m.content}`
               ).join('\n\n')

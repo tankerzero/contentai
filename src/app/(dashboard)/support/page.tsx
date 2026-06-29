@@ -116,6 +116,15 @@ export default function SupportPage() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  // Sync greeting when UI language changes (context hydrates from localStorage after first render)
+  useEffect(() => {
+    setMessages(prev =>
+      prev.length === 1 && prev[0].role === 'assistant'
+        ? [{ role: 'assistant', content: UI[lang].greeting }]
+        : prev
+    )
+  }, [lang])
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])

@@ -50,10 +50,14 @@ export async function POST(req: NextRequest) {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     mode: 'subscription',
+    payment_method_types: ['card'],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${appUrl}/billing?success=true`,
     cancel_url: `${appUrl}/billing`,
     metadata: { userId: user.id, planId },
+    custom_text: {
+      submit: { message: 'You will be charged in CAD. Cancel anytime from your Billing page.' },
+    },
   })
 
   return NextResponse.json({ url: session.url })
