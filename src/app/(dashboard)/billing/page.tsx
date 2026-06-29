@@ -133,6 +133,17 @@ export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<PlanId>('free')
   const [loading, setLoading] = useState(true)
   const [currency, setCurrencyState] = useState<CurrencyCode>('CAD')
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+
+  useEffect(() => {
+    const reset = () => setLoadingPlan(null)
+    window.addEventListener('focus', reset)
+    document.addEventListener('visibilitychange', reset)
+    return () => {
+      window.removeEventListener('focus', reset)
+      document.removeEventListener('visibilitychange', reset)
+    }
+  }, [])
 
   useEffect(() => {
     setCurrencyState(loadCurrency())
@@ -274,7 +285,12 @@ export default function BillingPage() {
                   {ui.contactUs}
                 </a>
               ) : key !== 'free' ? (
-                <CheckoutButton planId={key} />
+                <CheckoutButton
+                  planId={key}
+                  isLoading={loadingPlan === key}
+                  onStart={() => setLoadingPlan(key)}
+                  onError={() => setLoadingPlan(null)}
+                />
               ) : (
                 <div className="text-center text-xs text-gray-400 py-2">{ui.downgrade}</div>
               )}

@@ -1,13 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import type { PlanId } from '@/lib/plans'
 
-export default function CheckoutButton({ planId }: { planId: PlanId }) {
-  const [loading, setLoading] = useState(false)
+interface Props {
+  planId: PlanId
+  isLoading: boolean
+  onStart: () => void
+  onError: () => void
+}
 
+export default function CheckoutButton({ planId, isLoading, onStart, onError }: Props) {
   async function handleCheckout() {
-    setLoading(true)
+    onStart()
     const res = await fetch('/api/stripe/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -16,7 +20,7 @@ export default function CheckoutButton({ planId }: { planId: PlanId }) {
     const { url, error } = await res.json()
     if (error) {
       alert(error)
-      setLoading(false)
+      onError()
       return
     }
     window.location.href = url
@@ -25,10 +29,10 @@ export default function CheckoutButton({ planId }: { planId: PlanId }) {
   return (
     <button
       onClick={handleCheckout}
-      disabled={loading}
+      disabled={isLoading}
       className="w-full bg-brand-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-brand-700 transition-colors disabled:opacity-60"
     >
-      {loading ? 'Redirecting…' : 'Upgrade'}
+      {isLoading ? 'Redirecting…' : 'Upgrade'}
     </button>
   )
 }
