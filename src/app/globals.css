@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  /* Arabic text uses Noto Naskh Arabic via CSS variable set by next/font */
+  :lang(ar),
+  [lang='ar'],
+  [dir='rtl'],
+  .font-arabic {
+    font-family: var(--font-arabic), 'Segoe UI', Tahoma, Arial, sans-serif;
+    letter-spacing: 0;
+    word-spacing: 0.04em;
+    line-height: 1.85;
+  }
+
+  html.font-arabic body {
+    font-family: var(--font-arabic), 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+}
+
+@layer utilities {
+  .gradient-brand {
+    @apply bg-gradient-to-br from-brand-600 to-brand-800;
+  }
+
+  /* Hero geometric pattern overlay */
+  .hero-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%230D7377' stroke-width='0.8'%3E%3Crect x='10' y='10' width='60' height='60'/%3E%3Crect x='10' y='10' width='60' height='60' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='21'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 80px 80px;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* Arabesque SVG divider */
+  .divider-arabesque {
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 24'%3E%3Cpath d='M0 12 Q50 2 100 12 Q150 22 200 12 Q250 2 300 12 Q350 22 400 12' fill='none' stroke='%23e2e8f0' stroke-width='1'/%3E%3Ccircle cx='200' cy='12' r='3' fill='%230D7377' opacity='0.3'/%3E%3Ccircle cx='100' cy='12' r='2' fill='%230D7377' opacity='0.2'/%3E%3Ccircle cx='300' cy='12' r='2' fill='%230D7377' opacity='0.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 400px 24px;
+  }
+
+  /* Text gradient utility */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #0D7377 0%, #C9A84C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}
