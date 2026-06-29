@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { PLANS, type PlanId } from '@/lib/plans'
 import CheckoutButton from '@/components/CheckoutButton'
+import AddOnCheckoutButton from '@/components/AddOnCheckoutButton'
 import { useUILang } from '@/contexts/UILanguageContext'
 import { CURRENCIES, type CurrencyCode, loadCurrency, saveCurrency, formatPrice } from '@/lib/currency'
 
@@ -26,7 +27,7 @@ const UI = {
           desc: '500 extra generations added to your account instantly.',
           basePriceCAD: 4.99,
           cta: 'Buy now',
-          href: 'mailto:support@contentai.ca?subject=Content Pack',
+          addOnId: 'content_pack' as const,
         },
         {
           icon: '🎨',
@@ -63,7 +64,7 @@ const UI = {
           desc: '500 générations supplémentaires ajoutées instantanément.',
           basePriceCAD: 4.99,
           cta: 'Acheter',
-          href: 'mailto:support@contentai.ca?subject=Pack Contenu',
+          addOnId: 'content_pack' as const,
         },
         {
           icon: '🎨',
@@ -100,7 +101,7 @@ const UI = {
           desc: '500 توليد إضافي يُضاف لحسابك فوراً.',
           basePriceCAD: 4.99,
           cta: 'اشتر الآن',
-          href: 'mailto:support@contentai.ca?subject=Content Pack',
+          addOnId: 'content_pack' as const,
         },
         {
           icon: '🎨',
@@ -238,7 +239,6 @@ export default function BillingPage() {
         {(Object.entries(PLANS) as [PlanId, typeof PLANS[PlanId]][]).map(([key, plan]) => {
           const features = ui.features[key as keyof typeof ui.features]
           const isRecommended = key === 'basic'
-          const isAgency = key === 'agency'
           const isCurrent = key === currentPlan
 
           return (
@@ -277,13 +277,6 @@ export default function BillingPage() {
               </ul>
               {isCurrent ? (
                 <div className="text-center text-xs text-brand-600 font-semibold py-2">{ui.active}</div>
-              ) : isAgency ? (
-                <a
-                  href="mailto:support@contentai.ca?subject=Agency Plan"
-                  className="block text-center py-2.5 rounded-xl font-semibold text-xs bg-gray-900 text-white hover:bg-gray-800 transition-colors"
-                >
-                  {ui.contactUs}
-                </a>
               ) : key !== 'free' ? (
                 <CheckoutButton
                   planId={key}
@@ -313,12 +306,16 @@ export default function BillingPage() {
                   <span className="text-base font-bold text-brand-700 shrink-0">{formatPrice(addon.basePriceCAD, currency)}</span>
                 </div>
                 <p className="text-xs text-gray-500 leading-relaxed mb-4">{addon.desc}</p>
-                <a
-                  href={addon.href}
-                  className="inline-block bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors"
-                >
-                  {addon.cta}
-                </a>
+                {addon.addOnId != null ? (
+                  <AddOnCheckoutButton addOnId={addon.addOnId} label={addon.cta} />
+                ) : (
+                  <a
+                    href={addon.href}
+                    className="inline-block bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors"
+                  >
+                    {addon.cta}
+                  </a>
+                )}
               </div>
             </div>
           ))}
