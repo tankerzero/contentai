@@ -63,6 +63,8 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return NextResponse.json({ error: 'Too many requests. Please wait a moment.' }, { status: 429 })
 
   const body = await req.json()
+  console.log('[support] route called, user:', user.id, '| message preview:', String(body.message ?? '').slice(0, 80))
+
   const message = sanitize(body.message ?? '', 1000)
   const rawHistory = Array.isArray(body.history) ? body.history.slice(-12) : []
 
@@ -70,6 +72,9 @@ export async function POST(req: NextRequest) {
 
   // Check for escalation keywords
   if (needsEscalation(message)) {
+    console.log('[support] escalation triggered for:', user.email ?? user.id)
+    console.log('[support] RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY)
+
     if (process.env.RESEND_API_KEY) {
       try {
         const { data: profileData } = await supabase
@@ -78,7 +83,8 @@ export async function POST(req: NextRequest) {
         const userEmail = user.email ?? user.id
 
         const resend = new Resend(process.env.RESEND_API_KEY)
-        await resend.emails.send({
+        console.log('[support] sending escalation email to:', SUPPORT_EMAIL, '| replyTo:', userEmail)
+        const { data: emailResult, error: emailError } = await resend.emails.send({
           from: 'ContentAI Support <noreply@contentai.app>',
           to: [SUPPORT_EMAIL],
           replyTo: userEmail,
@@ -100,9 +106,16 @@ export async function POST(req: NextRequest) {
             }</pre>
           `,
         })
+        if (emailError) {
+          console.error('[support] Resend error:', JSON.stringify(emailError))
+        } else {
+          console.log('[support] Resend response:', JSON.stringify(emailResult))
+        }
       } catch (err) {
-        console.error('[support] Escalation email error:', err)
+        console.error('[support] Escalation email exception:', JSON.stringify(err, Object.getOwnPropertyNames(err as object)))
       }
+    } else {
+      console.warn('[support] RESEND_API_KEY not set — escalation email skipped')
     }
 
     return NextResponse.json({
