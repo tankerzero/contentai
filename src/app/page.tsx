@@ -300,9 +300,11 @@ export default function LandingPage() {
               {/* Mock UI */}
               <div className="space-y-3">
                 <div className="flex gap-2">
-                  <div className="h-7 w-16 bg-brand-50 border border-brand-200 rounded-lg" />
-                  <div className="h-7 w-16 bg-gray-50 border border-gray-100 rounded-lg" />
-                  <div className="h-7 w-16 bg-gray-50 border border-gray-100 rounded-lg" />
+                  {(['🇬🇧 EN', '🇫🇷 FR', '🇸🇦 AR'] as const).map((label, i) => (
+                    <div key={label} className={`h-7 px-2 rounded-lg text-xs flex items-center gap-1 font-medium ${i === 0 ? 'bg-brand-50 border border-brand-200 text-brand-700' : 'bg-gray-50 border border-gray-100 text-gray-400'}`}>
+                      {label}
+                    </div>
+                  ))}
                 </div>
                 <div className="h-4 w-3/4 bg-gray-100 rounded" />
                 <div className="flex flex-wrap gap-1.5">
@@ -320,18 +322,6 @@ export default function LandingPage() {
                 </div>
                 <div className="h-10 bg-brand-600 rounded-xl flex items-center justify-center">
                   <span className="text-white text-xs font-semibold">✨ Generate</span>
-                </div>
-              </div>
-              {/* Floating result card */}
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-lg border border-gray-100 p-3 w-40">
-                <div className="space-y-1.5">
-                  <div className="h-2 bg-gray-100 rounded w-full" />
-                  <div className="h-2 bg-gray-100 rounded w-5/6" />
-                  <div className="h-2 bg-brand-100 rounded w-4/6" />
-                </div>
-                <div className="mt-2 flex items-center gap-1">
-                  <span className="text-yellow-400 text-xs">★</span>
-                  <span className="text-xs text-gray-400">Saved to history</span>
                 </div>
               </div>
             </div>
