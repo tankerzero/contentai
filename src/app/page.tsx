@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { PLANS } from '@/lib/plans'
 import { useUILang, type UILang } from '@/contexts/UILanguageContext'
+import { CURRENCIES, type CurrencyCode, loadCurrency, saveCurrency, formatPrice } from '@/lib/currency'
 
 // ── Translations ────────────────────────────────────────────────────────────
 
@@ -302,6 +303,16 @@ export default function LandingPage() {
   const [wordIdx, setWordIdx] = useState(0)
   const [visible, setVisible] = useState(true)
   const [yearly, setYearly] = useState(false)
+  const [currency, setCurrency] = useState<CurrencyCode>('CAD')
+
+  useEffect(() => {
+    setCurrency(loadCurrency())
+  }, [])
+
+  function handleCurrencyChange(code: CurrencyCode) {
+    setCurrency(code)
+    saveCurrency(code)
+  }
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -515,23 +526,39 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-3">{t.pricing.title}</h2>
             <p className="text-gray-500 mb-8">{t.pricing.subtitle}</p>
 
-            {/* Monthly/yearly toggle */}
-            <div className={`inline-flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <button
-                onClick={() => setYearly(false)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${!yearly ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500'}`}
-              >
-                {t.pricing.monthly}
-              </button>
-              <button
-                onClick={() => setYearly(true)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''} ${yearly ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500'}`}
-              >
-                {t.pricing.yearly}
-                <span className={`text-xs px-1.5 py-0.5 rounded-full ${yearly ? 'bg-white text-brand-700' : 'bg-amber-100 text-amber-700'}`}>
-                  {t.pricing.save}
-                </span>
-              </button>
+            {/* Monthly/yearly toggle + currency selector */}
+            <div className={`flex flex-col items-center gap-3 ${isRTL ? 'font-arabic' : ''}`}>
+              <div className={`inline-flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <button
+                  onClick={() => setYearly(false)}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${!yearly ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500'}`}
+                >
+                  {t.pricing.monthly}
+                </button>
+                <button
+                  onClick={() => setYearly(true)}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''} ${yearly ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500'}`}
+                >
+                  {t.pricing.yearly}
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${yearly ? 'bg-white text-brand-700' : 'bg-amber-100 text-amber-700'}`}>
+                    {t.pricing.save}
+                  </span>
+                </button>
+              </div>
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <select
+                  value={currency}
+                  onChange={e => handleCurrencyChange(e.target.value as CurrencyCode)}
+                  className="border border-gray-200 rounded-lg px-2.5 py-1 text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {CURRENCIES.map(c => (
+                    <option key={c.code} value={c.code}>{c.flag} {c.code} — {c.name}</option>
+                  ))}
+                </select>
+                {currency !== 'CAD' && (
+                  <span className="text-xs text-gray-400">Charged in CAD</span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -560,7 +587,7 @@ export default function LandingPage() {
                   <h3 className="text-lg font-bold text-gray-900 mb-1">{plan.name}</h3>
                   <div className="mb-5">
                     <span className="text-4xl font-bold text-gray-900">
-                      {displayPrice === 0 ? t.pricing.ctaFree : `${displayPrice}€`}
+                      {displayPrice === 0 ? t.pricing.ctaFree : formatPrice(displayPrice, currency)}
                     </span>
                     {displayPrice > 0 && <span className="text-gray-400 text-sm">{suffix}</span>}
                   </div>
