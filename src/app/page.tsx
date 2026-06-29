@@ -288,11 +288,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right: app mockup */}
-          <div className={`relative ${isRTL ? 'scale-x-[-1]' : ''}`}>
+          {/* Right: app mockup — always LTR regardless of page direction */}
+          <div className="relative" dir="ltr">
             <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 max-w-sm mx-auto relative">
               {/* Window chrome */}
-              <div className={`flex gap-1.5 mb-5 ${isRTL ? 'flex-row-reverse scale-x-[-1]' : ''}`}>
+              <div className="flex gap-1.5 mb-5">
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-amber-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
@@ -305,10 +305,12 @@ export default function LandingPage() {
                   <div className="h-7 w-16 bg-gray-50 border border-gray-100 rounded-lg" />
                 </div>
                 <div className="h-4 w-3/4 bg-gray-100 rounded" />
-                <div className="grid grid-cols-3 gap-1.5">
-                  <div className="h-8 bg-brand-50 border border-brand-200 rounded-lg text-brand-700 text-xs flex items-center justify-center font-medium">Blog</div>
-                  <div className="h-8 bg-gray-50 rounded-lg" />
-                  <div className="h-8 bg-gray-50 rounded-lg" />
+                <div className="flex flex-wrap gap-1.5">
+                  {(['Blog', 'Social', 'Email', 'Ad', 'Product'] as const).map((label, i) => (
+                    <div key={label} className={`h-8 px-2.5 rounded-lg text-xs flex items-center justify-center font-medium ${i === 0 ? 'bg-brand-50 border border-brand-200 text-brand-700' : 'bg-gray-50 border border-gray-100 text-gray-400'}`}>
+                      {label}
+                    </div>
+                  ))}
                 </div>
                 <div className="h-14 bg-gray-50 rounded-xl border border-gray-100" />
                 <div className="flex gap-1.5">
