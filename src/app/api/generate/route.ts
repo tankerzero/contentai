@@ -18,11 +18,12 @@ export async function POST(req: NextRequest) {
   }
 
   const { data: profile } = await supabase
-    .from('profiles').select('plan').eq('id', user.id).single()
+    .from('profiles').select('plan, extra_credits').eq('id', user.id).single()
 
   const planId = (profile?.plan ?? 'free') as PlanId
   const plan = PLANS[planId]
-  const limit = plan.generations
+  const extraCredits = (profile?.extra_credits as number) ?? 0
+  const limit = plan.generations === Infinity ? Infinity : plan.generations + extraCredits
 
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()

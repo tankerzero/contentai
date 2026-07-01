@@ -1,0 +1,10 @@
+// Reset rate limiter state between tests by clearing module cache
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://lkiertfgzxhdinvnycii.supabase.co'
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key'
+process.env.STRIPE_SECRET_KEY = 'sk_test_placeholder_for_tests'
+process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test_placeholder'
+process.env.RESEND_API_KEY = 'test-resend-key'
+process.env.CRON_SECRET = 'test-cron-secret'
+process.env.BUFFER_ACCESS_TOKEN = 'test-buffer-token'
+process.env.NEXT_PUBLIC_APP_URL = 'https://contentai.ca'

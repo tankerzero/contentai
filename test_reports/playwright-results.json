@@ -1,0 +1,2606 @@
+{
+  "config": {
+    "argv": [
+      "/usr/bin/node",
+      "/home/slim/contentai/node_modules/.bin/playwright",
+      "test",
+      "tests/e2e/api-security.spec.ts",
+      "tests/e2e/auth.spec.ts",
+      "tests/e2e/landing.spec.ts",
+      "--project=chromium"
+    ],
+    "configFile": "/home/slim/contentai/playwright.config.ts",
+    "rootDir": "/home/slim/contentai/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 3
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/slim/contentai/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/slim/contentai/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/slim/contentai/test-results",
+        "repeatEach": 1,
+        "retries": 1,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/home/slim/contentai/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test_reports/playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "test_reports/playwright-html",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "api-security.spec.ts",
+      "file": "api-security.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "API route security — unauthenticated access",
+          "file": "api-security.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GET /api/generate returns 405 (POST only)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1712,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:10.405Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-352752cec03a1f624efe",
+              "file": "api-security.spec.ts",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "POST /api/generate without auth returns 401",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 101,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:12.177Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-2789f03a08da32c3446c",
+              "file": "api-security.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "POST /api/marketing/queue without CRON_SECRET returns 401",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 508,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:12.298Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-0053ddd4cc27df5f966f",
+              "file": "api-security.spec.ts",
+              "line": 16,
+              "column": 7
+            },
+            {
+              "title": "POST /api/marketing/publish without auth returns 401",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 286,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:12.833Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-4685b3d7f83c85cd1d99",
+              "file": "api-security.spec.ts",
+              "line": 23,
+              "column": 7
+            },
+            {
+              "title": "GET /api/marketing/approve without token returns HTML error page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 207,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.144Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-7eb9151a1f324ef389f1",
+              "file": "api-security.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "GET /api/marketing/approve with invalid token returns 200 HTML (not found)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 678,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-37c134717ba277805e3b",
+              "file": "api-security.spec.ts",
+              "line": 35,
+              "column": 7
+            },
+            {
+              "title": "GET /api/marketing/seed-canada-day without key returns 401",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 368,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:14.086Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-84141ec1eccf4aea2c07",
+              "file": "api-security.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "POST /api/stripe/webhook without valid signature returns 400",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 394,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:14.480Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-d0fd9c917fff2b7b66d7",
+              "file": "api-security.spec.ts",
+              "line": 48,
+              "column": 7
+            },
+            {
+              "title": "POST /api/brand requires auth — returns 401",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 346,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:14.892Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-c99385488cd1fb59ed3b",
+              "file": "api-security.spec.ts",
+              "line": 56,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "API route security — method validation",
+          "file": "api-security.spec.ts",
+          "line": 64,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GET /api/marketing/queue returns 405",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 47,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:15.255Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-9b2ef7375b8905ca0ad2",
+              "file": "api-security.spec.ts",
+              "line": 65,
+              "column": 7
+            },
+            {
+              "title": "DELETE /api/generate returns 405",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 47,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:15.319Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-e41a0c044dcff993d428",
+              "file": "api-security.spec.ts",
+              "line": 70,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Demo route",
+          "file": "api-security.spec.ts",
+          "line": 76,
+          "column": 6,
+          "specs": [
+            {
+              "title": "POST /api/demo with valid payload returns content",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 589,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m\n    at /home/slim/contentai/tests/e2e/api-security.spec.ts:82:24",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                          "column": 24,
+                          "line": 82
+                        },
+                        "snippet": "  80 |     })\n  81 |     // Should succeed (200) or rate limit (429) — both are valid\n> 82 |     expect([200, 429]).toContain(res.status())\n     |                        ^\n  83 |   })\n  84 |\n  85 |   test('POST /api/demo with empty topic returns 400', async ({ request }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                            "column": 24,
+                            "line": 82
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m\n\n  80 |     })\n  81 |     // Should succeed (200) or rate limit (429) — both are valid\n> 82 |     expect([200, 429]).toContain(res.status())\n     |                        ^\n  83 |   })\n  84 |\n  85 |   test('POST /api/demo with empty topic returns 400', async ({ request }) => {\n    at /home/slim/contentai/tests/e2e/api-security.spec.ts:82:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:15.391Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/api-security-Demo-route-PO-1190e-lid-payload-returns-content-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                        "column": 24,
+                        "line": 82
+                      }
+                    },
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 171,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m\n    at /home/slim/contentai/tests/e2e/api-security.spec.ts:82:24",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                          "column": 24,
+                          "line": 82
+                        },
+                        "snippet": "  80 |     })\n  81 |     // Should succeed (200) or rate limit (429) — both are valid\n> 82 |     expect([200, 429]).toContain(res.status())\n     |                        ^\n  83 |   })\n  84 |\n  85 |   test('POST /api/demo with empty topic returns 400', async ({ request }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                            "column": 24,
+                            "line": 82
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m500\u001b[39m\nReceived array: \u001b[31m[200, 429]\u001b[39m\n\n  80 |     })\n  81 |     // Should succeed (200) or rate limit (429) — both are valid\n> 82 |     expect([200, 429]).toContain(res.status())\n     |                        ^\n  83 |   })\n  84 |\n  85 |   test('POST /api/demo with empty topic returns 400', async ({ request }) => {\n    at /home/slim/contentai/tests/e2e/api-security.spec.ts:82:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:52:16.752Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/api-security-Demo-route-PO-1190e-lid-payload-returns-content-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/api-security-Demo-route-PO-1190e-lid-payload-returns-content-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/api-security.spec.ts",
+                        "column": 24,
+                        "line": 82
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-63a320902e72464cbea1",
+              "file": "api-security.spec.ts",
+              "line": 77,
+              "column": 7
+            },
+            {
+              "title": "POST /api/demo with empty topic returns 400",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 91,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:17.664Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-bc37f6c6ee24b97cb5d7",
+              "file": "api-security.spec.ts",
+              "line": 85,
+              "column": 7
+            },
+            {
+              "title": "POST /api/demo with invalid JSON returns 400",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:17.819Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "268b55824a70a8c6b15d-e4c84d4dd6bf56fa7c63",
+              "file": "api-security.spec.ts",
+              "line": 92,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Auth — protected route redirect",
+          "file": "auth.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "/dashboard redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2471,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:10.430Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-65124544a52d0e0eb081",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/generate redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 658,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.227Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-ad136f6f2af16722ad6a",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/history redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 800,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.906Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-cfc5771e19e4bd8d5a11",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/brand redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 912,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:14.754Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-51a4c7f757f506fbd73f",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/billing redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 770,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:15.696Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-dff87f12e971f2f04457",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/social redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 537,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:16.487Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-baa18ea124cd85319038",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            },
+            {
+              "title": "/marketing redirects to /login when unauthenticated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 475,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:17.040Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-a809eff51f9d1d28bdbc",
+              "file": "auth.spec.ts",
+              "line": 15,
+              "column": 9
+            }
+          ]
+        },
+        {
+          "title": "Auth — login page",
+          "file": "auth.spec.ts",
+          "line": 23,
+          "column": 6,
+          "specs": [
+            {
+              "title": "login page renders without error",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 492,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:17.532Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-44f948cae614181f7ccf",
+              "file": "auth.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "wrong password shows error message",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1423,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:18.042Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-35a32740d7b34681cc49",
+              "file": "auth.spec.ts",
+              "line": 30,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Auth — signup page",
+          "file": "auth.spec.ts",
+          "line": 39,
+          "column": 6,
+          "specs": [
+            {
+              "title": "signup page renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 452,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:19.479Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-9691b2e968e285bc442d",
+              "file": "auth.spec.ts",
+              "line": 40,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Auth — forgot password",
+          "file": "auth.spec.ts",
+          "line": 46,
+          "column": 6,
+          "specs": [
+            {
+              "title": "forgot password page renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1040,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:19.946Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-654608688db7e2fc675f",
+              "file": "auth.spec.ts",
+              "line": 47,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "landing.spec.ts",
+      "file": "landing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Landing page — desktop",
+          "file": "landing.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "loads successfully (200)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1130,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:10.468Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-42635c533f4a3cb1a81f",
+              "file": "landing.spec.ts",
+              "line": 8,
+              "column": 7
+            },
+            {
+              "title": "displays ContentAI branding",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1185,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:11.901Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-6de08f2ffd0a687cfd4b",
+              "file": "landing.spec.ts",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "hero headline is visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 782,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.121Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-bd6d7055c22a3862a4ee",
+              "file": "landing.spec.ts",
+              "line": 16,
+              "column": 7
+            },
+            {
+              "title": "hero tagline (Generate. Approve. Posted.) is visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 5821,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:21:68",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 68,
+                          "line": 21
+                        },
+                        "snippet": "  19 |\n  20 |   test('hero tagline (Generate. Approve. Posted.) is visible', async ({ page }) => {\n> 21 |     await expect(page.getByText(/Generate\\. Approve\\. Posted\\./i)).toBeVisible()\n     |                                                                    ^\n  22 |   })\n  23 |\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 68,
+                            "line": 21
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n\n\n  19 |\n  20 |   test('hero tagline (Generate. Approve. Posted.) is visible', async ({ page }) => {\n> 21 |     await expect(page.getByText(/Generate\\. Approve\\. Posted\\./i)).toBeVisible()\n     |                                                                    ^\n  22 |   })\n  23 |\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:21:68"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:13.930Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-b6f36-e-Approve-Posted-is-visible-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 68,
+                        "line": 21
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6134,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:21:68",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 68,
+                          "line": 21
+                        },
+                        "snippet": "  19 |\n  20 |   test('hero tagline (Generate. Approve. Posted.) is visible', async ({ page }) => {\n> 21 |     await expect(page.getByText(/Generate\\. Approve\\. Posted\\./i)).toBeVisible()\n     |                                                                    ^\n  22 |   })\n  23 |\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 68,
+                            "line": 21
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Generate\\. Approve\\. Posted\\./i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Generate\\. Approve\\. Posted\\./i)\u001b[22m\n\n\n  19 |\n  20 |   test('hero tagline (Generate. Approve. Posted.) is visible', async ({ page }) => {\n> 21 |     await expect(page.getByText(/Generate\\. Approve\\. Posted\\./i)).toBeVisible()\n     |                                                                    ^\n  22 |   })\n  23 |\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:21:68"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:52:20.477Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-b6f36-e-Approve-Posted-is-visible-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-b6f36-e-Approve-Posted-is-visible-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 68,
+                        "line": 21
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-47a696dd340b625bd34a",
+              "file": "landing.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "all 4 pricing plans visible: Free, Basic, Pro, Agency",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30055,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 71,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: /Free/ }).first()\nExpected: visible\nReceived: undefined\n\n\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {\n  25 |     await page.getByText('pricing', { exact: false }).first().scrollIntoViewIfNeeded().catch(() => {})\n> 26 |     await expect(page.getByRole('heading', { name: /Free/ }).first()).toBeVisible()\n     |                                                                       ^\n  27 |     await expect(page.getByRole('heading', { name: /Basic/ }).first()).toBeVisible()\n  28 |     await expect(page.getByRole('heading', { name: /Pro/ }).first()).toBeVisible()\n  29 |     await expect(page.getByRole('heading', { name: /Agency/ }).first()).toBeVisible()\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:26:71"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:52:27.663Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a223f-sible-Free-Basic-Pro-Agency-chromium/error-context.md"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30634,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 71,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: /Free/ }).first()\nExpected: visible\nReceived: undefined\n\n\n  24 |   test('all 4 pricing plans visible: Free, Basic, Pro, Agency', async ({ page }) => {\n  25 |     await page.getByText('pricing', { exact: false }).first().scrollIntoViewIfNeeded().catch(() => {})\n> 26 |     await expect(page.getByRole('heading', { name: /Free/ }).first()).toBeVisible()\n     |                                                                       ^\n  27 |     await expect(page.getByRole('heading', { name: /Basic/ }).first()).toBeVisible()\n  28 |     await expect(page.getByRole('heading', { name: /Pro/ }).first()).toBeVisible()\n  29 |     await expect(page.getByRole('heading', { name: /Agency/ }).first()).toBeVisible()\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:26:71"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:52:58.382Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a223f-sible-Free-Basic-Pro-Agency-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a223f-sible-Free-Basic-Pro-Agency-chromium-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-cbc2126a622fbbf77977",
+              "file": "landing.spec.ts",
+              "line": 24,
+              "column": 7
+            },
+            {
+              "title": "\"How it works\" section is visible with 3 steps",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5637,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:33:50",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 50,
+                          "line": 33
+                        },
+                        "snippet": "  31 |\n  32 |   test('\"How it works\" section is visible with 3 steps', async ({ page }) => {\n> 33 |     await expect(page.getByText('How it works')).toBeVisible()\n     |                                                  ^\n  34 |     await expect(page.getByText('Generate').first()).toBeVisible()\n  35 |     await expect(page.getByText('Approve').first()).toBeVisible()\n  36 |     await expect(page.getByText('Posted').first()).toBeVisible()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 50,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n\n\n  31 |\n  32 |   test('\"How it works\" section is visible with 3 steps', async ({ page }) => {\n> 33 |     await expect(page.getByText('How it works')).toBeVisible()\n     |                                                  ^\n  34 |     await expect(page.getByText('Generate').first()).toBeVisible()\n  35 |     await expect(page.getByText('Approve').first()).toBeVisible()\n  36 |     await expect(page.getByText('Posted').first()).toBeVisible()\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:33:50"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:53:30.356Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-2999e-ion-is-visible-with-3-steps-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 50,
+                        "line": 33
+                      }
+                    },
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6067,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:33:50",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 50,
+                          "line": 33
+                        },
+                        "snippet": "  31 |\n  32 |   test('\"How it works\" section is visible with 3 steps', async ({ page }) => {\n> 33 |     await expect(page.getByText('How it works')).toBeVisible()\n     |                                                  ^\n  34 |     await expect(page.getByText('Generate').first()).toBeVisible()\n  35 |     await expect(page.getByText('Approve').first()).toBeVisible()\n  36 |     await expect(page.getByText('Posted').first()).toBeVisible()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 50,
+                            "line": 33
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('How it works')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('How it works')\u001b[22m\n\n\n  31 |\n  32 |   test('\"How it works\" section is visible with 3 steps', async ({ page }) => {\n> 33 |     await expect(page.getByText('How it works')).toBeVisible()\n     |                                                  ^\n  34 |     await expect(page.getByText('Generate').first()).toBeVisible()\n  35 |     await expect(page.getByText('Approve').first()).toBeVisible()\n  36 |     await expect(page.getByText('Posted').first()).toBeVisible()\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:33:50"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:53:36.712Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-2999e-ion-is-visible-with-3-steps-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-2999e-ion-is-visible-with-3-steps-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 50,
+                        "line": 33
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-76a579550c9d7c4783b2",
+              "file": "landing.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "\"Most tools stop at writing\" tagline is visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5570,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:40:65",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 65,
+                          "line": 40
+                        },
+                        "snippet": "  38 |\n  39 |   test('\"Most tools stop at writing\" tagline is visible', async ({ page }) => {\n> 40 |     await expect(page.getByText(/Most tools stop at writing/i)).toBeVisible()\n     |                                                                 ^\n  41 |   })\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 65,
+                            "line": 40
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n\n\n  38 |\n  39 |   test('\"Most tools stop at writing\" tagline is visible', async ({ page }) => {\n> 40 |     await expect(page.getByText(/Most tools stop at writing/i)).toBeVisible()\n     |                                                                 ^\n  41 |   })\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:40:65"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:53:43.761Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-073af--writing-tagline-is-visible-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 65,
+                        "line": 40
+                      }
+                    },
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6097,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:40:65",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 65,
+                          "line": 40
+                        },
+                        "snippet": "  38 |\n  39 |   test('\"Most tools stop at writing\" tagline is visible', async ({ page }) => {\n> 40 |     await expect(page.getByText(/Most tools stop at writing/i)).toBeVisible()\n     |                                                                 ^\n  41 |   })\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 65,
+                            "line": 40
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Most tools stop at writing/i)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Most tools stop at writing/i)\u001b[22m\n\n\n  38 |\n  39 |   test('\"Most tools stop at writing\" tagline is visible', async ({ page }) => {\n> 40 |     await expect(page.getByText(/Most tools stop at writing/i)).toBeVisible()\n     |                                                                 ^\n  41 |   })\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:40:65"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:53:50.057Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-073af--writing-tagline-is-visible-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-073af--writing-tagline-is-visible-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 65,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-188626b2b2a84797a20d",
+              "file": "landing.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "à la carte section is visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5565,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:44:56",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 56,
+                          "line": 44
+                        },
+                        "snippet": "  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n> 44 |     await expect(page.getByText('One-time purchases')).toBeVisible()\n     |                                                        ^\n  45 |     await expect(page.getByText('Content Pack')).toBeVisible()\n  46 |     await expect(page.getByText('Brand Voice Setup')).toBeVisible()\n  47 |   })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 56,
+                            "line": 44
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n\n\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n> 44 |     await expect(page.getByText('One-time purchases')).toBeVisible()\n     |                                                        ^\n  45 |     await expect(page.getByText('Content Pack')).toBeVisible()\n  46 |     await expect(page.getByText('Brand Voice Setup')).toBeVisible()\n  47 |   })\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:44:56"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:53:57.167Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-desktop-à-la-carte-section-is-visible-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 56,
+                        "line": 44
+                      }
+                    },
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6097,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:44:56",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 56,
+                          "line": 44
+                        },
+                        "snippet": "  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n> 44 |     await expect(page.getByText('One-time purchases')).toBeVisible()\n     |                                                        ^\n  45 |     await expect(page.getByText('Content Pack')).toBeVisible()\n  46 |     await expect(page.getByText('Brand Voice Setup')).toBeVisible()\n  47 |   })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 56,
+                            "line": 44
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('One-time purchases')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('One-time purchases')\u001b[22m\n\n\n  42 |\n  43 |   test('à la carte section is visible', async ({ page }) => {\n> 44 |     await expect(page.getByText('One-time purchases')).toBeVisible()\n     |                                                        ^\n  45 |     await expect(page.getByText('Content Pack')).toBeVisible()\n  46 |     await expect(page.getByText('Brand Voice Setup')).toBeVisible()\n  47 |   })\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:44:56"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:54:03.456Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-desktop-à-la-carte-section-is-visible-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-desktop-à-la-carte-section-is-visible-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 56,
+                        "line": 44
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-cdc1f71edaade426476a",
+              "file": "landing.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "auto-posting PRO feature card is visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5585,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:50:60",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 60,
+                          "line": 50
+                        },
+                        "snippet": "  48 |\n  49 |   test('auto-posting PRO feature card is visible', async ({ page }) => {\n> 50 |     await expect(page.getByText('Writes & Posts For You')).toBeVisible()\n     |                                                            ^\n  51 |   })\n  52 |\n  53 |   test('footer has real Twitter link (not #)', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 60,
+                            "line": 50
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n\n\n  48 |\n  49 |   test('auto-posting PRO feature card is visible', async ({ page }) => {\n> 50 |     await expect(page.getByText('Writes & Posts For You')).toBeVisible()\n     |                                                            ^\n  51 |   })\n  52 |\n  53 |   test('footer has real Twitter link (not #)', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:50:60"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:10.514Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a292f-PRO-feature-card-is-visible-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 60,
+                        "line": 50
+                      }
+                    },
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6155,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:50:60",
+                        "location": {
+                          "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                          "column": 60,
+                          "line": 50
+                        },
+                        "snippet": "  48 |\n  49 |   test('auto-posting PRO feature card is visible', async ({ page }) => {\n> 50 |     await expect(page.getByText('Writes & Posts For You')).toBeVisible()\n     |                                                            ^\n  51 |   })\n  52 |\n  53 |   test('footer has real Twitter link (not #)', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 60,
+                            "line": 50
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Writes & Posts For You')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Writes & Posts For You')\u001b[22m\n\n\n  48 |\n  49 |   test('auto-posting PRO feature card is visible', async ({ page }) => {\n> 50 |     await expect(page.getByText('Writes & Posts For You')).toBeVisible()\n     |                                                            ^\n  51 |   })\n  52 |\n  53 |   test('footer has real Twitter link (not #)', async ({ page }) => {\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:50:60"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:54:16.801Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a292f-PRO-feature-card-is-visible-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-a292f-PRO-feature-card-is-visible-chromium-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                        "column": 60,
+                        "line": 50
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-3e7c1245abb33c5267a4",
+              "file": "landing.spec.ts",
+              "line": 49,
+              "column": 7
+            },
+            {
+              "title": "footer has real Twitter link (not #)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 634,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:23.930Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-adde6ab3d8578d823e1d",
+              "file": "landing.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "footer has real LinkedIn link (not #)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 554,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:24.690Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-30447765300cfd72145f",
+              "file": "landing.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "footer has real Facebook link (not #)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 544,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:25.270Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-2f486cabc999ec434515",
+              "file": "landing.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "teaser video auto-plays on desktop",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 517,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:25.831Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-9f64ad777c992cdc18fe",
+              "file": "landing.spec.ts",
+              "line": 77,
+              "column": 7
+            },
+            {
+              "title": "demo modal opens on \"See demo\" click",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30048,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 38,
+                            "line": 86
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('See demo')\u001b[22m\n\n\n  84 |\n  85 |   test('demo modal opens on \"See demo\" click', async ({ page }) => {\n> 86 |     await page.getByText('See demo').click()\n     |                                      ^\n  87 |     // Modal should appear\n  88 |     await expect(page.locator('[role=\"dialog\"], .fixed.inset-0').first()).toBeVisible({ timeout: 3000 })\n  89 |   })\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:86:38"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:54:26.362Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-d7561-dal-opens-on-See-demo-click-chromium/error-context.md"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30716,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 38,
+                            "line": 86
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('See demo')\u001b[22m\n\n\n  84 |\n  85 |   test('demo modal opens on \"See demo\" click', async ({ page }) => {\n> 86 |     await page.getByText('See demo').click()\n     |                                      ^\n  87 |     // Modal should appear\n  88 |     await expect(page.locator('[role=\"dialog\"], .fixed.inset-0').first()).toBeVisible({ timeout: 3000 })\n  89 |   })\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:86:38"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:54:56.986Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-d7561-dal-opens-on-See-demo-click-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Landing-page-—-des-d7561-dal-opens-on-See-demo-click-chromium-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-6a988376af5ff8fe3806",
+              "file": "landing.spec.ts",
+              "line": 85,
+              "column": 7
+            },
+            {
+              "title": "Cookie banner appears on first visit",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1137,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:29.106Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-6b2183bc5ccfdb48c3a2",
+              "file": "landing.spec.ts",
+              "line": 91,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Landing page — language switching",
+          "file": "landing.spec.ts",
+          "line": 100,
+          "column": 6,
+          "specs": [
+            {
+              "title": "switches to French and shows French content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 668,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:30.366Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-561879f0cf17c0ad0f9a",
+              "file": "landing.spec.ts",
+              "line": 101,
+              "column": 7
+            },
+            {
+              "title": "switches to Arabic and flips to RTL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 792,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:31.058Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-d2bb9805ed2e329dd350",
+              "file": "landing.spec.ts",
+              "line": 107,
+              "column": 7
+            },
+            {
+              "title": "switches to Spanish",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 699,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:31.872Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-5c9085c872b043da4153",
+              "file": "landing.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "switches to Chinese",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 747,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:32.592Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-a76f6151f473dfa685e7",
+              "file": "landing.spec.ts",
+              "line": 120,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Landing page — mobile (375px)",
+          "file": "landing.spec.ts",
+          "line": 127,
+          "column": 6,
+          "specs": [
+            {
+              "title": "teaser video is hidden on mobile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 517,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:33.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-5162393662eab102158a",
+              "file": "landing.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "bottom nav is visible on mobile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 369,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:33.904Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-787965cb7bdc521a6406",
+              "file": "landing.spec.ts",
+              "line": 136,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Navigation links",
+          "file": "landing.spec.ts",
+          "line": 143,
+          "column": 6,
+          "specs": [
+            {
+              "title": "\"Sign in\" link goes to /login",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30048,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 37,
+                            "line": 146
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Sign in')\u001b[22m\n\n\n  144 |   test('\"Sign in\" link goes to /login', async ({ page }) => {\n  145 |     await page.goto('/')\n> 146 |     await page.getByText('Sign in').click()\n      |                                     ^\n  147 |     await expect(page).toHaveURL(/\\/login/)\n  148 |   })\n  149 |\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:146:37"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:55:34.289Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Sign-in-link-goes-to-login-chromium/error-context.md"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30974,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 37,
+                            "line": 146
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Sign in')\u001b[22m\n\n\n  144 |   test('\"Sign in\" link goes to /login', async ({ page }) => {\n  145 |     await page.goto('/')\n> 146 |     await page.getByText('Sign in').click()\n      |                                     ^\n  147 |     await expect(page).toHaveURL(/\\/login/)\n  148 |   })\n  149 |\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:146:37"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:56:04.936Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Sign-in-link-goes-to-login-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Sign-in-link-goes-to-login-chromium-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-bf9dfd3ce472923103f3",
+              "file": "landing.spec.ts",
+              "line": 144,
+              "column": 7
+            },
+            {
+              "title": "\"Get started\" link goes to /signup",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30049,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 46,
+                            "line": 152
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Get started free')\u001b[22m\n\n\n  150 |   test('\"Get started\" link goes to /signup', async ({ page }) => {\n  151 |     await page.goto('/')\n> 152 |     await page.getByText('Get started free').click()\n      |                                              ^\n  153 |     await expect(page).toHaveURL(/\\/signup/)\n  154 |   })\n  155 |\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:152:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:56:37.342Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Get-started-link-goes-to-signup-chromium/error-context.md"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30666,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/slim/contentai/tests/e2e/landing.spec.ts",
+                            "column": 46,
+                            "line": 152
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Get started free')\u001b[22m\n\n\n  150 |   test('\"Get started\" link goes to /signup', async ({ page }) => {\n  151 |     await page.goto('/')\n> 152 |     await page.getByText('Get started free').click()\n      |                                              ^\n  153 |     await expect(page).toHaveURL(/\\/signup/)\n  154 |   })\n  155 |\n    at /home/slim/contentai/tests/e2e/landing.spec.ts:152:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-07-01T00:57:08.148Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Get-started-link-goes-to-signup-chromium-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/slim/contentai/test-results/landing-Navigation-links-Get-started-link-goes-to-signup-chromium-retry1/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-feb69c794bd3e8cf4440",
+              "file": "landing.spec.ts",
+              "line": 150,
+              "column": 7
+            },
+            {
+              "title": "Privacy link goes to /privacy",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1853,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T00:57:40.237Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4e5b49d369fd48ca0656-cc2f185362d11adf4416",
+              "file": "landing.spec.ts",
+              "line": 156,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-01T00:52:09.569Z",
+    "duration": 332711.49299999996,
+    "expected": 39,
+    "skipped": 0,
+    "unexpected": 10,
+    "flaky": 0
+  }
+}

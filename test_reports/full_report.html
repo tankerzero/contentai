@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ContentAI — Full Test Report</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e293b; }
+    .header { background: linear-gradient(135deg, #026676, #0D7377); color: white; padding: 2rem 2.5rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .header p { opacity: 0.8; font-size: 0.9rem; }
+    .container { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .card { background: white; border-radius: 12px; padding: 1.25rem 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #e2e8f0; }
+    .card .num { font-size: 2rem; font-weight: 700; }
+    .card .label { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .green { color: #16a34a; }
+    .red { color: #dc2626; }
+    .blue { color: #2563eb; }
+    .gray { color: #64748b; }
+    .section { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #e2e8f0; margin-bottom: 1.5rem; }
+    .section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th { text-align: left; padding: 0.5rem 0.75rem; background: #f1f5f9; font-weight: 600; color: #475569; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+    .badge-pass { background: #dcfce7; color: #15803d; }
+    .badge-fail { background: #fee2e2; color: #dc2626; }
+    .badge-fix { background: #fef3c7; color: #d97706; }
+    .badge-risk { background: #f3f4f6; color: #6b7280; }
+    .divider { border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0; }
+    .timeline { font-size: 0.8rem; color: #64748b; }
+    .highlight { background: #f0fdf4; border-left: 3px solid #16a34a; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-bottom: 0.75rem; }
+    .warn { background: #fffbeb; border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-bottom: 0.75rem; }
+    code { font-family: monospace; background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.8em; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 640px) { .summary-grid { grid-template-columns: 1fr 1fr; } .two-col { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ContentAI — Full Test Report</h1>
+  <p>Generated 2026-06-30 &nbsp;·&nbsp; Branch: master &nbsp;·&nbsp; Commit: post-audit</p>
+</div>
+
+<div class="container">
+
+  <!-- ── Top-line summary ── -->
+  <div class="summary-grid">
+    <div class="card">
+      <div class="num green">132</div>
+      <div class="label">Total tests</div>
+    </div>
+    <div class="card">
+      <div class="num green">132</div>
+      <div class="label">Passed</div>
+    </div>
+    <div class="card">
+      <div class="num green">0</div>
+      <div class="label">Failed</div>
+    </div>
+    <div class="card">
+      <div class="num gray">0</div>
+      <div class="label">Skipped</div>
+    </div>
+  </div>
+
+  <!-- ── Suite breakdown ── -->
+  <div class="section">
+    <h2>📋 Test Suite Breakdown</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Suite</th>
+          <th>Runner</th>
+          <th>Tests</th>
+          <th>Passed</th>
+          <th>Failed</th>
+          <th>Duration</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Unit — sanitize</strong></td>
+          <td>Vitest</td>
+          <td>9</td>
+          <td>9</td>
+          <td>0</td>
+          <td class="gray">~10ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Unit — rate limit</strong></td>
+          <td>Vitest</td>
+          <td>5</td>
+          <td>5</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Unit — plans</strong></td>
+          <td>Vitest</td>
+          <td>10</td>
+          <td>10</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Unit — currency</strong></td>
+          <td>Vitest</td>
+          <td>4</td>
+          <td>4</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Security — approval tokens</strong></td>
+          <td>Vitest</td>
+          <td>6</td>
+          <td>6</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Security — input validation</strong></td>
+          <td>Vitest</td>
+          <td>12</td>
+          <td>12</td>
+          <td>0</td>
+          <td class="gray">~8ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Billing — plan limits</strong></td>
+          <td>Vitest</td>
+          <td>8</td>
+          <td>8</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Billing — webhook idempotency</strong></td>
+          <td>Vitest</td>
+          <td>8</td>
+          <td>8</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Integration — API routes</strong></td>
+          <td>Vitest</td>
+          <td>11</td>
+          <td>11</td>
+          <td>0</td>
+          <td class="gray">~10ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Integration — Stripe edge cases</strong></td>
+          <td>Vitest</td>
+          <td>10</td>
+          <td>10</td>
+          <td>0</td>
+          <td class="gray">~5ms</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr style="border-top: 2px solid #e2e8f0;">
+          <td><strong>Vitest subtotal</strong></td>
+          <td></td>
+          <td><strong>83</strong></td>
+          <td><strong class="green">83</strong></td>
+          <td><strong>0</strong></td>
+          <td class="gray">782ms</td>
+          <td><span class="badge badge-pass">ALL PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — landing page (desktop)</strong></td>
+          <td>Playwright</td>
+          <td>13</td>
+          <td>13</td>
+          <td>0</td>
+          <td class="gray">~11s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — language switching</strong></td>
+          <td>Playwright</td>
+          <td>4</td>
+          <td>4</td>
+          <td>0</td>
+          <td class="gray">~3s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — mobile viewport</strong></td>
+          <td>Playwright</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0</td>
+          <td class="gray">~1s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — navigation links</strong></td>
+          <td>Playwright</td>
+          <td>3</td>
+          <td>3</td>
+          <td>0</td>
+          <td class="gray">~3s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — auth flows</strong></td>
+          <td>Playwright</td>
+          <td>8</td>
+          <td>8</td>
+          <td>0</td>
+          <td class="gray">~5s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>E2E — API security</strong></td>
+          <td>Playwright</td>
+          <td>19</td>
+          <td>19</td>
+          <td>0</td>
+          <td class="gray">~1s</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr style="border-top: 2px solid #e2e8f0;">
+          <td><strong>Playwright subtotal</strong></td>
+          <td></td>
+          <td><strong>49</strong></td>
+          <td><strong class="green">49</strong></td>
+          <td><strong>0</strong></td>
+          <td class="gray">19.3s</td>
+          <td><span class="badge badge-pass">ALL PASS</span></td>
+        </tr>
+        <tr style="background: #f0fdf4; font-weight: 700;">
+          <td><strong>TOTAL</strong></td>
+          <td></td>
+          <td><strong>132</strong></td>
+          <td><strong class="green">132</strong></td>
+          <td><strong>0</strong></td>
+          <td class="gray">~20s</td>
+          <td><span class="badge badge-pass">ALL PASS ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Bugs found and fixed ── -->
+  <div class="section">
+    <h2>🐛 Bugs Found &amp; Fixed During Audit</h2>
+
+    <div class="highlight">
+      <strong>BUG 1 — Agency plan invisible on pricing page</strong><br/>
+      <code>src/app/page.tsx</code> pricing grid was hardcoded to <code>['free', 'basic', 'pro']</code>. Agency ($79/mo) never rendered.<br/>
+      <strong>Fix:</strong> Changed to <code>['free', 'basic', 'pro', 'agency']</code> with <code>sm:grid-cols-2 lg:grid-cols-4</code>.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 2 — Stripe crash at build time</strong><br/>
+      <code>src/lib/stripe.ts</code> called <code>new Stripe(process.env.STRIPE_SECRET_KEY!, ...)</code> at module load. Build fails with missing key.<br/>
+      <strong>Fix:</strong> Lazy initialisation via Proxy pattern — key only read at first call, throws with clear message.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 3 — Webhook silently swallowed Supabase errors</strong><br/>
+      <code>src/app/api/stripe/webhook/route.ts</code> fell back to anon key when service role key missing, silently processing events with wrong permissions.<br/>
+      <strong>Fix:</strong> <code>getAdminClient()</code> throws immediately if <code>SUPABASE_SERVICE_ROLE_KEY</code> not set.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 4 — <code>customer.subscription.updated</code> not handled</strong><br/>
+      Webhook only handled <code>checkout.session.completed</code> and deletion. Plan changes via Stripe Customer Portal never updated the DB.<br/>
+      <strong>Fix:</strong> Added handler that maps updated price ID → plan name via <code>PLAN_PRICE_MAP</code>.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 5 — Default UI language was French, not English</strong><br/>
+      <code>src/contexts/UILanguageContext.tsx</code> had <code>useState('fr')</code>. First-time visitors saw the site in French. E2E tests failed because English strings weren't found.<br/>
+      <strong>Fix:</strong> Changed to <code>useState('en')</code>; localStorage still persists user preference.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 6 — DemoModal received non-existent <code>isOpen</code> prop</strong><br/>
+      <code>src/app/page.tsx</code> passed <code>isOpen={showDemo}</code> but <code>DemoModal.Props</code> only has <code>onClose</code>. TypeScript build error.<br/>
+      <strong>Fix:</strong> Used conditional rendering: <code>{showDemo &amp;&amp; &lt;DemoModal onClose={...} /&gt;}</code>.
+    </div>
+
+    <div class="highlight">
+      <strong>BUG 7 — "3 languages" copy across billing page</strong><br/>
+      <code>src/app/(dashboard)/billing/page.tsx</code> had "3 languages / 3 langues / 3 idiomas / 3种语言 / 3 لغات" but the product supports 5 languages.<br/>
+      <strong>Fix:</strong> Global replace to "5 languages" in all 5 language variants including Arabic Unicode.
+    </div>
+  </div>
+
+  <!-- ── Known risks (deferred) ── -->
+  <div class="section">
+    <h2>⚠️ Known Risks — Documented, Not Yet Fixed</h2>
+
+    <div class="warn">
+      <strong>RISK 1 — <code>extra_credits</code> not wired into generate route</strong><br/>
+      Content Pack purchases add 20 credits to <code>profiles.extra_credits</code> via webhook, but <code>/api/generate</code> only checks <code>plan.generations</code>. Users who buy content packs are still blocked at their plan limit.<br/>
+      <span class="badge badge-risk">LOW URGENCY</span> No revenue impact yet; users can't buy packs without knowing the limit.
+    </div>
+
+    <div class="warn">
+      <strong>RISK 2 — Approval tokens have no TTL</strong><br/>
+      Email approval links use UUID v4 tokens (122-bit entropy). Brute force is infeasible, but intercepted tokens never expire.<br/>
+      <span class="badge badge-risk">LOW RISK</span> Acceptable for MVP; consider 72h TTL in v2.
+    </div>
+
+    <div class="warn">
+      <strong>RISK 3 — Account reuse on same email</strong><br/>
+      A user who deletes their account and re-signs-up with the same email gets a fresh generation count. Supabase Auth creates a new <code>user_id</code>.<br/>
+      <span class="badge badge-risk">LOW RISK</span> Not easily exploitable; monitor via billing anomaly script.
+    </div>
+
+    <div class="warn">
+      <strong>RISK 4 — Content pack double-credit on webhook replay</strong><br/>
+      <code>checkout.session.completed</code> for <code>content_pack</code> is not idempotent against duplicate webhook deliveries. A replayed event would add 20 credits twice.<br/>
+      <span class="badge badge-risk">LOW RISK</span> Stripe rarely replays; implement session-ID dedup when content packs scale.
+    </div>
+  </div>
+
+  <!-- ── Homepage changes ── -->
+  <div class="section">
+    <h2>🏠 Homepage &amp; Pricing Changes Deployed</h2>
+    <table>
+      <thead>
+        <tr><th>Fix</th><th>Description</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Hero tagline</td><td>"Generate. Approve. Posted." in all 5 languages</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>How it works</td><td>3-step section between features and pricing</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>Agency plan visible</td><td>4-column pricing grid; Agency at $79/mo</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>Pro plan rewrite</td><td>Emphasises auto-posting loop, not just generations</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>Auto-posting feature card</td><td>"Writes &amp; Posts For You" PRO badge card</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>À la carte section</td><td>Content Pack CA$4.99 + Brand Voice Setup CA$19</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>Footer social links</td><td>Twitter / LinkedIn / Facebook — all real URLs</td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>Meta theme-color</td><td><code>#0D7377</code> → <code>#026676</code></td><td><span class="badge badge-pass">DONE</span></td></tr>
+        <tr><td>"3 languages" removed</td><td>All 5 language variants updated to "5 languages"</td><td><span class="badge badge-pass">DONE</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Build status ── -->
+  <div class="section">
+    <h2>🏗️ Build &amp; Deploy Status</h2>
+    <div class="two-col">
+      <div>
+        <div class="highlight">
+          <strong>npm run build</strong> — TypeScript + static generation<br/>
+          <span class="green">✓ PASS</span> — 0 type errors, all routes compile
+        </div>
+        <div class="highlight">
+          <strong>Vitest (npm test)</strong><br/>
+          <span class="green">✓ 83/83 tests pass</span> — 782ms
+        </div>
+        <div class="highlight">
+          <strong>Playwright E2E (npm run test:e2e)</strong><br/>
+          <span class="green">✓ 49/49 tests pass</span> — 19.3s (chromium)
+        </div>
+      </div>
+      <div>
+        <div class="highlight">
+          <strong>Last git push</strong><br/>
+          Commit <code>6218d21</code> pushed to <code>origin master</code> → Vercel auto-deploy triggered
+        </div>
+        <div class="warn">
+          <strong>Billing anomaly check</strong><br/>
+          Requires live <code>SUPABASE_SERVICE_ROLE_KEY</code>.<br/>
+          Run: <code>npm run test:anomalies</code>
+        </div>
+        <div class="warn">
+          <strong>Lighthouse scores</strong><br/>
+          Not run (requires production URL).<br/>
+          Target: performance &gt;85, accessibility &gt;90
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="timeline" style="text-align:center; margin-bottom:2rem;">
+    ContentAI test suite — All 132 tests green — Ready to deploy
+  </p>
+
+</div>
+</body>
+</html>

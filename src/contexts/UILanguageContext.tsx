@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react'
 
 export type UILang = 'en' | 'fr' | 'ar' | 'es' | 'zh'
 
@@ -13,13 +13,13 @@ interface UILangContextValue {
 }
 
 const UILangContext = createContext<UILangContextValue>({
-  lang: 'fr',
+  lang: 'en',
   setLang: () => {},
   isRTL: false,
 })
 
 export function UILanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<UILang>('fr')
+  const [lang, setLangState] = useState<UILang>('en')
   const isRTL = lang === 'ar'
 
   useEffect(() => {
@@ -33,13 +33,21 @@ export function UILanguageProvider({ children }: { children: React.ReactNode }) 
     document.documentElement.classList.toggle('font-arabic', isRTL)
   }, [lang, isRTL])
 
-  function setLang(newLang: UILang) {
+  // Stable reference — prevents context consumers from re-rendering when
+  // UILanguageProvider re-renders for reasons unrelated to lang/isRTL.
+  const setLang = useCallback((newLang: UILang) => {
     setLangState(newLang)
     localStorage.setItem(STORAGE_KEY, newLang)
-  }
+  }, [])
+
+  // Memoised value object — consumers only re-render when lang or isRTL actually changes.
+  const value = useMemo<UILangContextValue>(
+    () => ({ lang, setLang, isRTL }),
+    [lang, setLang, isRTL],
+  )
 
   return (
-    <UILangContext.Provider value={{ lang, setLang, isRTL }}>
+    <UILangContext.Provider value={value}>
       {children}
     </UILangContext.Provider>
   )
