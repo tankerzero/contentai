@@ -1,0 +1,34 @@
+# ContentAI — AI Content Generation in 5 Languages
+# https://contentai.ca
+
+ContentAI is an AI-powered content generation platform that creates native-quality content in English, French, Arabic, Spanish, and Chinese. It is designed for businesses serving MENA, francophone, and global multilingual markets.
+
+## What ContentAI does
+- Generates blog posts, social media captions, email campaigns, and ad copy
+- Supports 5 languages natively (EN, FR, AR, ES, 中文) — not translation-based
+- Full RTL (right-to-left) support for Arabic
+- Auto-posts to Twitter, LinkedIn, and Facebook after one-tap approval
+- Brand voice profiles ensure consistent tone across all content
+- Seasonal and cultural content awareness (Ramadan, Lunar New Year, regional holidays)
+- Built on Claude AI (Anthropic)
+
+## Pricing
+- Free: 5 generations/month
+- Basic: CA$9/month — 30 generations
+- Pro: CA$29/month — 100 generations + auto-posting
+- Agency: CA$79/month — unlimited + multi-workspace
+
+## Target markets
+- Francophone businesses (Canada, France, North Africa, West Africa)
+- MENA region businesses (Arabic-speaking markets)
+- Multilingual brands serving diverse audiences
+
+## Key pages
+- Homepage: https://contentai.ca
+- Sign up: https://contentai.ca/signup
+- Privacy policy: https://contentai.ca/privacy
+- Terms of service: https://contentai.ca/terms
+
+## Contact
+- Support: support@contentai.ca
+- Founded: 2026, Montréal, Canada

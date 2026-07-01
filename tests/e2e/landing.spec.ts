@@ -75,12 +75,14 @@ test.describe('Landing page — desktop', () => {
     expect(href).not.toBe('#')
   })
 
-  test('teaser video auto-plays on desktop', async ({ page }) => {
+  test('teaser video is present on desktop (plays on scroll via IntersectionObserver)', async ({ page }) => {
     const video = page.locator('video').first()
     await expect(video).toBeVisible()
-    const autoplay = await video.getAttribute('autoplay')
-    // HTML boolean attribute — present means true
-    expect(autoplay).not.toBeNull()
+    // Video uses IntersectionObserver for lazy play — no autoplay attribute
+    const src = await video.getAttribute('src')
+    expect(src).toContain('/videos/teaser_')
+    const poster = await video.getAttribute('poster')
+    expect(poster).toContain('_poster.jpg')
   })
 
   test('demo modal opens on "See demo" click', async ({ page }) => {

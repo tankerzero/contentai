@@ -40,9 +40,9 @@ test.describe('API route security — unauthenticated access', () => {
     expect(body.toLowerCase()).toMatch(/not found|invalid/i)
   })
 
-  test('GET /api/marketing/seed-canada-day without key returns 401', async ({ request }) => {
+  test('GET /api/marketing/seed-canada-day returns 404 (endpoint deleted)', async ({ request }) => {
     const res = await request.get('/api/marketing/seed-canada-day')
-    expect(res.status()).toBe(401)
+    expect(res.status()).toBe(404)
   })
 
   test('POST /api/stripe/webhook without valid signature returns 400', async ({ request }) => {

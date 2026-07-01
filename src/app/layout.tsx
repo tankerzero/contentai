@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Noto_Naskh_Arabic } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import { UILanguageProvider } from '@/contexts/UILanguageContext'
 import CookieBanner from '@/components/CookieBanner'
 import PWAInstallBanner from '@/components/PWAInstallBanner'
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CookieBanner />
           <PWAInstallBanner />
         </UILanguageProvider>
+        <Analytics />
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { PLANS } from '@/lib/plans'
 import { useUILang, type UILang } from '@/contexts/UILanguageContext'
@@ -23,16 +23,9 @@ const T = {
       badge1: '🤖 Claude AI', badge2: '🌍 5 languages', badge3: '✦ RTL Arabic',
     },
     proof: {
-      stats: [
-        { value: '10K+', label: 'Pieces generated' },
-        { value: '5',    label: 'Languages' },
-        { value: '500+', label: 'Creators' },
-      ],
-      testimonials: [
-        { name: 'Sophie M.',  location: 'Montréal', text: 'ContentAI doubled my posting frequency. The French output is indistinguishable from native writing.', rating: 5 },
-        { name: 'Ahmed K.',   location: 'Dubaï',    text: 'Finally an AI that generates proper Arabic RTL content. I use it every day for my social media.', rating: 5 },
-        { name: 'Leila B.',   location: 'Paris',    text: 'The brand voice feature is a game changer. My clients always get content that sounds like them.', rating: 5 },
-      ],
+      langBand: 'EN · FR · AR · ES · 中文 — Five languages. One tool.',
+      founderQuote: 'I built this because I couldn\'t find an AI content tool that actually worked in French and Arabic — not just translated into them. So I made one.',
+      founderName: '— Slim, founder, Montréal 🇨🇦',
     },
     features: {
       title: 'Everything you need to create great content',
@@ -129,6 +122,18 @@ const T = {
         },
       ],
     },
+    phBanner: '🚀 We\'re live on Product Hunt today! Support us →',
+    faq: {
+      title: 'Frequently asked questions',
+      items: [
+        { q: 'What AI powers ContentAI?', a: 'ContentAI is built on Claude AI by Anthropic — one of the most capable and safety-focused AI models available.' },
+        { q: 'Is my content private?', a: 'Yes. Your content and brand data are never used to train AI models. We comply with PIPEDA and Quebec Law 25.' },
+        { q: 'Does it really write in Arabic, not just translate?', a: 'Yes — ContentAI generates Arabic content natively, with proper RTL layout, cultural context, and no translation artifacts.' },
+        { q: 'Can I try it without a credit card?', a: 'Yes — the free plan gives you 5 generations with no credit card required.' },
+        { q: 'What social platforms does auto-posting support?', a: 'Twitter/X, LinkedIn, and Facebook. You review and approve every post before it goes live.' },
+        { q: 'What happens if I need more generations?', a: 'You can upgrade your plan anytime, or add a one-time Content Pack (CA$4.99) for 20 extra generations.' },
+      ],
+    },
     footer: {
       tagline: 'Made with ❤️ for MENA, Francophone & global creators',
       privacy: 'Privacy', terms: 'Terms', blog: 'Blog',
@@ -148,16 +153,9 @@ const T = {
       badge1: '🤖 Claude AI', badge2: '🌍 5 langues', badge3: '✦ Arabe RTL',
     },
     proof: {
-      stats: [
-        { value: '10K+', label: 'Contenus générés' },
-        { value: '5',    label: 'Langues' },
-        { value: '500+', label: 'Créateurs' },
-      ],
-      testimonials: [
-        { name: 'Sophie M.', location: 'Montréal', text: 'ContentAI a doublé ma fréquence de publication. Le contenu en français est parfait, rien à retoucher.', rating: 5 },
-        { name: 'Ahmed K.',  location: 'Dubaï',    text: "Enfin une IA qui génère du contenu arabe RTL correct. Je l'utilise tous les jours pour mes réseaux sociaux.", rating: 5 },
-        { name: 'Leila B.',  location: 'Paris',    text: 'Le ton de marque est révolutionnaire. Mes clients reçoivent toujours un contenu qui leur ressemble vraiment.', rating: 5 },
-      ],
+      langBand: 'EN · FR · AR · ES · 中文 — Cinq langues. Un seul outil.',
+      founderQuote: "J'ai créé ContentAI parce que je ne trouvais pas d'outil IA qui fonctionnait vraiment en français et en arabe — pas juste traduit. Alors je l'ai construit.",
+      founderName: '— Slim, fondateur, Montréal 🇨🇦',
     },
     features: {
       title: "Tout ce qu'il faut pour créer du contenu remarquable",
@@ -254,6 +252,18 @@ const T = {
         },
       ],
     },
+    phBanner: '🚀 Nous sommes en direct sur Product Hunt aujourd\'hui ! Soutenez-nous →',
+    faq: {
+      title: 'Questions fréquentes',
+      items: [
+        { q: 'Quelle IA propulse ContentAI ?', a: "ContentAI est propulsé par Claude AI d'Anthropic — l'un des modèles d'IA les plus performants et axés sur la sécurité." },
+        { q: 'Mon contenu est-il privé ?', a: 'Oui. Votre contenu et vos données de marque ne sont jamais utilisés pour entraîner des modèles IA. Nous respectons la LPRPDE et la Loi 25 du Québec.' },
+        { q: "Écrit-il vraiment en arabe, pas juste traduit ?", a: "Oui — ContentAI génère du contenu arabe nativement, avec le bon sens de lecture, le contexte culturel approprié, et sans artefacts de traduction." },
+        { q: 'Puis-je l\'essayer sans carte de crédit ?', a: 'Oui — le plan gratuit vous offre 5 générations sans carte de crédit requise.' },
+        { q: 'Quelles plateformes sociales sont prises en charge ?', a: 'Twitter/X, LinkedIn et Facebook. Vous révisez et approuvez chaque publication avant qu\'elle soit mise en ligne.' },
+        { q: "Que faire si j'ai besoin de plus de générations ?", a: "Vous pouvez mettre à niveau votre plan à tout moment, ou ajouter un Content Pack ponctuel (4,99 CA$) pour 20 générations supplémentaires." },
+      ],
+    },
     footer: {
       tagline: 'Fait avec ❤️ pour les créateurs MENA, francophones et du monde entier',
       privacy: 'Confidentialité', terms: 'Conditions', blog: 'Blog',
@@ -273,16 +283,9 @@ const T = {
       badge1: '🤖 Claude AI', badge2: '🌍 5 لغات', badge3: '✦ عربي RTL',
     },
     proof: {
-      stats: [
-        { value: '+10K', label: 'محتوى مولَّد' },
-        { value: '5',    label: 'لغات' },
-        { value: '+500', label: 'مبدع' },
-      ],
-      testimonials: [
-        { name: 'سوفي م.', location: 'مونتريال', text: 'ضاعف ContentAI تردد نشري. المحتوى بالفرنسية لا يمكن تمييزه عن كتابة الناطقين الأصليين.', rating: 5 },
-        { name: 'أحمد ك.', location: 'دبي',      text: 'أخيراً ذكاء اصطناعي يولّد محتوى عربياً صحيحاً من اليمين لليسار. أستخدمه يومياً لوسائل التواصل.', rating: 5 },
-        { name: 'ليلى ب.', location: 'باريس',    text: 'ميزة صوت العلامة التجارية تغيير قواعد اللعبة. عملائي يحصلون دائماً على محتوى يعكس هويتهم.', rating: 5 },
-      ],
+      langBand: 'EN · FR · AR · ES · 中文 — خمس لغات. أداة واحدة.',
+      founderQuote: 'بنيت هذا لأنني لم أجد أداة ذكاء اصطناعي تعمل فعلاً بالفرنسية والعربية — لا مجرد ترجمة. فقررت أن أبنيها بنفسي.',
+      founderName: '— سليم، المؤسس، مونتريال 🇨🇦',
     },
     features: {
       title: 'كل ما تحتاجه لإنشاء محتوى رائع',
@@ -379,6 +382,18 @@ const T = {
         },
       ],
     },
+    phBanner: '🚀 نحن الآن على Product Hunt! ادعمنا →',
+    faq: {
+      title: 'الأسئلة الشائعة',
+      items: [
+        { q: 'ما هو الذكاء الاصطناعي الذي يشغّل ContentAI؟', a: 'يعتمد ContentAI على Claude AI من Anthropic — أحد أكثر نماذج الذكاء الاصطناعي قدرةً وأماناً.' },
+        { q: 'هل محتواي خاص؟', a: 'نعم. لا يُستخدم محتواك أو بيانات علامتك التجارية في تدريب نماذج الذكاء الاصطناعي. نحن ملتزمون بـ PIPEDA وقانون 25 في كيبيك.' },
+        { q: 'هل يكتب باللغة العربية فعلاً لا مجرد ترجمة؟', a: 'نعم — يُنشئ ContentAI المحتوى العربي بشكل أصلي، مع تخطيط صحيح من اليمين إلى اليسار، وسياق ثقافي مناسب، دون أي أثر للترجمة.' },
+        { q: 'هل يمكنني التجربة دون بطاقة ائتمان؟', a: 'نعم — تتيح لك الخطة المجانية 5 عمليات توليد دون الحاجة إلى بطاقة ائتمان.' },
+        { q: 'ما منصات التواصل الاجتماعي المدعومة للنشر التلقائي؟', a: 'تويتر/X وLinkedIn وفيسبوك. تراجع وتوافق على كل منشور قبل نشره.' },
+        { q: 'ماذا أفعل إذا احتجت مزيداً من التوليدات؟', a: 'يمكنك ترقية خطتك في أي وقت، أو إضافة Content Pack لمرة واحدة (4.99 دولار كندي) للحصول على 20 توليداً إضافياً.' },
+      ],
+    },
     footer: {
       tagline: 'صُنع بـ ❤️ للمبدعين حول العالم',
       privacy: 'الخصوصية', terms: 'الشروط', blog: 'المدونة',
@@ -398,16 +413,9 @@ const T = {
       badge1: '🤖 Claude AI', badge2: '🌍 5 idiomas', badge3: '✦ Árabe RTL',
     },
     proof: {
-      stats: [
-        { value: '10K+', label: 'Contenidos generados' },
-        { value: '5',    label: 'Idiomas' },
-        { value: '500+', label: 'Creadores' },
-      ],
-      testimonials: [
-        { name: 'Sophie M.',  location: 'Montréal', text: 'ContentAI duplicó mi frecuencia de publicación. El contenido en francés es perfecto, sin retoques.', rating: 5 },
-        { name: 'Ahmed K.',   location: 'Dubái',    text: 'Por fin una IA que genera contenido árabe RTL correcto. Lo uso todos los días para mis redes sociales.', rating: 5 },
-        { name: 'Leila B.',   location: 'París',    text: 'La función de voz de marca es revolucionaria. Mis clientes siempre reciben contenido que los representa.', rating: 5 },
-      ],
+      langBand: 'EN · FR · AR · ES · 中文 — Cinco idiomas. Una herramienta.',
+      founderQuote: 'Construí esto porque no encontraba una herramienta de IA que funcionara de verdad en francés y árabe — no solo traducido. Así que la construí yo mismo.',
+      founderName: '— Slim, fundador, Montréal 🇨🇦',
     },
     features: {
       title: 'Todo lo que necesitas para crear gran contenido',
@@ -504,6 +512,18 @@ const T = {
         },
       ],
     },
+    phBanner: '🚀 ¡Estamos en vivo en Product Hunt hoy! Apóyanos →',
+    faq: {
+      title: 'Preguntas frecuentes',
+      items: [
+        { q: '¿Qué IA impulsa ContentAI?', a: 'ContentAI está impulsado por Claude AI de Anthropic — uno de los modelos de IA más capaces y enfocados en la seguridad.' },
+        { q: '¿Mi contenido es privado?', a: 'Sí. Tu contenido y datos de marca nunca se usan para entrenar modelos de IA. Cumplimos con PIPEDA y la Ley 25 de Quebec.' },
+        { q: '¿Realmente escribe en árabe, no solo traduce?', a: 'Sí — ContentAI genera contenido en árabe de forma nativa, con diseño RTL correcto, contexto cultural y sin artefactos de traducción.' },
+        { q: '¿Puedo probarlo sin tarjeta de crédito?', a: 'Sí — el plan gratuito te da 5 generaciones sin necesidad de tarjeta de crédito.' },
+        { q: '¿Qué plataformas sociales admite la publicación automática?', a: 'Twitter/X, LinkedIn y Facebook. Revisas y apruebas cada publicación antes de que se publique.' },
+        { q: '¿Qué pasa si necesito más generaciones?', a: 'Puedes actualizar tu plan en cualquier momento, o añadir un Content Pack puntual (CA$4.99) para 20 generaciones adicionales.' },
+      ],
+    },
     footer: {
       tagline: 'Hecho con ❤️ para creadores de todo el mundo',
       privacy: 'Privacidad', terms: 'Términos', blog: 'Blog',
@@ -523,16 +543,9 @@ const T = {
       badge1: '🤖 Claude AI', badge2: '🌍 5种语言', badge3: '✦ 阿拉伯语RTL',
     },
     proof: {
-      stats: [
-        { value: '10K+', label: '已生成内容' },
-        { value: '5',    label: '支持语言' },
-        { value: '500+', label: '创作者' },
-      ],
-      testimonials: [
-        { name: 'Sophie M.', location: '蒙特利尔', text: 'ContentAI让我的发布频率翻倍。法语内容质量堪比母语写作，无需修改。', rating: 5 },
-        { name: 'Ahmed K.',  location: '迪拜',     text: '终于有一款AI能正确生成阿拉伯语RTL内容。我每天都用它来管理社交媒体。', rating: 5 },
-        { name: 'Leila B.',  location: '巴黎',     text: '品牌声音功能彻底改变了我的工作方式。客户总能收到真正代表他们的内容。', rating: 5 },
-      ],
+      langBand: 'EN · FR · AR · ES · 中文 — 五种语言，一个工具。',
+      founderQuote: '我建造这个工具，是因为找不到一款真正支持法语和阿拉伯语的AI内容工具——而不只是翻译。所以我自己做了一个。',
+      founderName: '— Slim，创始人，蒙特利尔 🇨🇦',
     },
     features: {
       title: '创作优质内容所需的一切',
@@ -629,6 +642,18 @@ const T = {
         },
       ],
     },
+    phBanner: '🚀 我们今天在 Product Hunt 上线了！支持我们 →',
+    faq: {
+      title: '常见问题',
+      items: [
+        { q: 'ContentAI 使用什么 AI？', a: 'ContentAI 基于 Anthropic 的 Claude AI — 目前最强大、最注重安全的 AI 模型之一。' },
+        { q: '我的内容是否私密？', a: '是的。您的内容和品牌数据永远不会用于训练 AI 模型。我们遵守 PIPEDA 和魁北克第 25 号法律。' },
+        { q: '它真的能用阿拉伯语写作，而不只是翻译？', a: '是的 — ContentAI 以原生方式生成阿拉伯语内容，支持正确的从右到左布局、文化语境，无任何翻译痕迹。' },
+        { q: '可以不用信用卡试用吗？', a: '是的 — 免费计划提供 5 次生成，无需信用卡。' },
+        { q: '自动发布支持哪些社交平台？', a: 'Twitter/X、LinkedIn 和 Facebook。每篇帖子在发布前都需要您审核并批准。' },
+        { q: '如果需要更多次生成怎么办？', a: '您可以随时升级套餐，或购买一次性内容包（CA$4.99）获得额外 20 次生成。' },
+      ],
+    },
     footer: {
       tagline: '用 ❤️ 为全球创作者打造',
       privacy: '隐私政策', terms: '服务条款', blog: '博客',
@@ -656,6 +681,35 @@ export default function LandingPage() {
   const [yearly, setYearly] = useState(false)
   const [currency, setCurrency] = useState<CurrencyCode>('CAD')
   const [showDemo, setShowDemo] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [phDismissed, setPhDismissed] = useState(true)
+
+  // PH banner: show only on 2026-07-01, unless dismissed
+  useEffect(() => {
+    const now = new Date()
+    const isLaunchDay = now.getFullYear() === 2026 && now.getMonth() === 6 && now.getDate() === 1
+    const dismissed = localStorage.getItem('ph_banner_dismissed') === '1'
+    if (isLaunchDay && !dismissed) setPhDismissed(false)
+  }, [])
+
+  function dismissPhBanner() {
+    localStorage.setItem('ph_banner_dismissed', '1')
+    setPhDismissed(true)
+  }
+
+  const [faqOpen, setFaqOpen] = useState<number | null>(null)
+
+  // Only play teaser when it scrolls into view
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { entry.isIntersecting ? el.play().catch(() => {}) : el.pause() },
+      { threshold: 0.25 },
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [lang])
 
   useEffect(() => {
     setCurrency(loadCurrency())
@@ -696,6 +750,31 @@ export default function LandingPage() {
 
   return (
     <div className={`min-h-screen bg-white ${isRTL ? 'font-arabic' : ''}`} dir={dir}>
+      {/* ── Product Hunt launch banner ───────────────────── */}
+      {!phDismissed && (
+        <div className={`relative flex items-center justify-center gap-3 px-10 py-2.5 text-sm font-semibold ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}
+          style={{ background: '#C9A84C', color: '#026676' }}
+          dir={isRTL ? 'rtl' : 'ltr'}
+        >
+          <a
+            href="https://www.producthunt.com/posts/contentai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:opacity-80 transition-opacity truncate"
+          >
+            {t.phBanner}
+          </a>
+          <button
+            onClick={dismissPhBanner}
+            aria-label="Dismiss"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-black/10 transition-colors shrink-0 text-base leading-none"
+            style={{ color: '#026676' }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* ── Nav ─────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
         <div className={`flex items-center justify-between px-6 py-3.5 max-w-7xl mx-auto ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -828,53 +907,43 @@ export default function LandingPage() {
       <div className="hidden md:block py-8 bg-white">
         <div className="max-w-[800px] mx-auto px-6">
           <video
-            key={lang === 'ar' ? 'ar' : 'en'}
-            src={lang === 'ar' ? '/videos/teaser_arabic.mp4' : '/videos/teaser_english.mp4'}
-            autoPlay
+            ref={videoRef}
+            key={lang === 'ar' ? 'ar' : lang === 'fr' ? 'fr' : 'en'}
+            src={
+              lang === 'ar' ? '/videos/teaser_arabic.mp4' :
+              lang === 'fr' ? '/videos/teaser_french.mp4' :
+              '/videos/teaser_english.mp4'
+            }
+            poster={
+              lang === 'ar' ? '/videos/teaser_arabic_poster.jpg' :
+              lang === 'fr' ? '/videos/teaser_french_poster.jpg' :
+              '/videos/teaser_english_poster.jpg'
+            }
             muted
             loop
             playsInline
+            preload="none"
             className="w-full rounded-2xl shadow-lg"
           />
         </div>
       </div>
 
-      {/* ── Stats bar ───────────────────────────────────── */}
-      <section className="bg-brand-600 py-8">
-        <div className={`max-w-4xl mx-auto px-6 flex items-center justify-around gap-8 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
-          {t.proof.stats.map(s => (
-            <div key={s.label} className="text-center">
-              <p className="text-3xl font-bold text-white">{s.value}</p>
-              <p className="text-brand-200 text-sm mt-0.5">{s.label}</p>
-            </div>
-          ))}
-        </div>
+      {/* ── Language band (replaces fake stats) ─────────── */}
+      <section className="bg-brand-600 py-6">
+        <p className={`text-center text-white font-medium text-base tracking-wide px-6 ${isRTL ? 'font-arabic' : ''}`}>
+          {t.proof.langBand}
+        </p>
       </section>
 
-      {/* ── Testimonials ────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
-            {t.proof.testimonials.map(tw => (
-              <div key={tw.name} className={`bg-white rounded-2xl p-6 shadow-sm border border-gray-100 ${isRTL ? 'text-right' : ''}`}>
-                <div className={`flex mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {'★'.repeat(tw.rating).split('').map((s, i) => (
-                    <span key={i} className="text-amber-400 text-sm">{s}</span>
-                  ))}
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">&ldquo;{tw.text}&rdquo;</p>
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-sm shrink-0">
-                    {tw.name[0]}
-                  </div>
-                  <div className={isRTL ? 'text-right' : ''}>
-                    <p className="text-sm font-semibold text-gray-800">{tw.name}</p>
-                    <p className="text-xs text-gray-400">{tw.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ── Founder quote (replaces fake testimonials) ───── */}
+      <section className="py-16 px-6 bg-gray-50">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className={`text-2xl font-light text-gray-700 leading-relaxed mb-6 ${isRTL ? 'font-arabic text-right' : ''}`}>
+            &ldquo;{t.proof.founderQuote}&rdquo;
+          </p>
+          <p className={`text-sm font-semibold text-brand-600 ${isRTL ? 'font-arabic' : ''}`}>
+            {t.proof.founderName}
+          </p>
         </div>
       </section>
 
@@ -1098,6 +1167,33 @@ export default function LandingPage() {
                 >
                   {item.cta}
                 </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ─────────────────────────────────────────── */}
+      <section className="py-16 px-6 bg-white border-t border-gray-100">
+        <div className="max-w-2xl mx-auto">
+          <h2 className={`text-2xl font-bold text-gray-900 mb-8 text-center ${isRTL ? 'font-arabic' : ''}`}>
+            {t.faq.title}
+          </h2>
+          <div className="space-y-3">
+            {t.faq.items.map((item, idx) => (
+              <div key={idx} className="border border-gray-200 rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setFaqOpen(faqOpen === idx ? null : idx)}
+                  className={`w-full flex items-center justify-between px-5 py-4 text-left bg-white hover:bg-gray-50 transition-colors ${isRTL ? 'flex-row-reverse text-right font-arabic' : ''}`}
+                >
+                  <span className="font-medium text-gray-900 text-sm pr-4">{item.q}</span>
+                  <span className={`text-brand-600 shrink-0 text-lg transition-transform ${faqOpen === idx ? 'rotate-45' : ''}`}>+</span>
+                </button>
+                {faqOpen === idx && (
+                  <div className={`px-5 pb-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3 bg-gray-50 ${isRTL ? 'text-right font-arabic' : ''}`}>
+                    {item.a}
+                  </div>
+                )}
               </div>
             ))}
           </div>
