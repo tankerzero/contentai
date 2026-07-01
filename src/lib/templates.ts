@@ -15,36 +15,6 @@ export interface Template {
 
 export const TEMPLATES: Template[] = [
   {
-    id: 'ramadan',
-    icon: '🌙',
-    name: {
-      fr: 'Post Ramadan',
-      ar: 'بوست رمضان',
-      en: 'Ramadan Post',
-      es: 'Post Ramadán',
-      zh: '斋月帖子',
-    },
-    description: {
-      fr: 'Message chaleureux pour souhaiter un bon Ramadan à votre communauté',
-      ar: 'رسالة دافئة للتهنئة بشهر رمضان المبارك',
-      en: 'Warm message to wish your community a blessed Ramadan',
-      es: 'Mensaje cálido para desear un feliz Ramadán a tu comunidad',
-      zh: '向您的社区送上斋月祝福的温馨信息',
-    },
-    contentType: 'social_media',
-    topic: {
-      fr: 'Souhaiter un bon Ramadan à notre communauté, partager les valeurs de générosité, de partage et de spiritualité',
-      ar: 'تهنئة المجتمع بحلول شهر رمضان المبارك، ومشاركة قيم الكرم والتواصل الاجتماعي والروحانية',
-      en: 'Wishing our community a blessed Ramadan, sharing values of generosity, community and spirituality',
-      es: 'Desear a nuestra comunidad un bendecido Ramadán, compartiendo valores de generosidad y espiritualidad',
-      zh: '祝愿我们的社区斋月吉祥，分享慷慨、社区和精神价值观',
-    },
-    tone: 'Inspirant',
-    language: 'ar',
-    keywords: 'رمضان كريم، مبارك، شهر الخير',
-    wordCount: 150,
-  },
-  {
     id: 'summer_sale',
     icon: '☀️',
     name: {

@@ -22,12 +22,21 @@ const UI = {
     subtitle: (n: number) => `${n} توليد — انقر للتوسيع`,
     loading: 'جارٍ التحميل…',
   },
+  es: {
+    title: 'Historial',
+    subtitle: (n: number) => `${n} generación${n !== 1 ? 'es' : ''} — clic para expandir`,
+    loading: 'Cargando historial…',
+  },
+  zh: {
+    title: '历史记录',
+    subtitle: (n: number) => `${n} 条生成记录 — 点击展开`,
+    loading: '加载中…',
+  },
 }
 
 export default function HistoryPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
 
   const [generations, setGenerations] = useState<Generation[]>([])
   const [loading, setLoading] = useState(true)

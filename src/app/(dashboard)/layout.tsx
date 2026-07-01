@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-gray-50 flex rtl:flex-row-reverse">
       <NavSidebar email={user.email ?? ''} />
-      <main className="flex-1 overflow-auto pb-16 md:pb-0 min-w-0">
+      <main className="flex-1 overflow-auto pb-24 md:pb-0 min-w-0">
         {children}
       </main>
       <MobileBottomNav />

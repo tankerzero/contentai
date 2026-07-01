@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-07-01T04:37:12.408Z",
+  "skipped": true,
+  "reason": "SUPABASE_SERVICE_ROLE_KEY not configured in local environment",
+  "instructions": "Run from production environment or add real keys to .env.local"
+}

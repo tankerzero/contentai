@@ -159,6 +159,72 @@ const UI = {
     },
     loading: 'جارٍ التحميل…',
   },
+  es: {
+    tabs: { content: 'Mi Contenido', calendar: 'Calendario', analytics: 'Estadísticas', export: 'Exportar', brand: 'Perfiles de Marca' },
+    search: 'Buscar contenido…',
+    filters: { all: 'Todo', blog: 'Blog', social: 'Social', email: 'Email', product: 'Producto', ad: 'Anuncio', favs: '★ Favoritos' },
+    langs: { all: 'Todo', en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇸🇦 AR' },
+    dates: { all: 'Todo', '7d': 'Últimos 7d', '30d': 'Últimos 30d', '90d': 'Últimos 90d' },
+    view: { grid: 'Cuadrícula', list: 'Lista' },
+    actions: { copy: 'Copiar', copied: '✓', delete: 'Eliminar', setDefault: 'Pred.', default: 'Predeterminado' },
+    bulk: { select: 'Sel. todo', deselect: 'Desel.', deleteSelected: 'Elim. selecc.', exportSelected: 'Export. selecc.' },
+    empty: 'Sin contenido.', emptyFav: 'Sin favoritos aún.',
+    calendar: { title: 'Calendario', noContent: 'Sin contenido este día.' },
+    analytics: {
+      title: 'Estadísticas', credits: 'Créditos usados', creditsOf: 'de', thisMonth: 'Este mes',
+      total: 'Total', favorites: 'Favoritos', topType: 'Tipo principal', topLang: 'Idioma principal',
+      topPlatform: 'Plataforma principal', chart: 'Últimos 30 días',
+    },
+    export: {
+      title: 'Exportar', subtitle: 'Descarga tu contenido como CSV.',
+      btnAll: 'Exportar todo como CSV', btnSelected: 'Exportar selecc. como CSV',
+      proPlan: 'Requiere plan Pro', proNote: 'Actualiza a Pro o Agency para exportar.',
+      columns: 'Columnas: fecha, tipo, plataforma, idioma, tema, contenido',
+    },
+    brand: {
+      title: 'Perfiles de Marca', addBtn: 'Nuevo perfil',
+      noProfiles: 'Sin perfiles de marca aún.',
+      proLock: 'Actualiza a Pro para múltiples perfiles',
+      industry: 'Sector', style: 'Estilo',
+      editBtn: 'Editar', deleteBtn: 'Eliminar',
+      profileName: 'Nombre del perfil', save: 'Guardar', saving: 'Guardando…', saved: '✓ Guardado',
+      cancel: 'Cancelar', newProfile: 'Nuevo perfil',
+    },
+    loading: 'Cargando…',
+  },
+  zh: {
+    tabs: { content: '我的内容', calendar: '日历', analytics: '数据分析', export: '导出', brand: '品牌档案' },
+    search: '搜索内容…',
+    filters: { all: '全部', blog: '博客', social: '社交', email: '邮件', product: '产品', ad: '广告', favs: '★ 收藏' },
+    langs: { all: '全部', en: '🇬🇧 EN', fr: '🇫🇷 FR', ar: '🇸🇦 AR' },
+    dates: { all: '全部', '7d': '最近7天', '30d': '最近30天', '90d': '最近90天' },
+    view: { grid: '网格', list: '列表' },
+    actions: { copy: '复制', copied: '✓', delete: '删除', setDefault: '设默认', default: '默认' },
+    bulk: { select: '全选', deselect: '取消选择', deleteSelected: '删除所选', exportSelected: '导出所选' },
+    empty: '未找到内容。', emptyFav: '暂无收藏。',
+    calendar: { title: '日历', noContent: '该日无内容。' },
+    analytics: {
+      title: '数据分析', credits: '已用积分', creditsOf: '/', thisMonth: '本月',
+      total: '总计', favorites: '收藏', topType: '主要类型', topLang: '主要语言',
+      topPlatform: '主要平台', chart: '最近30天',
+    },
+    export: {
+      title: '导出', subtitle: '将内容下载为CSV格式。',
+      btnAll: '导出全部为CSV', btnSelected: '导出所选为CSV',
+      proPlan: '需要Pro套餐', proNote: '升级到Pro或Agency以导出内容。',
+      columns: '列：日期、类型、平台、语言、主题、内容',
+    },
+    brand: {
+      title: '品牌档案', addBtn: '新建档案',
+      noProfiles: '暂无品牌档案。',
+      proLock: '升级到Pro以使用多个档案',
+      industry: '行业', style: '风格',
+      editBtn: '编辑', deleteBtn: '删除',
+      profileName: '档案名称', save: '保存', saving: '保存中…', saved: '✓ 已保存',
+      cancel: '取消', newProfile: '新建档案',
+    },
+    loading: '加载中…',
+  },
 } as const
 
 const MONTH_NAMES_EN = ['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -213,8 +279,7 @@ function topEntry(map: Map<string, number>): string {
 
 export default function ContentPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang as keyof typeof UI] ?? UI.en
   const dir = isRTL ? 'rtl' : 'ltr'
 
   // Data

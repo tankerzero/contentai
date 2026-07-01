@@ -124,11 +124,13 @@ export default function GeneratePage() {
   const ui = UI[lang]
   const tones = TONES[language]
 
-  // Compute seasonal templates client-side only, so the real browser date and
-  // locale are always used (never a stale SSR date).
+  // Compute seasonal templates client-side only (never SSR) so the real browser date/locale are used.
+  // effectiveLocale: use UI lang directly for ar/zh (user explicitly chose that language);
+  // for en/fr/es use the actual browser locale so regional templates (Canada Day, Bastille, etc.) work.
   useEffect(() => {
-    const locale = navigator.language || 'en'
-    setActiveSeasonal(getActiveSeasonalTemplates(locale, lang))
+    const browserLocale = navigator.language || 'en'
+    const effectiveLocale = (lang === 'ar' || lang === 'zh') ? lang : browserLocale
+    setActiveSeasonal(getActiveSeasonalTemplates(effectiveLocale, lang))
   }, [lang])
 
   useEffect(() => {

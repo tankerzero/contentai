@@ -1,8 +1,15 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Terms of Service | ContentAI',
+  title: 'Terms of Service',
   description: 'Terms of Service for ContentAI.',
+  alternates: { canonical: 'https://contentai.ca/terms' },
+  openGraph: {
+    type: 'website',
+    url: 'https://contentai.ca/terms',
+    title: 'Terms of Service | ContentAI',
+    description: 'Terms of Service for ContentAI.',
+  },
 }
 
 const LAST_UPDATED = 'June 1, 2025'

@@ -60,12 +60,35 @@ const UI = {
     generated: 'أسبوع مولَّد —', copyAll: 'نسخ الكل', copiedAll: '✓ تم النسخ!',
     copyDay: 'نسخ', copiedDay: '✓', dayError: 'خطأ في التوليد',
   },
+  es: {
+    title: 'Planificador Semanal',
+    subtitle: 'Genera 7 publicaciones para toda la semana con un clic.',
+    langLabel: 'Idioma de salida', platformLabel: 'Plataforma',
+    topicLabel: 'Tema semanal / topic',
+    topicPlaceholder: 'ej. Lanzamiento de nuestra nueva colección de primavera',
+    topicPlaceholderAr: 'ej. Promociones Eid al-Adha',
+    toneLabel: 'Tono', brandToggle: 'Usar voz de marca',
+    generateBtn: '📅 Generar semana', generating: 'Generando semana…',
+    generated: 'Semana generada —', copyAll: 'Copiar todo', copiedAll: '✓ Todo copiado!',
+    copyDay: 'Copiar', copiedDay: '✓', dayError: 'Error de generación',
+  },
+  zh: {
+    title: '每周规划器',
+    subtitle: '一键生成整周7篇帖子。',
+    langLabel: '输出语言', platformLabel: '平台',
+    topicLabel: '每周主题',
+    topicPlaceholder: '例：我们新春系列的发布',
+    topicPlaceholderAr: '例：开斋节促销活动',
+    toneLabel: '语气', brandToggle: '应用品牌声音',
+    generateBtn: '📅 生成本周', generating: '生成中…',
+    generated: '已生成本周 —', copyAll: '全部复制', copiedAll: '✓ 全部已复制！',
+    copyDay: '复制', copiedDay: '✓', dayError: '生成错误',
+  },
 }
 
 export default function PlannerPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
 
   const [platform, setPlatform] = useState('Instagram')
   const [topic, setTopic] = useState('')

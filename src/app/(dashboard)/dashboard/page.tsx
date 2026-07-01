@@ -33,6 +33,24 @@ const UI = {
     recent: 'آخر التوليدات', noGen: 'لا توليدات بعد.',
     noGenCta: 'أنشئ أول توليد →',
   },
+  es: {
+    title: 'Panel', welcome: 'Bienvenido de nuevo',
+    stats: { total: 'Total generaciones', month: 'Este mes', plan: 'Plan' },
+    ready: '¿Listo para crear?',
+    readyDesc: 'Genera tu próximo contenido en segundos.',
+    readyCta: 'Nueva generación →',
+    recent: 'Generaciones recientes', noGen: 'Sin generaciones aún.',
+    noGenCta: 'Crea la primera →',
+  },
+  zh: {
+    title: '控制台', welcome: '欢迎回来',
+    stats: { total: '总生成数', month: '本月', plan: '套餐' },
+    ready: '准备好创作了吗？',
+    readyDesc: '几秒钟内生成您的下一篇内容。',
+    readyCta: '新建生成 →',
+    recent: '最近生成', noGen: '暂无生成记录。',
+    noGenCta: '创建第一篇 →',
+  },
 }
 
 interface Generation {
@@ -48,8 +66,7 @@ interface Profile {
 
 export default function DashboardPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
 
   const [email, setEmail] = useState('')
   const [generations, setGenerations] = useState<Generation[]>([])

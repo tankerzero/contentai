@@ -113,6 +113,54 @@ const T = {
     retry: 'إعادة المحاولة',
     copySuccess: 'تم النسخ!',
   },
+  es: {
+    title: 'Redes Sociales',
+    subtitle: 'Conecta tus cuentas para publicar directamente',
+    connected: 'Conectado',
+    notConnected: 'No conectado',
+    connect: 'Conectar',
+    disconnect: 'Desconectar',
+    copyOpen: 'Copiar y Abrir',
+    postHistory: 'Historial de publicaciones',
+    noHistory: 'Sin publicaciones aún.',
+    platform: 'Plataforma',
+    status: 'Estado',
+    date: 'Fecha',
+    content: 'Contenido',
+    posted: 'Publicado',
+    pending: 'Pendiente',
+    failed: 'Fallido',
+    bufferLink: 'Programar con Buffer',
+    twitterNote: 'Publicación directa vía API',
+    manualNote: 'Publicación manual (Copiar y Abrir)',
+    connectTwitter: 'Conectar Twitter/X',
+    retry: 'Reintentar',
+    copySuccess: '¡Copiado!',
+  },
+  zh: {
+    title: '社交账号',
+    subtitle: '连接您的社交账号以直接发布',
+    connected: '已连接',
+    notConnected: '未连接',
+    connect: '连接',
+    disconnect: '断开连接',
+    copyOpen: '复制并打开',
+    postHistory: '发帖历史',
+    noHistory: '暂无帖子。',
+    platform: '平台',
+    status: '状态',
+    date: '日期',
+    content: '内容',
+    posted: '已发布',
+    pending: '待处理',
+    failed: '失败',
+    bufferLink: '使用Buffer安排',
+    twitterNote: '通过API直接发布',
+    manualNote: '手动发布（复制并打开）',
+    connectTwitter: '连接Twitter/X',
+    retry: '重试',
+    copySuccess: '已复制！',
+  },
 }
 
 interface SocialConnection {
@@ -180,8 +228,7 @@ const PLATFORMS = [
 
 export default function SocialPage() {
   const { lang } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const t = T[uiLang]
+  const t = T[lang]
 
   const [connections, setConnections] = useState<SocialConnection[]>([])
   const [posts, setPosts] = useState<SocialPost[]>([])

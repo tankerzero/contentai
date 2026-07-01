@@ -15,15 +15,32 @@ export interface SeasonalTemplate {
   topic: Record<OutputLanguage, string>
   tone: string
   language: OutputLanguage
+  /**
+   * Primary target locale prefixes (e.g. 'ar', 'en-CA', 'zh', 'es-MX').
+   * Matching: exact OR startsWith(l + '-').
+   * If absent → universal (show for all locales when in window).
+   */
   locales?: string[]
-  showForLangs?: OutputLanguage[]
+  /**
+   * Additional locale prefixes shown during the date window only.
+   * Used for Christmas/NY: Arabic users see it during the season.
+   */
+  alsoShowLocales?: string[]
+  /**
+   * When true: always show for `locales` users regardless of date window,
+   * AND also show for all other locales when date is in window.
+   * Pattern: Islamic holidays (always for ar-*), CNY (always for zh-*).
+   */
+  localeRequiredOutsideWindow?: boolean
 }
+
+// ── Islamic windows ──────────────────────────────────────────────────────────
 
 // Ramadan start + 6 weeks window (2 weeks before → Eid al-Fitr)
 const RAMADAN_WINDOWS: SeasonalWindow[] = [
   { start: '2024-02-26', end: '2024-04-10' },
   { start: '2025-02-16', end: '2025-03-31' },
-  { start: '2026-02-03', end: '2026-03-22' },
+  { start: '2026-02-17', end: '2026-03-18' },
   { start: '2027-01-22', end: '2027-03-10' },
   { start: '2028-01-14', end: '2028-02-28' },
   { start: '2029-01-03', end: '2029-02-17' },
@@ -61,7 +78,10 @@ function yearWindows(m1: number, d1: number, m2: number, d2: number): SeasonalWi
   return windows
 }
 
+// ── Templates ────────────────────────────────────────────────────────────────
+
 export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
+  // ── Islamic: always visible for ar-* users; visible for all during window ──
   {
     id: 'ramadan_seasonal',
     icon: '🌙',
@@ -84,6 +104,8 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     },
     tone: 'Inspirant',
     language: 'ar',
+    locales: ['ar'],
+    localeRequiredOutsideWindow: true,
   },
   {
     id: 'eid_adha_seasonal',
@@ -107,7 +129,11 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     },
     tone: 'Inspirant',
     language: 'ar',
+    locales: ['ar'],
+    localeRequiredOutsideWindow: true,
   },
+
+  // ── Chinese New Year: always for zh-*; for all during window ──
   {
     id: 'chinese_new_year',
     icon: '🧧',
@@ -130,8 +156,11 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     },
     tone: 'Amical',
     language: 'zh',
-    showForLangs: ['zh'],
+    locales: ['zh'],
+    localeRequiredOutsideWindow: true,
   },
+
+  // ── Christmas: en/fr/es + ar during window; zh excluded ──
   {
     id: 'christmas_seasonal',
     icon: '🎄',
@@ -154,7 +183,11 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     },
     tone: 'Amical',
     language: 'fr',
+    locales: ['en-CA', 'en-US', 'fr-CA', 'fr-FR', 'fr-BE', 'es'],
+    alsoShowLocales: ['ar'],
   },
+
+  // ── New Year: same locale scope as Christmas ──
   {
     id: 'new_year_seasonal',
     icon: '🎆',
@@ -177,7 +210,141 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     },
     tone: 'Inspirant',
     language: 'fr',
+    locales: ['en-CA', 'en-US', 'fr-CA', 'fr-FR', 'fr-BE', 'es'],
+    alsoShowLocales: ['ar'],
   },
+
+  // ── Canada Day: en-CA and fr-CA only ──
+  {
+    id: 'canada_day',
+    icon: '🍁',
+    contentType: 'social_media',
+    windows: yearWindows(6, 25, 7, 3),
+    name: { en: 'Canada Day', fr: 'Fête du Canada', ar: 'يوم كندا', es: 'Día de Canadá', zh: '加拿大国庆' },
+    description: {
+      en: 'Canada Day celebration post',
+      fr: 'Post pour la Fête du Canada',
+      ar: 'منشور يوم كندا',
+      es: 'Publicación del Día de Canadá',
+      zh: '加拿大国庆帖子',
+    },
+    topic: {
+      en: 'Happy Canada Day — celebrating our great country with our community and customers across Canada',
+      fr: 'Bonne Fête du Canada — célébrer notre beau pays avec notre communauté et nos clients à travers le Canada',
+      ar: 'عيد كندا سعيد — الاحتفال ببلدنا الرائع مع مجتمعنا وعملائنا في جميع أنحاء كندا',
+      es: 'Feliz Día de Canadá — celebrando nuestro gran país con nuestra comunidad y clientes en todo Canadá',
+      zh: '加拿大国庆快乐——与我们全国的社区和客户一起庆祝伟大的国家',
+    },
+    tone: 'Amical',
+    language: 'en',
+    locales: ['en-CA', 'fr-CA'],
+  },
+
+  // ── US Independence Day: en-US only ──
+  {
+    id: 'us_independence_day',
+    icon: '🇺🇸',
+    contentType: 'social_media',
+    windows: yearWindows(6, 28, 7, 6),
+    name: { en: 'Independence Day', fr: '4 Juillet', ar: 'عيد الاستقلال الأمريكي', es: 'Día de la Independencia', zh: '美国独立日' },
+    description: {
+      en: 'July 4th celebration post',
+      fr: 'Post 4 juillet américain',
+      ar: 'منشور الاستقلال الأمريكي',
+      es: 'Publicación del 4 de julio',
+      zh: '美国独立日帖子',
+    },
+    topic: {
+      en: 'Happy 4th of July — celebrating American independence, freedom, and the spirit of our great nation',
+      fr: "Joyeux 4 juillet — célébrer l'indépendance américaine, la liberté et l'esprit de notre grande nation",
+      ar: 'عيد استقلال أمريكا سعيد — الاحتفال بالاستقلال الأمريكي والحرية وروح الأمة العظيمة',
+      es: 'Feliz 4 de julio — celebrando la independencia americana, la libertad y el espíritu de nuestra gran nación',
+      zh: '美国独立日快乐——庆祝美国独立、自由和我们伟大国家的精神',
+    },
+    tone: 'Amical',
+    language: 'en',
+    locales: ['en-US'],
+  },
+
+  // ── Bastille Day: fr-FR and fr-BE only ──
+  {
+    id: 'bastille_day',
+    icon: '🥁',
+    contentType: 'social_media',
+    windows: yearWindows(7, 10, 7, 16),
+    name: { en: 'Bastille Day', fr: 'Fête Nationale', ar: 'اليوم الوطني الفرنسي', es: 'Día de la Bastilla', zh: '法国国庆日' },
+    description: {
+      en: 'French National Day post',
+      fr: 'Post Fête Nationale française',
+      ar: 'منشور اليوم الوطني الفرنسي',
+      es: 'Publicación del Día Nacional francés',
+      zh: '法国国庆日帖子',
+    },
+    topic: {
+      en: 'Happy Bastille Day — celebrating French liberty, equality, and fraternity with our community',
+      fr: "Bonne Fête Nationale — célébrer la liberté, l'égalité et la fraternité avec notre communauté",
+      ar: 'عيد الفطر الوطني الفرنسي سعيد — الاحتفال بالحرية والمساواة والأخوة الفرنسية مع مجتمعنا',
+      es: 'Feliz Día de la Bastilla — celebrando la libertad, igualdad y fraternidad francesas con nuestra comunidad',
+      zh: '法国国庆节快乐——与我们的社区一起庆祝法国的自由、平等和博爱精神',
+    },
+    tone: 'Amical',
+    language: 'fr',
+    locales: ['fr-FR', 'fr-BE'],
+  },
+
+  // ── Día de Muertos: es-MX only ──
+  {
+    id: 'dia_de_muertos',
+    icon: '💀',
+    contentType: 'social_media',
+    windows: yearWindows(10, 29, 11, 2),
+    name: { en: 'Día de Muertos', fr: 'Jour des Morts', ar: 'يوم الموتى', es: 'Día de Muertos', zh: '亡灵节' },
+    description: {
+      en: 'Day of the Dead celebration',
+      fr: 'Célébration Jour des Morts mexicain',
+      ar: 'الاحتفال بيوم الموتى المكسيكي',
+      es: 'Celebración del Día de Muertos',
+      zh: '墨西哥亡灵节庆祝',
+    },
+    topic: {
+      en: 'Honoring Día de Muertos — celebrating the lives of loved ones with color, tradition, and remembrance',
+      fr: 'Honorer le Día de Muertos — célébrer la vie de nos proches avec couleur, tradition et souvenir',
+      ar: 'إحياء ذكرى يوم الموتى — الاحتفال بحياة الأحبة بالألوان والتقاليد والذكريات',
+      es: 'Honrando el Día de Muertos — celebrando la vida de nuestros seres queridos con color, tradición y memoria',
+      zh: '纪念亡灵节——以色彩、传统和回忆庆祝我们所爱之人的生命',
+    },
+    tone: 'Inspirant',
+    language: 'es',
+    locales: ['es-MX'],
+  },
+
+  // ── Cinco de Mayo: es-MX only ──
+  {
+    id: 'cinco_de_mayo',
+    icon: '🎉',
+    contentType: 'social_media',
+    windows: yearWindows(5, 3, 5, 7),
+    name: { en: 'Cinco de Mayo', fr: 'Cinco de Mayo', ar: 'سينكو دي مايو', es: 'Cinco de Mayo', zh: '五月五日' },
+    description: {
+      en: 'Cinco de Mayo celebration',
+      fr: 'Célébration Cinco de Mayo',
+      ar: 'الاحتفال بسينكو دي مايو',
+      es: 'Celebración del Cinco de Mayo',
+      zh: '五月五日庆典',
+    },
+    topic: {
+      en: 'Happy Cinco de Mayo — celebrating Mexican culture, heritage, and community spirit',
+      fr: "Joyeux Cinco de Mayo — célébrer la culture, le patrimoine et l'esprit communautaire mexicain",
+      ar: 'عيد سينكو دي مايو سعيد — الاحتفال بالثقافة والتراث والروح المجتمعية المكسيكية',
+      es: 'Feliz Cinco de Mayo — celebrando la cultura, herencia y espíritu comunitario mexicano',
+      zh: '五月五日快乐——庆祝墨西哥文化、遗产和社区精神',
+    },
+    tone: 'Amical',
+    language: 'es',
+    locales: ['es-MX'],
+  },
+
+  // ── Universal: Valentine's, Black Friday, Back to School ──
   {
     id: 'valentines_seasonal',
     icon: '💝',
@@ -247,44 +414,48 @@ export const SEASONAL_TEMPLATES: SeasonalTemplate[] = [
     tone: 'Amical',
     language: 'fr',
   },
-  {
-    id: 'canada_day',
-    icon: '🍁',
-    contentType: 'social_media',
-    windows: yearWindows(6, 25, 7, 3),
-    name: { en: 'Canada Day', fr: 'Fête du Canada', ar: 'يوم كندا', es: 'Día de Canadá', zh: '加拿大国庆' },
-    description: {
-      en: 'Canada Day celebration post',
-      fr: 'Post pour la Fête du Canada',
-      ar: 'منشور يوم كندا',
-      es: 'Publicación del Día de Canadá',
-      zh: '加拿大国庆帖子',
-    },
-    topic: {
-      en: 'Happy Canada Day — celebrating our great country with our community and customers across Canada',
-      fr: 'Bonne Fête du Canada — célébrer notre beau pays avec notre communauté et nos clients à travers le Canada',
-      ar: 'عيد كندا سعيد — الاحتفال ببلدنا الرائع مع مجتمعنا وعملائنا في جميع أنحاء كندا',
-      es: 'Feliz Día de Canadá — celebrando nuestro gran país con nuestra comunidad y clientes en todo Canadá',
-      zh: '加拿大国庆快乐——与我们全国的社区和客户一起庆祝伟大的国家',
-    },
-    tone: 'Amical',
-    language: 'en',
-    locales: ['en-CA', 'fr-CA'],
-  },
 ]
 
-export function getActiveSeasonalTemplates(
-  locale: string,
-  uiLang: OutputLanguage
-): SeasonalTemplate[] {
+// ── Filter function ──────────────────────────────────────────────────────────
+
+function matchesLocale(locale: string, targets: string[]): boolean {
+  return targets.some(l => locale === l || locale.startsWith(l + '-'))
+}
+
+export function getActiveSeasonalTemplates(locale: string, uiLang: OutputLanguage): SeasonalTemplate[] {
+  const rawNav = typeof navigator !== 'undefined' ? navigator.language : '(server)'
+  console.log('[seasonal DEBUG] raw locale:', rawNav, 'lowercased:', rawNav.toLowerCase())
   const today = new Date().toISOString().slice(0, 10)
+
+  // Arabic context: UI lang is Arabic OR effective locale starts with 'ar'
+  const isArabicContext = (uiLang === 'ar') || locale.toLowerCase().startsWith('ar')
+  // CNY context: UI lang is Chinese OR effective locale starts with 'zh'
+  const isCNYContext = (uiLang === 'zh') || locale.toLowerCase().startsWith('zh')
+
   const active = SEASONAL_TEMPLATES.filter(t => {
     const inWindow = t.windows.some(w => today >= w.start && today <= w.end)
-    if (!inWindow) return false
-    if (t.locales && !t.locales.some(l => locale.startsWith(l))) return false
-    if (t.showForLangs && !t.showForLangs.includes(uiLang)) return false
-    return true
+
+    if (!t.locales) return inWindow
+
+    if (t.localeRequiredOutsideWindow) {
+      // Islamic & CNY require BOTH context match AND date window — never shown outside season
+      const isIslamic = t.locales.includes('ar')
+      const contextMatch = (isIslamic ? isArabicContext : isCNYContext)
+      const showTemplate = contextMatch && inWindow
+
+      if (isIslamic) {
+        console.log('[seasonal] isArabicContext:', isArabicContext, 'isWithinWindow:', inWindow, 'showRamadan:', showTemplate)
+      }
+
+      return showTemplate
+    }
+
+    const primaryMatch = matchesLocale(locale, t.locales)
+    const alsoMatch = t.alsoShowLocales ? matchesLocale(locale, t.alsoShowLocales) : false
+
+    return (primaryMatch || alsoMatch) && inWindow
   })
-  console.log('[seasonal] today:', today, '| locale:', locale, '| active:', active.map(t => t.id))
+
+  console.log('[seasonal] locale:', locale, 'uiLang:', uiLang, 'isArabicContext:', isArabicContext, 'active templates:', active.map(t => t.id))
   return active
 }

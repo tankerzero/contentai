@@ -15,12 +15,16 @@ const INDUSTRIES = {
   en: ['E-commerce', 'Restaurant', 'Fashion & Beauty', 'Technology', 'Real Estate', 'Health & Wellness', 'Finance', 'Education', 'Sport', 'Tourism', 'Other'],
   fr: ['E-commerce', 'Restauration', 'Mode & Beauté', 'Technologie', 'Immobilier', 'Santé & Bien-être', 'Finance', 'Éducation', 'Sport', 'Tourisme', 'Autre'],
   ar: ['تجارة إلكترونية', 'مطاعم', 'موضة وجمال', 'تكنولوجيا', 'عقارات', 'صحة ولياقة', 'مالية', 'تعليم', 'رياضة', 'سياحة', 'أخرى'],
+  es: ['E-commerce', 'Restaurante', 'Moda y Belleza', 'Tecnología', 'Inmobiliaria', 'Salud y Bienestar', 'Finanzas', 'Educación', 'Deporte', 'Turismo', 'Otro'],
+  zh: ['电商', '餐厅', '时尚与美容', '科技', '房地产', '健康与健身', '金融', '教育', '体育', '旅游', '其他'],
 }
 
 const WRITING_STYLES = {
   en: ['Formal & Professional', 'Casual & Friendly', 'Inspiring & Motivating', 'Humorous & Quirky', 'Expert & Authoritative', 'Warm & Community-focused'],
   fr: ['Formel et professionnel', 'Décontracté et amical', 'Inspirant et motivant', 'Humoristique et décalé', 'Expertise et autorité', 'Chaleureux et communautaire'],
   ar: ['رسمي ومهني', 'غير رسمي وودّي', 'ملهم وتحفيزي', 'فكاهي ومميز', 'خبير وموثوق', 'دافئ ومجتمعي'],
+  es: ['Formal y Profesional', 'Casual y Amigable', 'Inspirador y Motivador', 'Humorístico y Único', 'Experto y Autorizado', 'Cálido y Comunitario'],
+  zh: ['正式专业', '轻松友好', '励志激励', '幽默独特', '专家权威', '温暖社区'],
 }
 
 const UI = {
@@ -57,12 +61,33 @@ const UI = {
     tonePlaceholder: 'مثال:\n• لدينا، كل عميل فريد\n• نحن لا نتنازل عن الجودة\n• التميز ليس خياراً، بل معيارنا',
     save: 'حفظ الملف', saving: 'جارٍ الحفظ…', saved: '✓ تم حفظ الملف',
   },
+  es: {
+    title: 'Voz de Marca', loading: 'Cargando…',
+    subtitle: 'Define la identidad de tu marca. Esta información se inyectará automáticamente en tus generaciones cuando el modo "Voz de marca" esté activado.',
+    companyLabel: 'Nombre de la empresa', companyPlaceholder: 'ej. Mi Tienda Bonita',
+    industryLabel: 'Sector', valuesLabel: 'Valores de marca',
+    valuesPlaceholder: 'ej. Calidad, proximidad, innovación, autenticidad',
+    styleLabel: 'Estilo de escritura', toneLabel: 'Ejemplos de tono',
+    toneHint: '(frases típicas, expresiones características)',
+    tonePlaceholder: 'ej.\n• Con nosotros, cada cliente es único\n• No hacemos las cosas a medias\n• La excelencia no es una opción, es nuestro estándar',
+    save: 'Guardar perfil', saving: 'Guardando…', saved: '✓ Perfil guardado',
+  },
+  zh: {
+    title: '品牌声音', loading: '加载中…',
+    subtitle: '定义您的品牌身份。启用"品牌声音"模式时，此信息将自动注入您的生成内容中。',
+    companyLabel: '公司名称', companyPlaceholder: '例：我的精品店',
+    industryLabel: '行业', valuesLabel: '品牌价值观',
+    valuesPlaceholder: '例：质量、亲近、创新、真实性',
+    styleLabel: '写作风格', toneLabel: '语气示例',
+    toneHint: '（典型短语、特色表达）',
+    tonePlaceholder: '例：\n• 在我们这里，每位客户都是独特的\n• 我们不做半途而废的事\n• 卓越不是选项，而是我们的标准',
+    save: '保存档案', saving: '保存中…', saved: '✓ 档案已保存',
+  },
 }
 
 export default function BrandPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
 
   const [profileId, setProfileId] = useState<string | null>(null)
   const [form, setForm] = useState<BrandProfile>({
@@ -130,8 +155,8 @@ export default function BrandPage() {
     )
   }
 
-  const industries = INDUSTRIES[uiLang]
-  const writingStyles = WRITING_STYLES[uiLang]
+  const industries = INDUSTRIES[lang as keyof typeof INDUSTRIES] ?? INDUSTRIES.en
+  const writingStyles = WRITING_STYLES[lang as keyof typeof WRITING_STYLES] ?? WRITING_STYLES.en
 
   return (
     <div className={`p-8 max-w-2xl ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>

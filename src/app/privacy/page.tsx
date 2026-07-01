@@ -1,8 +1,15 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Privacy Policy | ContentAI',
+  title: 'Privacy Policy',
   description: 'Privacy Policy for ContentAI — PIPEDA & Quebec Law 25 compliant.',
+  alternates: { canonical: 'https://contentai.ca/privacy' },
+  openGraph: {
+    type: 'website',
+    url: 'https://contentai.ca/privacy',
+    title: 'Privacy Policy | ContentAI',
+    description: 'Privacy Policy for ContentAI — PIPEDA & Quebec Law 25 compliant.',
+  },
 }
 
 const LAST_UPDATED = 'June 1, 2025'

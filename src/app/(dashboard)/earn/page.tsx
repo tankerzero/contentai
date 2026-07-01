@@ -67,6 +67,48 @@ const UI = {
     bufferNote: 'تريد جدولة منشوراتك بكفاءة؟',
     bufferCta: 'استخدم Buffer للجدولة ←',
   },
+  es: {
+    title: 'Gana con ContentAI',
+    subtitle: 'Comparte tu enlace. Gana 20% de comisión por cada usuario de pago que traigas.',
+    yourLink: 'Tu enlace de referido',
+    copy: 'Copiar', copied: '✓ Copiado!',
+    howTitle: 'Cómo funciona',
+    steps: [
+      { icon: '🔗', title: 'Comparte tu enlace', desc: 'Envía tu enlace único a amigos, clientes o en redes sociales.' },
+      { icon: '👤', title: 'Se registran', desc: 'Cualquiera que se registre con tu enlace queda vinculado a tu cuenta.' },
+      { icon: '💳', title: 'Se suscriben', desc: 'Cuando suscriben un plan de pago, ganas 20% de comisión.' },
+      { icon: '💸', title: 'Cobras', desc: 'Pagamos vía Stripe cuando tu saldo alcanza $20.' },
+    ],
+    stats: { referrals: 'Referidos', converted: 'Convertidos', balance: 'Saldo', pending: 'Pendiente de pago' },
+    commissions: { pending: 'Pendiente', converted: 'Convertido', paid: 'Pagado' },
+    tableTitle: 'Historial de referidos', tableEmpty: 'Sin referidos aún.',
+    tableDate: 'Fecha', tableStatus: 'Estado', tableAmount: 'Comisión',
+    rate: '20% de comisión', rateDesc: 'en cada suscripción de pago de tus referidos.',
+    payoutNote: 'Pagos procesados mensualmente. Saldo mínimo $20.',
+    bufferNote: '¿Quieres programar publicaciones eficientemente?',
+    bufferCta: 'Usa Buffer para programar →',
+  },
+  zh: {
+    title: '通过ContentAI赚钱',
+    subtitle: '分享您的推荐链接，赚取每位付费用户20%的佣金。',
+    yourLink: '您的推荐链接',
+    copy: '复制链接', copied: '✓ 已复制！',
+    howTitle: '如何运作',
+    steps: [
+      { icon: '🔗', title: '分享您的链接', desc: '将您的专属推荐链接发送给朋友、客户或在社交媒体分享。' },
+      { icon: '👤', title: '他们注册', desc: '通过您的链接注册的任何人都与您的账户关联。' },
+      { icon: '💳', title: '他们升级', desc: '当他们订阅付费套餐时，您将获得20%佣金。' },
+      { icon: '💸', title: '您获得收入', desc: '余额达到$20时通过Stripe支付。' },
+    ],
+    stats: { referrals: '推荐数', converted: '已转化', balance: '余额', pending: '待付款' },
+    commissions: { pending: '待处理', converted: '已转化', paid: '已支付' },
+    tableTitle: '推荐历史', tableEmpty: '暂无推荐记录。',
+    tableDate: '日期', tableStatus: '状态', tableAmount: '佣金',
+    rate: '20%佣金', rateDesc: '来自您推荐用户的每笔付费订阅。',
+    payoutNote: '每月处理付款，最低余额$20。',
+    bufferNote: '想高效安排发帖时间？',
+    bufferCta: '使用Buffer安排 →',
+  },
 }
 
 interface Referral {
@@ -84,8 +126,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function EarnPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
 
   const [referralCode, setReferralCode] = useState<string | null>(null)
   const [balance, setBalance] = useState(0)

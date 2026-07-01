@@ -29,7 +29,8 @@ const config: Config = {
       },
       fontFamily: {
         sans:   ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        arabic: ['var(--font-arabic)', 'Segoe UI', 'Tahoma', 'Arial', 'sans-serif'],
+        arabic:  ['var(--font-arabic)', 'Segoe UI', 'Tahoma', 'Arial', 'sans-serif'],
+        chinese: ['PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', 'sans-serif'],
       },
       backgroundImage: {
         'geometric-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%230D7377' stroke-width='0.8'%3E%3Crect x='10' y='10' width='60' height='60'/%3E%3Crect x='10' y='10' width='60' height='60' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='21'/%3E%3C/g%3E%3C/svg%3E\")",
