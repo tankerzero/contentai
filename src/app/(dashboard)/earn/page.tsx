@@ -145,7 +145,7 @@ export default function EarnPage() {
       })
   }, [])
 
-  const appUrl = typeof window !== 'undefined' ? window.location.origin : 'https://contentai.app'
+  const appUrl = typeof window !== 'undefined' ? window.location.origin : 'https://contentai.ca'
   const referralLink = referralCode ? `${appUrl}/signup?ref=${referralCode}` : ''
 
   async function copyLink() {

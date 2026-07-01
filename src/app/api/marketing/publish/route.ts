@@ -25,6 +25,7 @@ interface MarketingPost {
   platform: string
   asset_url: string | null
   scheduled_for: string | null
+  user_id: string | null
 }
 
 async function publishViaBuffer(post: MarketingPost): Promise<string> {
@@ -148,7 +149,7 @@ export async function POST(req: NextRequest) {
   // Fetch posts ready to publish
   const { data: readyPosts, error: fetchErr } = await supabase
     .from('marketing_posts')
-    .select('id, content, platform, asset_url, scheduled_for')
+    .select('id, content, platform, asset_url, scheduled_for, user_id')
     .eq('approval_status', 'approved')
     .eq('status', 'draft')
     .lte('scheduled_for', now)
@@ -172,6 +173,54 @@ export async function POST(req: NextRequest) {
   let failed = 0
 
   for (const post of posts) {
+    // Basic plan: enforce 3 auto-posts/month cap
+    if (post.user_id) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan, auto_posts_this_month, auto_posts_reset_at')
+        .eq('id', post.user_id)
+        .single()
+
+      const plan = (profile as { plan?: string } | null)?.plan ?? 'free'
+
+      if (plan === 'basic') {
+        // Reset counter if past reset date
+        const resetAt = (profile as { auto_posts_reset_at?: string | null } | null)?.auto_posts_reset_at
+        let usedThisMonth = (profile as { auto_posts_this_month?: number } | null)?.auto_posts_this_month ?? 0
+        if (resetAt && now > resetAt) {
+          const nextReset = new Date(now)
+          nextReset.setMonth(nextReset.getMonth() + 1, 1)
+          nextReset.setHours(0, 0, 0, 0)
+          await supabase
+            .from('profiles')
+            .update({ auto_posts_this_month: 0, auto_posts_reset_at: nextReset.toISOString() })
+            .eq('id', post.user_id)
+          usedThisMonth = 0
+        }
+
+        if (usedThisMonth >= 3) {
+          console.log(`[marketing/publish] Basic user ${post.user_id} at 3/month limit — skipping post ${post.id}`)
+          await supabase
+            .from('marketing_posts')
+            .update({ status: 'failed', error_message: 'Monthly auto-post limit (3/month) reached on Basic plan.' })
+            .eq('id', post.id)
+          // Notify user
+          const { data: userRow } = await supabase.auth.admin.getUserById(post.user_id)
+          const userEmail = (userRow as { user?: { email?: string } } | null)?.user?.email
+          if (userEmail) {
+            await sendEmail({
+              from: 'ContentAI <support@contentai.ca>',
+              to: userEmail,
+              subject: '[ContentAI] Auto-post limit reached — upgrade to Pro for unlimited',
+              html: `<p style="font-family:sans-serif;padding:24px">You've reached your 3 auto-posts/month limit on the Basic plan. <a href="${APP_URL}/billing" style="color:#0D7377">Upgrade to Pro</a> for unlimited auto-posting.</p>`,
+            }).catch(() => {})
+          }
+          failed++
+          continue
+        }
+      }
+    }
+
     try {
       const bufferPostId = await publishViaBuffer(post)
       await supabase
@@ -182,6 +231,23 @@ export async function POST(req: NextRequest) {
           posted_platform_id: bufferPostId,
         })
         .eq('id', post.id)
+
+      // Increment Basic plan monthly counter
+      if (post.user_id) {
+        const { data: p } = await supabase
+          .from('profiles')
+          .select('plan, auto_posts_this_month')
+          .eq('id', post.user_id)
+          .single()
+        if ((p as { plan?: string } | null)?.plan === 'basic') {
+          const cur = (p as { auto_posts_this_month?: number } | null)?.auto_posts_this_month ?? 0
+          await supabase
+            .from('profiles')
+            .update({ auto_posts_this_month: cur + 1 })
+            .eq('id', post.user_id)
+        }
+      }
+
       console.log(`[marketing/publish] ✓ ${post.platform} post ${post.id} → Buffer ${bufferPostId}`)
       posted++
     } catch (err) {

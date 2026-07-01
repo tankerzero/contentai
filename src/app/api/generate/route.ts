@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   const planId = (profile?.plan ?? 'free') as PlanId
   const plan = PLANS[planId]
   const extraCredits = (profile?.extra_credits as number) ?? 0
-  const limit = plan.generations === Infinity ? Infinity : plan.generations + extraCredits
+  const limit = plan.generations + extraCredits
 
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()

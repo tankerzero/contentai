@@ -22,11 +22,10 @@ describe('Plan generation limits', () => {
     expect(isBlocked(100, 'pro')).toBe(true)
   })
 
-  it('Agency: never blocked (unlimited)', () => {
+  it('Agency: VIP cap at 500 gen/month', () => {
     expect(isBlocked(0, 'agency')).toBe(false)
-    expect(isBlocked(100, 'agency')).toBe(false)
-    expect(isBlocked(10_000, 'agency')).toBe(false)
-    expect(isBlocked(1_000_000, 'agency')).toBe(false)
+    expect(isBlocked(499, 'agency')).toBe(false)
+    expect(isBlocked(500, 'agency')).toBe(true)
   })
 
   it('Content Pack adds 20 extra_credits (stored separately from plan limit)', () => {

@@ -29,9 +29,9 @@ export const PLANS = {
   agency: {
     name: 'Agency',
     price: 79,
-    generations: Infinity,
+    generations: 500,
     features: [
-      'Unlimited generations',
+      'VIP — 500 gen/month',
       'Everything in Pro',
       'Multi-workspace (manage client accounts)',
       'Client approval flow',

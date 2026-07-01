@@ -81,6 +81,7 @@ const T = {
       cta: 'Get started', ctaFree: 'Start free',
       perMonth: '/mo', perYear: '/yr',
       taglinePro: 'Create content once. Wake up to it already posted.',
+      taglineAgency: 'VIP — 500 gen/month. Built for agencies.',
       features: {
         free:   ['5 generations/month', 'All content types', '5 languages', 'Standard quality'],
         basic:  ['30 generations/month', 'All content types', '5 languages', 'Brand voice', 'Priority generation'],
@@ -92,7 +93,7 @@ const T = {
           'Brand voice profiles so it sounds like you',
         ],
         agency: [
-          'Unlimited generations',
+          'VIP — 500 gen/month',
           'Everything in Pro',
           'Multi-workspace (manage client accounts)',
           'Client approval flow',
@@ -211,6 +212,7 @@ const T = {
       cta: 'Commencer', ctaFree: 'Gratuit',
       perMonth: '/mois', perYear: '/an',
       taglinePro: 'Créez une fois. Réveillez-vous avec tout déjà publié.',
+      taglineAgency: 'VIP — 500 gen/mois. Conçu pour les agences.',
       features: {
         free:   ['5 générations/mois', 'Tous les types', '5 langues', 'Qualité standard'],
         basic:  ['30 générations/mois', 'Tous les types', '5 langues', 'Ton de marque', 'Priorité'],
@@ -222,7 +224,7 @@ const T = {
           'Profils de ton de marque pour garder votre style',
         ],
         agency: [
-          'Générations illimitées',
+          'VIP — 500 gen/mois',
           'Tout le Pro inclus',
           'Multi-espace (gérez des comptes clients)',
           "Flux d'approbation client",
@@ -341,6 +343,7 @@ const T = {
       cta: 'ابدأ الآن', ctaFree: 'مجاني',
       perMonth: '/شهر', perYear: '/سنة',
       taglinePro: 'أنشئ المحتوى مرة واحدة. استيقظ وقد نُشر بالفعل.',
+      taglineAgency: 'VIP — 500 توليد/شهر. مصمم للوكالات.',
       features: {
         free:   ['5 توليدات/شهر', 'جميع الأنواع', '5 لغات', 'جودة قياسية'],
         basic:  ['30 توليداً/شهر', 'جميع الأنواع', '5 لغات', 'صوت العلامة', 'أولوية'],
@@ -352,7 +355,7 @@ const T = {
           'ملفات صوت العلامة لتبقى بأسلوبك',
         ],
         agency: [
-          'توليدات غير محدودة',
+          'VIP — 500 توليد/شهر',
           'كل مزايا Pro',
           'متعدد الأعمال (إدارة حسابات العملاء)',
           'تدفق موافقة العميل',
@@ -471,6 +474,7 @@ const T = {
       cta: 'Comenzar', ctaFree: 'Gratis',
       perMonth: '/mes', perYear: '/año',
       taglinePro: 'Crea contenido una vez. Despiértate con todo ya publicado.',
+      taglineAgency: 'VIP — 500 gen/mes. Diseñado para agencias.',
       features: {
         free:   ['5 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Calidad estándar'],
         basic:  ['30 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Voz de marca', 'Prioridad'],
@@ -482,7 +486,7 @@ const T = {
           'Perfiles de voz de marca para sonar siempre igual',
         ],
         agency: [
-          'Generaciones ilimitadas',
+          'VIP — 500 gen/mes',
           'Todo lo de Pro',
           'Multi-espacio (gestiona cuentas de clientes)',
           'Flujo de aprobación de clientes',
@@ -601,6 +605,7 @@ const T = {
       cta: '立即开始', ctaFree: '免费',
       perMonth: '/月', perYear: '/年',
       taglinePro: '创建一次内容。醒来时已全部发布。',
+      taglineAgency: 'VIP — 每月500次生成。专为代理商打造。',
       features: {
         free:   ['5次生成/月', '所有内容类型', '5种语言', '标准质量'],
         basic:  ['30次生成/月', '所有内容类型', '5种语言', '品牌声音', '优先生成'],
@@ -612,7 +617,7 @@ const T = {
           '品牌声音档案，始终保持您的风格',
         ],
         agency: [
-          '无限次生成',
+          'VIP — 每月500次生成',
           '包含所有Pro功能',
           '多工作区（管理客户账户）',
           '客户审批流程',
@@ -1105,6 +1110,10 @@ export default function LandingPage() {
                   {/* Pro tagline */}
                   {key === 'pro' && (
                     <p className="text-xs text-brand-600 font-medium mb-3 leading-snug">{t.pricing.taglinePro}</p>
+                  )}
+                  {/* Agency VIP tagline */}
+                  {key === 'agency' && (
+                    <p className="text-xs text-brand-400 font-medium mb-3 leading-snug">{t.pricing.taglineAgency}</p>
                   )}
 
                   <div className="mb-5">

@@ -41,8 +41,11 @@ function approvalEmailHtml(opts: {
   scheduled_for: string | null
   approveUrl: string
   skipUrl: string
+  regenerateUrl: string
+  plan?: string
+  autoPostsRemaining?: number | null
 }) {
-  const { content, platform, asset_url, scheduled_for, approveUrl, skipUrl } = opts
+  const { content, platform, asset_url, scheduled_for, approveUrl, skipUrl, regenerateUrl, plan, autoPostsRemaining } = opts
   const safeContent = content
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -56,12 +59,17 @@ function approvalEmailHtml(opts: {
        </div>`
     : ''
 
+  const planLabel = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Free'
+  const remainingText = autoPostsRemaining != null
+    ? `${autoPostsRemaining} auto-post${autoPostsRemaining !== 1 ? 's' : ''} remaining this month`
+    : ''
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Review post — ContentAI</title>
+<title>Review your ${platformLabel(platform)} post — ContentAI</title>
 </head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -73,14 +81,15 @@ function approvalEmailHtml(opts: {
   <tr>
     <td style="background:linear-gradient(135deg,#0D7377 0%,#026676 100%);padding:28px 36px">
       <span style="font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-.3px">✦ ContentAI</span>
+      <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,.75)">Your scheduled post is ready for review</p>
     </td>
   </tr>
 
   <!-- Body -->
   <tr><td style="padding:32px 36px 24px">
 
-    <h1 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#111827">Review scheduled post</h1>
-    <p style="margin:0 0 20px;font-size:14px;color:#6b7280">Approve or skip before it publishes.</p>
+    <h1 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#111827">Your ${platformLabel(platform)} post is ready</h1>
+    <p style="margin:0 0 20px;font-size:14px;color:#6b7280">Review before it publishes automatically.</p>
 
     <!-- Meta badges -->
     <div style="margin-bottom:20px">
@@ -88,7 +97,7 @@ function approvalEmailHtml(opts: {
         ${platformLabel(platform)}
       </span>
       <span style="display:inline-block;background:#fafafa;color:#6b7280;font-size:13px;padding:4px 12px;border-radius:20px;border:1px solid #e5e7eb">
-        📅 ${formatSchedule(scheduled_for)}
+        📅 Scheduled for: ${formatSchedule(scheduled_for)}
       </span>
     </div>
 
@@ -100,27 +109,34 @@ function approvalEmailHtml(opts: {
     <!-- Asset image -->
     ${assetBlock}
 
-    <!-- Action buttons -->
-    <table cellpadding="0" cellspacing="0" style="margin-top:24px">
+    <!-- Action buttons — 3 options -->
+    <table cellpadding="0" cellspacing="0" style="margin-top:24px;width:100%">
       <tr>
-        <td style="padding-right:12px">
+        <td style="padding-right:10px;vertical-align:top">
           <a href="${approveUrl}"
-             style="display:inline-block;background:#0D7377;color:#ffffff;font-size:15px;font-weight:700;padding:14px 28px;border-radius:10px;text-decoration:none;letter-spacing:.2px">
-            ✅ Approve
+             style="display:inline-block;background:#0D7377;color:#ffffff;font-size:14px;font-weight:700;padding:13px 22px;border-radius:10px;text-decoration:none;white-space:nowrap">
+            ✅ Approve &amp; Post
           </a>
         </td>
-        <td>
+        <td style="padding-right:10px;vertical-align:top">
+          <a href="${regenerateUrl}"
+             style="display:inline-block;background:#ffffff;color:#0D7377;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;text-decoration:none;border:2px solid #0D7377;white-space:nowrap">
+            🔄 Regenerate
+          </a>
+        </td>
+        <td style="vertical-align:top">
           <a href="${skipUrl}"
-             style="display:inline-block;background:#ffffff;color:#374151;font-size:15px;font-weight:600;padding:13px 28px;border-radius:10px;text-decoration:none;border:2px solid #d1d5db">
+             style="display:inline-block;background:#ffffff;color:#6b7280;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;text-decoration:none;border:2px solid #d1d5db;white-space:nowrap">
             ⏭ Skip
           </a>
         </td>
       </tr>
     </table>
 
-    <p style="margin:20px 0 0;font-size:12px;color:#9ca3af">
-      Approving queues the post for automatic publishing at the scheduled time via Buffer.<br>
-      Skipping removes it from the queue permanently.
+    <p style="margin:16px 0 0;font-size:12px;color:#9ca3af">
+      <strong>Approve</strong> — publishes as-is at the scheduled time.<br>
+      <strong>Regenerate</strong> — generates a new version (uses 1 credit), sends a new email.<br>
+      <strong>Skip</strong> — removes this post only; next scheduled post is unaffected.
     </p>
 
   </td></tr>
@@ -129,7 +145,7 @@ function approvalEmailHtml(opts: {
   <tr>
     <td style="background:#f9fafb;padding:16px 36px;border-top:1px solid #f0f0f0">
       <p style="margin:0;font-size:12px;color:#9ca3af">
-        ContentAI · <a href="${APP_URL}" style="color:#9ca3af">${APP_URL.replace('https://', '')}</a>
+        You're on the <strong>${planLabel}</strong> plan${remainingText ? ` · ${remainingText}` : ''} · <a href="${APP_URL}/dashboard" style="color:#9ca3af">Manage at contentai.ca</a>
       </p>
     </td>
   </tr>
@@ -155,6 +171,8 @@ export async function POST(req: NextRequest) {
     asset_url?: string
     asset_type?: string
     scheduled_for?: string
+    user_id?: string
+    topic?: string
   }
   try {
     body = await req.json()
@@ -162,7 +180,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { content, platform, language, asset_url, asset_type, scheduled_for } = body
+  const { content, platform, language, asset_url, asset_type, scheduled_for, user_id, topic } = body
   if (!content || !platform) {
     return NextResponse.json({ error: 'content and platform are required' }, { status: 400 })
   }
@@ -170,9 +188,25 @@ export async function POST(req: NextRequest) {
   const supabase = getServiceClient()
   const approvalToken = crypto.randomUUID()
 
+  // Check auto-approve mode: Pro/Agency users can skip the email and post directly
+  let autoApprove = false
+  if (user_id) {
+    const { data: prof } = await supabase
+      .from('profiles')
+      .select('auto_approve_mode, plan')
+      .eq('id', user_id)
+      .single()
+    const profPlan = (prof as { plan?: string } | null)?.plan ?? 'free'
+    const autoApproveMode = (prof as { auto_approve_mode?: boolean } | null)?.auto_approve_mode ?? false
+    if (autoApproveMode && ['pro', 'agency', 'unlimited'].includes(profPlan)) {
+      autoApprove = true
+    }
+  }
+
   const { data: post, error } = await supabase
     .from('marketing_posts')
     .insert({
+      user_id: user_id ?? null,
       content,
       platform: platform.toLowerCase(),
       language: language ?? 'en',
@@ -181,8 +215,9 @@ export async function POST(req: NextRequest) {
       asset_type: asset_type ?? null,
       scheduled_for: scheduled_for ?? null,
       approval_token: approvalToken,
-      approval_status: 'pending',
+      approval_status: autoApprove ? 'approved' : 'pending',
       approval_sent_at: new Date().toISOString(),
+      ...(topic ? { topic } : {}),
     })
     .select('id, approval_token')
     .single()
@@ -192,29 +227,50 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const approveUrl = `${APP_URL}/api/marketing/approve?token=${approvalToken}`
-  const skipUrl    = `${APP_URL}/api/marketing/skip?token=${approvalToken}`
-
-  const html = approvalEmailHtml({
-    content,
-    platform,
-    asset_url: asset_url ?? null,
-    scheduled_for: scheduled_for ?? null,
-    approveUrl,
-    skipUrl,
-  })
-
-  const { error: emailErr } = await sendEmail({
-    from: 'ContentAI <support@contentai.ca>',
-    to: 'tanker.zero0@gmail.com',
-    subject: `[ContentAI] Review post: ${platformLabel(platform)} · ${formatSchedule(scheduled_for ?? null)}`,
-    html,
-  })
-
-  if (emailErr) {
-    console.error('[marketing/queue] Email error:', emailErr.message)
-    // Don't fail the request — post was saved, email is best-effort
+  // Fetch plan info for footer
+  let plan: string | undefined
+  let autoPostsRemaining: number | null = null
+  if (user_id) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('plan, auto_posts_this_month')
+      .eq('id', user_id)
+      .single()
+    plan = (profile as { plan?: string } | null)?.plan ?? 'free'
+    const autoPostsThisMonth = (profile as { auto_posts_this_month?: number } | null)?.auto_posts_this_month ?? 0
+    if (plan === 'basic') autoPostsRemaining = Math.max(0, 3 - autoPostsThisMonth)
   }
 
-  return NextResponse.json({ ok: true, id: post.id, approval_token: post.approval_token })
+  // Auto-approve mode: no email needed, post goes directly to approved queue
+  if (!autoApprove) {
+    const approveUrl    = `${APP_URL}/api/marketing/approve?token=${approvalToken}`
+    const skipUrl       = `${APP_URL}/api/marketing/skip?token=${approvalToken}`
+    const regenerateUrl = `${APP_URL}/api/marketing/regenerate?token=${approvalToken}`
+
+    const html = approvalEmailHtml({
+      content,
+      platform,
+      asset_url: asset_url ?? null,
+      scheduled_for: scheduled_for ?? null,
+      approveUrl,
+      skipUrl,
+      regenerateUrl,
+      plan,
+      autoPostsRemaining,
+    })
+
+    const when = formatSchedule(scheduled_for ?? null)
+    const { error: emailErr } = await sendEmail({
+      from: 'ContentAI <support@contentai.ca>',
+      to: 'tanker.zero0@gmail.com',
+      subject: `Your ${platformLabel(platform)} post is ready — approve before ${when}`,
+      html,
+    })
+
+    if (emailErr) {
+      console.error('[marketing/queue] Email error:', emailErr.message)
+    }
+  }
+
+  return NextResponse.json({ ok: true, id: post.id, approval_token: post.approval_token, auto_approved: autoApprove })
 }

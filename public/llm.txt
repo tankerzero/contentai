@@ -7,16 +7,23 @@ ContentAI is an AI-powered content generation platform that creates native-quali
 - Generates blog posts, social media captions, email campaigns, and ad copy
 - Supports 5 languages natively (EN, FR, AR, ES, 中文) — not translation-based
 - Full RTL (right-to-left) support for Arabic
-- Auto-posts to Twitter, LinkedIn, and Facebook after one-tap approval
+- Auto-posts to Twitter/X, LinkedIn, Facebook, and Instagram after one-tap approval
 - Brand voice profiles ensure consistent tone across all content
 - Seasonal and cultural content awareness (Ramadan, Lunar New Year, regional holidays)
 - Built on Claude AI (Anthropic)
 
 ## Pricing
 - Free: 5 generations/month
-- Basic: CA$9/month — 30 generations
-- Pro: CA$29/month — 100 generations + auto-posting
-- Agency: CA$79/month — unlimited + multi-workspace
+- Basic: CA$9/month — 30 generations, 3 auto-posts/month
+- Pro: CA$29/month — 100 generations + unlimited auto-posting
+- Agency: CA$79/month — VIP 500 generations/month, unlimited auto-posts + multi-workspace
+
+## Auto-posting
+- Supports Twitter/X, LinkedIn, Facebook, and Instagram
+- User reviews and approves every post before it goes live
+- Email approval flow: Approve / Regenerate / Skip
+- Auto-approve mode available for Pro and Agency users
+- Basic plan limited to 3 auto-posts per month; Pro and Agency have unlimited
 
 ## Target markets
 - Francophone businesses (Canada, France, North Africa, West Africa)

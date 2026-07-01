@@ -19,13 +19,14 @@ describe('PLANS', () => {
     expect(PLANS.pro.generations).toBe(100)
   })
 
-  it('agency plan has Infinity generations (truly unlimited)', () => {
-    expect(PLANS.agency.generations).toBe(Infinity)
+  it('agency plan has 500 generations/month (VIP cap)', () => {
+    expect(PLANS.agency.generations).toBe(500)
   })
 
-  it('agency is never blocked (count >= Infinity === false)', () => {
+  it('agency is blocked at 500 generations', () => {
     const limit = PLANS.agency.generations
-    expect(999999 >= limit).toBe(false)
+    expect(499 >= limit).toBe(false)
+    expect(500 >= limit).toBe(true)
   })
 
   it('prices are correct (CAD)', () => {
@@ -52,11 +53,11 @@ describe('PLANS', () => {
 
   it('generation limits enforce correctly at boundary', () => {
     const plans: PlanId[] = ['free', 'basic', 'pro', 'agency']
-    const expectedBlocked = { free: true, basic: true, pro: true, agency: false }
     for (const planId of plans) {
       const limit = PLANS[planId].generations
-      const countAtLimit = Number.isFinite(limit) ? limit : 999999
-      expect(countAtLimit >= limit).toBe(expectedBlocked[planId])
+      // At limit → blocked; one below → allowed
+      expect(limit >= limit).toBe(true)
+      expect((limit - 1) >= limit).toBe(false)
     }
   })
 })
