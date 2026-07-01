@@ -4,8 +4,19 @@ import Stripe from 'stripe'
 export type { PlanId, AddOnId } from './plans'
 export { PLANS, ADD_ONS } from './plans'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
+// Lazy-init so missing key in local builds doesn't crash at module evaluation time.
+let _stripe: Stripe | null = null
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY
+    if (!key) throw new Error('STRIPE_SECRET_KEY is not set')
+    _stripe = new Stripe(key, { apiVersion: '2025-02-24.acacia' })
+  }
+  return _stripe
+}
+// Backwards-compatible named export used by existing call sites.
+export const stripe = new Proxy({} as Stripe, {
+  get(_t, prop) { return (getStripe() as unknown as Record<string, unknown>)[prop as string] },
 })
 
 // Server-side price IDs — never exposed to the client bundle.

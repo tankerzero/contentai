@@ -6,25 +6,38 @@ export const PLANS = {
     name: 'Free',
     price: 0,
     generations: 5,
-    features: ['5 generations/month', 'All content types', '3 languages', 'Standard quality'],
+    features: ['5 generations/month', 'All content types', '5 languages', 'Standard quality'],
   },
   basic: {
     name: 'Basic',
     price: 9,
     generations: 30,
-    features: ['30 generations/month', 'All content types', '3 languages', 'Brand voice', 'Priority generation'],
+    features: ['30 generations/month', 'All content types', '5 languages', 'Brand voice', 'Priority generation'],
   },
   pro: {
     name: 'Pro',
     price: 29,
     generations: 100,
-    features: ['100 generations/month', 'All content types', '3 languages', 'Brand voice', 'Weekly planner', 'CSV export'],
+    features: [
+      'ContentAI writes your content automatically',
+      'Email preview — approve in one tap',
+      'Auto-posts to Twitter, LinkedIn & Facebook',
+      '5 languages + Brand voice profiles',
+      'Weekly planner',
+    ],
   },
   agency: {
     name: 'Agency',
     price: 79,
-    generations: 500,
-    features: ['500 generations/month', 'Unlimited brand profiles', '10 client workspaces', 'White-label PDF reports', 'Priority support'],
+    generations: Infinity,
+    features: [
+      'Unlimited generations',
+      'Everything in Pro',
+      'Multi-workspace (manage client accounts)',
+      'Client approval flow',
+      'Priority support',
+      'White-label ready',
+    ],
   },
 } as const
 
@@ -34,12 +47,12 @@ export const ADD_ONS = {
   content_pack: {
     name: 'Content Pack',
     price: 4.99,
-    description: '500 extra generations',
+    description: '20 extra generations, one-time',
   },
   brand_voice_setup: {
     name: 'Brand Voice Setup',
     price: 19,
-    description: 'Manual onboarding service',
+    description: 'Professional brand voice configuration, delivered within 48h',
   },
 } as const
 

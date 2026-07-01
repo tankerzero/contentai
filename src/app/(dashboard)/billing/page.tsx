@@ -40,9 +40,9 @@ const UI = {
       ],
     },
     features: {
-      free: ['5 generations/month', 'All content types', '3 languages', 'Standard quality'],
-      basic: ['30 generations/month', 'All content types', '3 languages', 'Brand voice', 'Priority generation'],
-      pro: ['100 generations/month', 'All content types', '3 languages', 'Brand voice', 'Weekly planner', 'CSV export'],
+      free: ['5 generations/month', 'All content types', '5 languages', 'Standard quality'],
+      basic: ['30 generations/month', 'All content types', '5 languages', 'Brand voice', 'Priority generation'],
+      pro: ['100 generations/month', 'All content types', '5 languages', 'Brand voice', 'Weekly planner', 'CSV export'],
       agency: ['500 generations/month', 'Unlimited brand profiles', '10 client workspaces', 'White-label PDF reports', 'Priority support'],
     },
     recommended: 'Most popular',
@@ -77,9 +77,9 @@ const UI = {
       ],
     },
     features: {
-      free: ['5 générations/mois', 'Tous les types', '3 langues', 'Qualité standard'],
-      basic: ['30 générations/mois', 'Tous les types', '3 langues', 'Ton de marque', 'Priorité'],
-      pro: ['100 générations/mois', 'Tous les types', '3 langues', 'Ton de marque', 'Planificateur', 'Export CSV'],
+      free: ['5 générations/mois', 'Tous les types', '5 langues', 'Qualité standard'],
+      basic: ['30 générations/mois', 'Tous les types', '5 langues', 'Ton de marque', 'Priorité'],
+      pro: ['100 générations/mois', 'Tous les types', '5 langues', 'Ton de marque', 'Planificateur', 'Export CSV'],
       agency: ['500 générations/mois', 'Profils marque illimités', '10 espaces clients', 'Rapports PDF blanc', 'Support prioritaire'],
     },
     recommended: 'Le plus populaire',
@@ -114,19 +114,92 @@ const UI = {
       ],
     },
     features: {
-      free: ['5 توليدات/شهر', 'جميع الأنواع', '3 لغات', 'جودة قياسية'],
-      basic: ['30 توليداً/شهر', 'جميع الأنواع', '3 لغات', 'صوت العلامة', 'أولوية'],
-      pro: ['100 توليد/شهر', 'جميع الأنواع', '3 لغات', 'صوت العلامة', 'المخطط الأسبوعي', 'تصدير CSV'],
+      free: ['5 توليدات/شهر', 'جميع الأنواع', '5 لغات', 'جودة قياسية'],
+      basic: ['30 توليداً/شهر', 'جميع الأنواع', '5 لغات', 'صوت العلامة', 'أولوية'],
+      pro: ['100 توليد/شهر', 'جميع الأنواع', '5 لغات', 'صوت العلامة', 'المخطط الأسبوعي', 'تصدير CSV'],
       agency: ['500 توليد/شهر', 'ملفات علامة غير محدودة', '10 فضاءات عملاء', 'تقارير PDF بالعلامة البيضاء', 'دعم أولوية'],
     },
     recommended: 'الأكثر شعبية',
+  },
+  es: {
+    title: 'Facturación y Planes', loading: 'Cargando…',
+    current: 'Plan actual:', currentBadge: 'Plan actual',
+    active: 'Activo', downgrade: 'Degradar',
+    perMonth: '/mes', save: '-20%',
+    contactUs: 'Contáctenos',
+    upgrade: 'Actualizar',
+    addons: {
+      title: 'Complementos',
+      subtitle: 'Compras únicas para potenciar tu flujo de trabajo.',
+      items: [
+        {
+          icon: '⚡',
+          title: 'Pack de Contenido',
+          desc: '500 generaciones adicionales añadidas a tu cuenta al instante.',
+          basePriceCAD: 4.99,
+          cta: 'Comprar ahora',
+          addOnId: 'content_pack' as const,
+        },
+        {
+          icon: '🎨',
+          title: 'Configuración Voz de Marca',
+          desc: 'Configuramos tu voz de marca — una llamada, listo para siempre.',
+          basePriceCAD: 19,
+          cta: 'Reservar',
+          href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
+        },
+      ],
+    },
+    features: {
+      free: ['5 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Calidad estándar'],
+      basic: ['30 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Voz de marca', 'Prioridad'],
+      pro: ['100 generaciones/mes', 'Todos los tipos', '5 idiomas', 'Voz de marca', 'Planificador', 'Export CSV'],
+      agency: ['500 generaciones/mes', 'Perfiles de marca ilimitados', '10 espacios de cliente', 'Informes PDF blancos', 'Soporte prioritario'],
+    },
+    recommended: 'Más popular',
+  },
+  zh: {
+    title: '账单与套餐', loading: '加载中…',
+    current: '当前套餐：', currentBadge: '当前套餐',
+    active: '已激活', downgrade: '降级',
+    perMonth: '/月', save: '节省20%',
+    contactUs: '联系我们',
+    upgrade: '升级',
+    addons: {
+      title: '附加项目',
+      subtitle: '一次性购买，提升工作效率。',
+      items: [
+        {
+          icon: '⚡',
+          title: '内容包',
+          desc: '立即为您的账户添加500次额外生成。',
+          basePriceCAD: 4.99,
+          cta: '立即购买',
+          addOnId: 'content_pack' as const,
+        },
+        {
+          icon: '🎨',
+          title: '品牌声音配置',
+          desc: '我们为您配置品牌声音 — 一次通话，永久完成。',
+          basePriceCAD: 19,
+          cta: '预约配置',
+          href: 'mailto:support@contentai.ca?subject=Brand Voice Setup',
+        },
+      ],
+    },
+    features: {
+      free: ['每月5次生成', '所有内容类型', '5种语言', '标准质量'],
+      basic: ['每月30次生成', '所有内容类型', '5种语言', '品牌声音', '优先生成'],
+      pro: ['每月100次生成', '所有内容类型', '5种语言', '品牌声音', '每周规划器', 'CSV导出'],
+      agency: ['每月500次生成', '无限品牌档案', '10个客户工作区', '白标PDF报告', '优先支持'],
+    },
+    recommended: '最受欢迎',
   },
 }
 
 export default function BillingPage() {
   const { lang, isRTL } = useUILang()
-  const uiLang: 'en' | 'fr' | 'ar' = (lang === 'es' || lang === 'zh') ? 'en' : lang
-  const ui = UI[uiLang]
+  const ui = UI[lang]
   const searchParams = useSearchParams()
   const isSuccess = searchParams.get('success') === 'true'
   const isCanceled = searchParams.get('canceled') === 'true'
