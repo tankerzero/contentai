@@ -305,7 +305,7 @@ export default function LandingPage() {
   const [visible, setVisible] = useState(true)
   const [yearly, setYearly] = useState(false)
   const [currency, setCurrency] = useState<CurrencyCode>('CAD')
-  const [demoOpen, setDemoOpen] = useState(false)
+  const [showDemo, setShowDemo] = useState(false)
 
   useEffect(() => {
     setCurrency(loadCurrency())
@@ -399,7 +399,7 @@ export default function LandingPage() {
                 {t.hero.cta}
               </Link>
               <button
-                onClick={() => setDemoOpen(true)}
+                onClick={() => setShowDemo(true)}
                 className="text-gray-600 px-7 py-3.5 rounded-2xl font-semibold text-base border border-gray-200 hover:border-brand-300 hover:text-brand-700 transition-all"
               >
                 {t.hero.ctaSecondary}
@@ -456,6 +456,21 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Hero video ──────────────────────────────────── */}
+      <div className="hidden md:block py-8 bg-white">
+        <div className="max-w-[800px] mx-auto px-6">
+          <video
+            key={lang === 'ar' ? 'ar' : 'en'}
+            src={lang === 'ar' ? '/videos/teaser_arabic.mp4' : '/videos/teaser_english.mp4'}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full rounded-2xl shadow-lg"
+          />
+        </div>
+      </div>
 
       {/* ── Stats bar ───────────────────────────────────── */}
       <section className="bg-brand-600 py-8">
@@ -656,7 +671,7 @@ export default function LandingPage() {
           <p className="text-xs text-gray-300">© 2026 ContentAI</p>
         </div>
       </footer>
-      <DemoModal isOpen={demoOpen} onClose={() => setDemoOpen(false)} />
+      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
     </div>
   )
 }
