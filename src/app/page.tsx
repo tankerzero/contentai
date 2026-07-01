@@ -671,7 +671,7 @@ export default function LandingPage() {
           <p className="text-xs text-gray-300">© 2026 ContentAI</p>
         </div>
       </footer>
-      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
+      {showDemo && <DemoModal isOpen={showDemo} onClose={() => setShowDemo(false)} />}
     </div>
   )
 }
