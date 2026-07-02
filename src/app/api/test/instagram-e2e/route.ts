@@ -19,9 +19,8 @@ function getSvc() {
 }
 
 function checkSecret(req: NextRequest): boolean {
-  const ownerUid = process.env.CONTENTAI_OWNER_USER_ID
-  if (!ownerUid) return false
-  return req.headers.get('x-test-secret') === ownerUid
+  const expected = process.env.CONTENTAI_OWNER_USER_ID ?? OWNER_UID
+  return req.headers.get('x-test-secret') === expected
 }
 
 export async function GET(req: NextRequest) {
