@@ -122,7 +122,7 @@ export async function generateBrandCardBuffer(
         fontFamily: 'Inter, sans-serif',
         alignSelf: isRTL ? 'center' : 'flex-start',
       },
-    }, '"'),
+    }, '«'),
     // Main text — use explicit width so RTL textAlign:'right' has room to anchor
     h('div', {
       style: {
@@ -144,6 +144,7 @@ export async function generateBrandCardBuffer(
           margin: 0,
           fontWeight: 700,
           letterSpacing: isRTL ? 0 : '-0.015em',
+          wordSpacing: isRTL ? '-2px' : 'normal',
           width: 920,
         },
       }, displayText)
@@ -166,7 +167,7 @@ export async function generateBrandCardBuffer(
           flexDirection: 'row' as const,
         },
       },
-        h('span', { style: { color: '#C9A84C', fontSize: 28, fontWeight: 700, fontFamily: 'Inter, sans-serif' } }, '✦'),
+        h('span', { style: { color: '#C9A84C', fontSize: 28, fontWeight: 700, fontFamily: 'Inter, sans-serif' } }, '◆'),
         h('span', { style: { color: '#C9A84C', fontSize: 22, fontWeight: 700, letterSpacing: '-0.01em', fontFamily: 'Inter, sans-serif' } }, 'ContentAI')
       ),
       !isRTL && h('span', {
