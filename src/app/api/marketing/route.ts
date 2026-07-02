@@ -92,6 +92,22 @@ export async function POST(req: NextRequest) {
         .select('id')
         .single()
 
+      // Also index in generations so My Content / History shows this post
+      await supabase
+        .from('generations')
+        .insert({
+          user_id: user.id,
+          content_type: 'social_media',
+          topic,
+          tone,
+          language,
+          content,
+          platform,
+        })
+        .then(({ error }) => {
+          if (error) console.error(`[marketing] generations insert failed for ${platformKey}:`, error.message)
+        })
+
       return {
         platform: platformKey,
         content,

@@ -26,6 +26,9 @@ const T = {
     posted: 'Posted',
     copy: 'Copy',
     copied: 'Copied!',
+    postNow: 'Post now',
+    posting: 'Posting…',
+    postedNow: 'Posted!',
     emailTitle: 'Onboarding Email Sequence',
     emailDesc: 'Automated emails sent to new users over 30 days.',
     step: 'Step',
@@ -62,6 +65,9 @@ const T = {
     posted: 'Publié',
     copy: 'Copier',
     copied: 'Copié !',
+    postNow: 'Publier',
+    posting: 'Publication…',
+    postedNow: 'Publié !',
     emailTitle: "Séquence d'email d'intégration",
     emailDesc: 'Emails automatiques envoyés aux nouveaux utilisateurs sur 30 jours.',
     step: 'Étape',
@@ -98,6 +104,9 @@ const T = {
     posted: 'منشور',
     copy: 'نسخ',
     copied: 'تم النسخ!',
+    postNow: 'نشر الآن',
+    posting: 'جاري النشر…',
+    postedNow: 'تم النشر!',
     emailTitle: 'تسلسل بريد الإعداد',
     emailDesc: 'رسائل بريد إلكتروني آلية ترسل للمستخدمين الجدد على مدى 30 يومًا.',
     step: 'الخطوة',
@@ -134,6 +143,9 @@ const T = {
     posted: 'Publicado',
     copy: 'Copiar',
     copied: '¡Copiado!',
+    postNow: 'Publicar ahora',
+    posting: 'Publicando…',
+    postedNow: '¡Publicado!',
     emailTitle: 'Secuencia de Email de Bienvenida',
     emailDesc: 'Emails automáticos enviados a nuevos usuarios durante 30 días.',
     step: 'Paso',
@@ -170,6 +182,9 @@ const T = {
     posted: '已发布',
     copy: '复制',
     copied: '已复制！',
+    postNow: '立即发布',
+    posting: '发布中…',
+    postedNow: '已发布！',
     emailTitle: '新用户引导邮件序列',
     emailDesc: '30天内自动发送给新用户的电子邮件。',
     step: '步骤',
@@ -221,15 +236,27 @@ export default function MarketingPage() {
   const [loading, setLoading] = useState(true)
   const [copying, setCopying] = useState<string | null>(null)
   const [sendingStep, setSendingStep] = useState<number | null>(null)
+  // platform → true if connected via Buffer with auto_post_enabled
+  const [connections, setConnections] = useState<Record<string, boolean>>({})
+  const [postingId, setPostingId] = useState<string | null>(null)
+  const [postErrors, setPostErrors] = useState<Record<string, string>>({})
+  const [postedIds, setPostedIds] = useState<Set<string>>(new Set())
 
   const loadData = useCallback(async () => {
     setLoading(true)
-    const [postsRes, emailRes] = await Promise.all([
+    const [postsRes, emailRes, socialRes] = await Promise.all([
       fetch('/api/marketing').then(r => r.json()),
       fetch('/api/email').then(r => r.json()),
+      fetch('/api/social').then(r => r.json()),
     ])
     setPosts(postsRes.posts ?? [])
     setSequences(emailRes.sequences ?? [])
+    // Build map of platform → has active Buffer connection with auto_post_enabled
+    const connMap: Record<string, boolean> = {}
+    for (const c of (socialRes.connections ?? []) as Array<{ platform: string; auto_post_enabled: boolean }>) {
+      if (c.auto_post_enabled) connMap[c.platform.toLowerCase()] = true
+    }
+    setConnections(connMap)
     setLoading(false)
   }, [])
 
@@ -254,6 +281,29 @@ export default function MarketingPage() {
     await navigator.clipboard.writeText(content)
     setCopying(id)
     setTimeout(() => setCopying(null), 2000)
+  }
+
+  const handlePostNow = async (postId: string) => {
+    setPostingId(postId)
+    setPostErrors(prev => { const n = { ...prev }; delete n[postId]; return n })
+    try {
+      const res = await fetch('/api/marketing/post-now', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ post_id: postId }),
+      })
+      const data = await res.json() as { ok?: boolean; error?: string; platform_post_id?: string }
+      if (!res.ok || !data.ok) {
+        setPostErrors(prev => ({ ...prev, [postId]: data.error ?? 'Publish failed' }))
+      } else {
+        setPostedIds(prev => new Set(prev).add(postId))
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, status: 'posted' } : p))
+      }
+    } catch {
+      setPostErrors(prev => ({ ...prev, [postId]: 'Network error — try again' }))
+    } finally {
+      setPostingId(null)
+    }
   }
 
   const handleSendEmail = async (step: number) => {
@@ -381,7 +431,7 @@ export default function MarketingPage() {
                       <span className="text-lg">{platformIcon[post.platform] ?? '📢'}</span>
                       <span className="capitalize font-medium text-gray-800">{post.platform}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor(post.status)}`}>
                         {statusLabel(post.status)}
                       </span>
@@ -391,6 +441,15 @@ export default function MarketingPage() {
                       >
                         {copying === post.id ? t.copied : t.copy}
                       </button>
+                      {connections[post.platform] && post.status !== 'posted' && (
+                        <button
+                          onClick={() => handlePostNow(post.id)}
+                          disabled={postingId === post.id}
+                          className="text-xs bg-[#0D7377] text-white px-3 py-1 rounded-lg hover:bg-[#0a5d61] disabled:opacity-50 transition"
+                        >
+                          {postedIds.has(post.id) ? t.postedNow : postingId === post.id ? t.posting : t.postNow}
+                        </button>
+                      )}
                     </div>
                   </div>
                   <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
@@ -408,6 +467,9 @@ export default function MarketingPage() {
                       <span>🎬</span>
                       <a href={post.asset_url} target="_blank" rel="noopener noreferrer" className="underline">Video attached</a>
                     </div>
+                  )}
+                  {postErrors[post.id] && (
+                    <p className="mt-2 text-xs text-red-500">{postErrors[post.id]}</p>
                   )}
                 </div>
               ))}
