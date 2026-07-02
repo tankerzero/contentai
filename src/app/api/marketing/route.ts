@@ -78,7 +78,9 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const { data: saved } = await supabase
+      // Use service client for both inserts — bypasses RLS, consistent with cron behaviour.
+      // User identity is enforced by setting user_id explicitly after auth.getUser() above.
+      const { data: saved, error: mpErr } = await svc
         .from('marketing_posts')
         .insert({
           user_id: user.id,
@@ -92,8 +94,13 @@ export async function POST(req: NextRequest) {
         .select('id')
         .single()
 
+      if (mpErr) {
+        console.error(`[marketing] marketing_posts insert failed for ${platformKey}:`, mpErr.message, mpErr.code)
+        throw new Error(`DB insert failed for ${platformKey}: ${mpErr.message}`)
+      }
+
       // Also index in generations so My Content / History shows this post
-      await supabase
+      const { error: genErr } = await svc
         .from('generations')
         .insert({
           user_id: user.id,
@@ -104,9 +111,11 @@ export async function POST(req: NextRequest) {
           content,
           platform,
         })
-        .then(({ error }) => {
-          if (error) console.error(`[marketing] generations insert failed for ${platformKey}:`, error.message)
-        })
+
+      if (genErr) {
+        console.error(`[marketing] generations insert failed for ${platformKey}:`, genErr.message, genErr.code)
+        // Non-fatal: marketing_posts row already saved, don't throw
+      }
 
       return {
         platform: platformKey,
