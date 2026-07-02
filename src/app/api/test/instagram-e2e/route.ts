@@ -19,7 +19,7 @@ function getSvc() {
 }
 
 function checkSecret(req: NextRequest): boolean {
-  const expected = process.env.CONTENTAI_OWNER_USER_ID ?? OWNER_UID
+  const expected = process.env.CONTENTAI_OWNER_USER_ID || OWNER_UID
   return req.headers.get('x-test-secret') === expected
 }
 
