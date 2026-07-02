@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
+import { generateBrandCardBuffer, uploadCardToStorage, CARD_PLATFORMS } from '@/lib/brand-card'
 
 // Service-role client — bypasses RLS so cron can read all users' schedules
 function getServiceClient() {
@@ -117,7 +118,11 @@ async function sendNotification(
 export async function POST(req: NextRequest) {
   // Verify Vercel cron secret
   const auth = req.headers.get('authorization')
-  if (process.env.CRON_SECRET && auth !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!process.env.CRON_SECRET) {
+    console.error('[cron/auto-post] CRON_SECRET is not set — refusing to run unprotected')
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+  }
+  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -252,7 +257,52 @@ export async function POST(req: NextRequest) {
         if (userEmail) await sendNotification(userEmail, s, content, false, msg)
         failed++
       }
+    } else if (CARD_PLATFORMS.has(s.platform)) {
+      // Image-capable platforms (instagram, facebook, pinterest): generate branded card and queue via Buffer
+      try {
+        const cardBuffer = await generateBrandCardBuffer(content, s.language)
+        const assetUrl   = await uploadCardToStorage(supabase, cardBuffer, `users/${s.user_id}`)
+
+        const appUrl     = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
+        const cronSecret = process.env.CRON_SECRET ?? ''
+        const queueRes   = await fetch(`${appUrl}/api/marketing/queue`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${cronSecret}`,
+          },
+          body: JSON.stringify({
+            content,
+            platform: s.platform,
+            language: s.language,
+            asset_url: assetUrl,
+            asset_type: 'image',
+            user_id: s.user_id,
+            topic: s.topic,
+          }),
+        })
+
+        if (queueRes.ok) {
+          await supabase.from('posting_schedules').update({
+            last_posted_at: now.toISOString(),
+            updated_at:     now.toISOString(),
+          }).eq('id', s.id)
+          console.log(`[cron] ${s.platform} post queued for user ${s.user_id} with auto-card`)
+          processed++
+        } else {
+          const errBody = await queueRes.text()
+          console.error(`[cron] Failed to queue ${s.platform} post: ${errBody}`)
+          await supabase.from('social_posts').update({ status: 'failed', error_message: `Queue failed: ${errBody}` }).eq('id', postId)
+          failed++
+        }
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : 'Unknown error'
+        console.error(`[cron] Card/queue failed for ${s.platform}: ${msg}`)
+        await supabase.from('social_posts').update({ status: 'failed', error_message: msg }).eq('id', postId)
+        failed++
+      }
     }
+    // TikTok/YouTube: require customer video upload, skip gracefully
   }
 
   console.log(`[cron/auto-post] done — processed: ${processed}, failed: ${failed}`)

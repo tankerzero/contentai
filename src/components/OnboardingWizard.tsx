@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useUILang } from '@/contexts/UILanguageContext'
+import AssetUploader from '@/components/AssetUploader'
 
 // ── Translations ──────────────────────────────────────────────────────────────
 
@@ -18,10 +19,10 @@ const T = {
     done: 'Done! 🎉',
 
     s1: {
-      title: 'Connect your first social account',
-      subtitle: 'ContentAI will ask for permission to post on your behalf. You approve every post before it goes live — nothing posts without you.',
-      igNote: 'Connect Facebook first to unlock Instagram posting.',
-      igMeta: 'No Instagram Business account found linked to your Facebook Page. Set it up in Meta Business Suite to enable Instagram posting.',
+      title: 'Connect your social channels',
+      subtitle: 'Connect Buffer once to auto-post to Facebook, Instagram, Twitter/X, LinkedIn, TikTok, Pinterest, and YouTube. You pick which channels get auto-posts — up to your plan limit.',
+      igNote: '',
+      igMeta: '',
     },
     s2: {
       title: 'When do you want to post?',
@@ -64,10 +65,10 @@ const T = {
     done: 'Terminé ! 🎉',
 
     s1: {
-      title: 'Connectez votre premier réseau social',
-      subtitle: 'ContentAI demandera la permission de publier en votre nom. Vous approuvez chaque publication avant qu\'elle soit mise en ligne.',
-      igNote: 'Connectez Facebook d\'abord pour débloquer la publication Instagram.',
-      igMeta: 'Aucun compte Instagram Business trouvé sur votre Page Facebook. Configurez-le dans Meta Business Suite.',
+      title: 'Connectez vos réseaux sociaux',
+      subtitle: "Connectez Buffer une seule fois pour publier sur Facebook, Instagram, Twitter/X, LinkedIn, TikTok, Pinterest et YouTube. Choisissez quelles chaînes reçoivent les publications automatiques.",
+      igNote: '',
+      igMeta: '',
     },
     s2: {
       title: 'Quand voulez-vous publier ?',
@@ -110,10 +111,10 @@ const T = {
     done: 'تم! 🎉',
 
     s1: {
-      title: 'اربط أول حساب اجتماعي',
-      subtitle: 'سيطلب ContentAI الإذن للنشر نيابةً عنك. تعتمد كل منشور قبل نشره.',
-      igNote: 'اربط Facebook أولاً لفتح نشر Instagram.',
-      igMeta: 'لم يُعثر على حساب Instagram Business مرتبط بصفحتك. أعدّه في Meta Business Suite.',
+      title: 'اربط قنواتك الاجتماعية',
+      subtitle: 'اربط Buffer مرة واحدة للنشر على Facebook وInstagram وTwitter/X وLinkedIn وTikTok وPinterest وYouTube. اختر أي القنوات تحصل على النشر التلقائي.',
+      igNote: '',
+      igMeta: '',
     },
     s2: {
       title: 'متى تريد النشر؟',
@@ -156,10 +157,10 @@ const T = {
     done: '¡Listo! 🎉',
 
     s1: {
-      title: 'Conecta tu primera cuenta social',
-      subtitle: 'ContentAI pedirá permiso para publicar en tu nombre. Apruebas cada publicación antes de que salga.',
-      igNote: 'Conecta Facebook primero para desbloquear Instagram.',
-      igMeta: 'No se encontró cuenta de Instagram Business en tu Página de Facebook. Configúrala en Meta Business Suite.',
+      title: 'Conecta tus canales sociales',
+      subtitle: 'Conecta Buffer una vez para publicar en Facebook, Instagram, Twitter/X, LinkedIn, TikTok, Pinterest y YouTube. Elige qué canales reciben publicaciones automáticas.',
+      igNote: '',
+      igMeta: '',
     },
     s2: {
       title: '¿Cuándo quieres publicar?',
@@ -202,10 +203,10 @@ const T = {
     done: '完成！🎉',
 
     s1: {
-      title: '连接您的第一个社交账号',
-      subtitle: 'ContentAI 将请求代表您发布内容的权限。每篇帖子在发布前都需要您审核。',
-      igNote: '请先连接 Facebook，再解锁 Instagram 发布功能。',
-      igMeta: '未找到与您的 Facebook 主页关联的 Instagram Business 账号。请在 Meta Business Suite 中设置。',
+      title: '连接您的社交频道',
+      subtitle: '连接一次 Buffer，即可发布到 Facebook、Instagram、Twitter/X、LinkedIn、TikTok、Pinterest 和 YouTube。选择哪些频道自动发帖（不超过您的计划限额）。',
+      igNote: '',
+      igMeta: '',
     },
     s2: {
       title: '您希望何时发布？',
@@ -241,10 +242,13 @@ const T = {
 }
 
 const SOCIAL_PLATFORMS = [
-  { id: 'twitter', icon: '𝕏', label: 'Twitter/X', connectPath: '/api/social/twitter/connect' },
-  { id: 'linkedin', icon: '💼', label: 'LinkedIn', connectPath: '/social' },
-  { id: 'facebook', icon: '👍', label: 'Facebook', connectPath: '/social' },
-  { id: 'instagram', icon: '📷', label: 'Instagram', connectPath: '/social', requiresFacebook: true },
+  {
+    id: 'buffer',
+    icon: '📡',
+    label: 'Connect via Buffer',
+    connectPath: '/api/auth/buffer/connect',
+    sublabel: 'Facebook, Instagram, Twitter/X, LinkedIn, TikTok & more',
+  },
 ]
 
 const TIMEZONES = [
@@ -290,7 +294,8 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
   const [editing, setEditing] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [approved, setApproved] = useState(false)
-  const [fbConnected, setFbConnected] = useState(false)
+  const [wizardAssetUrl, setWizardAssetUrl] = useState<string | null>(null)
+  const [wizardAssetType, setWizardAssetType] = useState<string | null>(null)
 
   const isPaid = plan !== 'free'
 
@@ -343,7 +348,25 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
 
   async function completeWizard() {
     const supabase = createClient()
-    await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', (await supabase.auth.getUser()).data.user?.id ?? '')
+    const userId = (await supabase.auth.getUser()).data.user?.id ?? ''
+    await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', userId)
+
+    // Save the first post to marketing_posts if we have generated content
+    if (editedPost || generatedPost) {
+      const content = editedPost || generatedPost
+      try {
+        await supabase.from('marketing_posts').insert({
+          user_id: userId,
+          content,
+          platform: 'instagram',
+          language: lang,
+          status: 'draft',
+          asset_url: wizardAssetUrl,
+          asset_type: wizardAssetType,
+        })
+      } catch { /* non-fatal */ }
+    }
+
     setApproved(true)
     setTimeout(() => onComplete(), 2000)
   }
@@ -388,8 +411,7 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
               <p className="text-sm text-gray-500 mb-6">{t.s1.subtitle}</p>
               <div className="space-y-3">
                 {SOCIAL_PLATFORMS.map(p => {
-                  const isConnected = connections.includes(p.id)
-                  const isLocked = p.requiresFacebook && !fbConnected
+                  const isConnected = connections.length > 0
 
                   return (
                     <div key={p.id} className={`flex items-center justify-between px-4 py-3 rounded-xl border ${isConnected ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-white'}`}>
@@ -397,21 +419,21 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
                         <span className="text-2xl">{p.icon}</span>
                         <div>
                           <p className="font-medium text-gray-900 text-sm">{p.label}</p>
-                          {isLocked && <p className="text-xs text-amber-600">{t.s1.igNote}</p>}
+                          {'sublabel' in p && p.sublabel && (
+                            <p className="text-xs text-gray-400">{p.sublabel}</p>
+                          )}
                         </div>
                       </div>
                       {isConnected
                         ? <span className="text-green-600 text-sm font-medium">✓ Connected</span>
-                        : isLocked
-                          ? <span className="text-xs text-gray-400 px-3 py-1.5 rounded-lg bg-gray-100">🔒 Locked</span>
-                          : (
-                            <Link
-                              href={p.connectPath}
-                              className="text-sm font-medium text-[#026676] px-3 py-1.5 rounded-lg border border-[#026676] hover:bg-[#026676] hover:text-white transition-colors"
-                            >
-                              Connect
-                            </Link>
-                          )
+                        : (
+                          <Link
+                            href={p.connectPath}
+                            className="text-sm font-medium text-[#026676] px-3 py-1.5 rounded-lg border border-[#026676] hover:bg-[#026676] hover:text-white transition-colors"
+                          >
+                            Connect
+                          </Link>
+                        )
                       }
                     </div>
                   )
@@ -574,6 +596,15 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
                       {editedPost}
                     </div>
                   )}
+
+                  {/* Optional image upload for first post */}
+                  <AssetUploader
+                    currentUrl={wizardAssetUrl}
+                    currentType={wizardAssetType}
+                    onAssetChange={(url, type) => { setWizardAssetUrl(url); setWizardAssetType(type) }}
+                    label={lang === 'ar' ? 'إرفاق صورة (اختياري)' : lang === 'fr' ? 'Joindre une image (facultatif)' : lang === 'es' ? 'Adjuntar imagen (opcional)' : lang === 'zh' ? '附加图片（可选）' : 'Attach an image (optional)'}
+                    className="mb-4"
+                  />
 
                   <div className="flex flex-col gap-2">
                     <button

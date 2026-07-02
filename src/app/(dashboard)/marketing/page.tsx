@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useUILang } from '@/contexts/UILanguageContext'
+import AssetUploader from '@/components/AssetUploader'
 
 const T = {
   en: {
@@ -15,6 +16,8 @@ const T = {
     generate: 'Generate 5 Posts',
     generating: 'Generating...',
     noPostsYet: 'No posts generated yet.',
+    uploadLabel: 'Attach image / video (optional)',
+    autoCard: 'Auto-branded card generated for Instagram & Facebook',
     platform: 'Platform',
     content: 'Content',
     status: 'Status',
@@ -49,6 +52,8 @@ const T = {
     generate: 'Générer 5 publications',
     generating: 'Génération en cours...',
     noPostsYet: 'Aucune publication générée.',
+    uploadLabel: 'Joindre image / vidéo (facultatif)',
+    autoCard: 'Carte de marque auto-générée pour Instagram & Facebook',
     platform: 'Plateforme',
     content: 'Contenu',
     status: 'Statut',
@@ -83,6 +88,8 @@ const T = {
     generate: 'إنشاء 5 منشورات',
     generating: 'جاري الإنشاء...',
     noPostsYet: 'لا توجد منشورات بعد.',
+    uploadLabel: 'إرفاق صورة / فيديو (اختياري)',
+    autoCard: 'بطاقة علامة تجارية مولّدة تلقائياً لـ Instagram وFacebook',
     platform: 'المنصة',
     content: 'المحتوى',
     status: 'الحالة',
@@ -117,6 +124,8 @@ const T = {
     generate: 'Generar 5 publicaciones',
     generating: 'Generando...',
     noPostsYet: 'Sin publicaciones generadas.',
+    uploadLabel: 'Adjuntar imagen / video (opcional)',
+    autoCard: 'Tarjeta de marca generada automáticamente para Instagram y Facebook',
     platform: 'Plataforma',
     content: 'Contenido',
     status: 'Estado',
@@ -151,6 +160,8 @@ const T = {
     generate: '生成5篇帖子',
     generating: '生成中...',
     noPostsYet: '暂无生成的帖子。',
+    uploadLabel: '附加图片 / 视频（可选）',
+    autoCard: '已为 Instagram 和 Facebook 自动生成品牌卡片',
     platform: '平台',
     content: '内容',
     status: '状态',
@@ -181,6 +192,8 @@ interface MarketingPost {
   platform: string
   language: string
   status: string
+  asset_url: string | null
+  asset_type: string | null
   created_at: string
 }
 
@@ -200,6 +213,8 @@ export default function MarketingPage() {
   const [topic, setTopic] = useState('')
   const [language, setLanguage] = useState('en')
   const [tone, setTone] = useState('Professional')
+  const [assetUrl, setAssetUrl] = useState<string | null>(null)
+  const [assetType, setAssetType] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
   const [posts, setPosts] = useState<MarketingPost[]>([])
   const [sequences, setSequences] = useState<EmailSeq[]>([])
@@ -226,7 +241,7 @@ export default function MarketingPage() {
     const res = await fetch('/api/marketing', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, language, tone }),
+      body: JSON.stringify({ topic, language, tone, asset_url: assetUrl, asset_type: assetType }),
     })
     const data = await res.json()
     if (data.posts) {
@@ -335,6 +350,21 @@ export default function MarketingPage() {
                 </button>
               </div>
             </div>
+
+            {/* Asset upload */}
+            <div className="border-t border-gray-100 pt-4">
+              <AssetUploader
+                label={t.uploadLabel}
+                currentUrl={assetUrl}
+                currentType={assetType}
+                onAssetChange={(url, type) => { setAssetUrl(url); setAssetType(type) }}
+              />
+              {!assetUrl && (
+                <p className="mt-2 text-xs text-gray-400">
+                  ✦ {t.autoCard}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Posts list */}
@@ -364,6 +394,21 @@ export default function MarketingPage() {
                     </div>
                   </div>
                   <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
+                  {post.asset_url && post.asset_type !== 'video' && (
+                    <div className="mt-3">
+                      <img
+                        src={post.asset_url}
+                        alt="Post image"
+                        className="w-full max-w-xs rounded-xl border border-gray-100 object-cover"
+                      />
+                    </div>
+                  )}
+                  {post.asset_url && post.asset_type === 'video' && (
+                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+                      <span>🎬</span>
+                      <a href={post.asset_url} target="_blank" rel="noopener noreferrer" className="underline">Video attached</a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
