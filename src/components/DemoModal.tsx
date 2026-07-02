@@ -159,10 +159,12 @@ const UI: Record<UILang, {
 // ── Component ────────────────────────────────────────────────────────────────
 
 interface Props {
+  isOpen: boolean
   onClose: () => void
 }
 
-export default function DemoModal({ onClose }: Props) {
+export default function DemoModal({ isOpen, onClose }: Props) {
+  if (!isOpen) return null
   const { lang, isRTL } = useUILang()
   const ui = UI[lang]
 

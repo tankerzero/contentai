@@ -11,7 +11,7 @@ import OnboardingWizard from '@/components/OnboardingWizard'
 const UI = {
   en: {
     autoHub: {
-      title: 'Your content. Automatically posted.',
+      title: 'Twitter/X auto-posts. LinkedIn & more — copy-ready in one click.',
       titleLocked: 'Auto-posting',
       queue: (n: number) => `${n} post${n !== 1 ? 's' : ''} approved and scheduled`,
       nextFires: 'Next scheduled:',
@@ -40,7 +40,7 @@ const UI = {
   },
   fr: {
     autoHub: {
-      title: 'Votre contenu. Publié automatiquement.',
+      title: 'Twitter/X en automatique. LinkedIn et plus — prêt à copier.',
       titleLocked: 'Publication automatique',
       queue: (n: number) => `${n} publication${n !== 1 ? 's' : ''} approuvée${n !== 1 ? 's' : ''} et planifiée${n !== 1 ? 's' : ''}`,
       nextFires: 'Prochaine planifiée :',
@@ -69,7 +69,7 @@ const UI = {
   },
   ar: {
     autoHub: {
-      title: 'محتواك. يُنشر تلقائياً.',
+      title: 'Twitter/X ينشر تلقائياً. LinkedIn وغيره — جاهز للنسخ.',
       titleLocked: 'النشر التلقائي',
       queue: (n: number) => `${n} منشور${n !== 1 ? 'ات' : ''} معتمد${n !== 1 ? 'ة' : ''} ومجدول${n !== 1 ? 'ة' : ''}`,
       nextFires: 'الموعد التالي:',
@@ -98,7 +98,7 @@ const UI = {
   },
   es: {
     autoHub: {
-      title: 'Tu contenido. Publicado automáticamente.',
+      title: 'Twitter/X en automático. LinkedIn y más — listo para copiar.',
       titleLocked: 'Publicación automática',
       queue: (n: number) => `${n} publicación${n !== 1 ? 'es' : ''} aprobada${n !== 1 ? 's' : ''} y programada${n !== 1 ? 's' : ''}`,
       nextFires: 'Próxima programada:',
@@ -127,7 +127,7 @@ const UI = {
   },
   zh: {
     autoHub: {
-      title: '您的内容。自动发布。',
+      title: 'Twitter/X自动发布。LinkedIn等——一键复制就绪。',
       titleLocked: '自动发布',
       queue: (n: number) => `${n} 篇帖子已批准并计划发布`,
       nextFires: '下次计划:',
@@ -197,7 +197,7 @@ const PLATFORM_ICONS: Record<string, string> = {
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
-  twitter: 'Twitter/X', linkedin: 'LinkedIn', facebook: 'Facebook', instagram: 'Instagram',
+  twitter: 'Twitter/X (Auto)', linkedin: 'LinkedIn (Copy)', facebook: 'Facebook (Copy)', instagram: 'Instagram (Copy)',
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────

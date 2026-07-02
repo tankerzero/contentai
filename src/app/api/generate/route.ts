@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     .from('profiles').select('plan, extra_credits').eq('id', user.id).single()
 
   const planId = (profile?.plan ?? 'free') as PlanId
-  const plan = PLANS[planId]
+  const plan = PLANS[planId] ?? PLANS['free']
+  if (!PLANS[planId]) console.warn(`[generate] Unknown plan value '${profile?.plan}' for user ${user.id} — defaulting to free`)
   const extraCredits = (profile?.extra_credits as number) ?? 0
   const limit = plan.generations + extraCredits
 

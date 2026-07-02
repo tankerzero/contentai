@@ -63,6 +63,13 @@ function approvalEmailHtml(opts: {
   const remainingText = autoPostsRemaining != null
     ? `${autoPostsRemaining} auto-post${autoPostsRemaining !== 1 ? 's' : ''} remaining this month`
     : ''
+  const isTwitter = platform.toLowerCase() === 'twitter'
+  const reviewSubtitle = isTwitter
+    ? 'Approve and it publishes automatically to Twitter/X at the scheduled time.'
+    : `Approve to save this version. Copy the text below and paste it on ${platformLabel(platform)} to publish.`
+  const approveNote = isTwitter
+    ? '<strong>Approve</strong> — publishes automatically to Twitter/X at the scheduled time.'
+    : `<strong>Approve</strong> — saves this post as ready. Copy the text above and paste it on ${platformLabel(platform)} to publish.`
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -89,7 +96,7 @@ function approvalEmailHtml(opts: {
   <tr><td style="padding:32px 36px 24px">
 
     <h1 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#111827">Your ${platformLabel(platform)} post is ready</h1>
-    <p style="margin:0 0 20px;font-size:14px;color:#6b7280">Review before it publishes automatically.</p>
+    <p style="margin:0 0 20px;font-size:14px;color:#6b7280">${reviewSubtitle}</p>
 
     <!-- Meta badges -->
     <div style="margin-bottom:20px">
@@ -134,7 +141,7 @@ function approvalEmailHtml(opts: {
     </table>
 
     <p style="margin:16px 0 0;font-size:12px;color:#9ca3af">
-      <strong>Approve</strong> — publishes as-is at the scheduled time.<br>
+      ${approveNote}<br>
       <strong>Regenerate</strong> — generates a new version (uses 1 credit), sends a new email.<br>
       <strong>Skip</strong> — removes this post only; next scheduled post is unaffected.
     </p>
@@ -160,7 +167,11 @@ function approvalEmailHtml(opts: {
 export async function POST(req: NextRequest) {
   // Server-side only — protected by CRON_SECRET
   const auth = req.headers.get('authorization')
-  if (process.env.CRON_SECRET && auth !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!process.env.CRON_SECRET) {
+    console.error('[marketing/queue] CRON_SECRET is not set — refusing to run unprotected')
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+  }
+  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

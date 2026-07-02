@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { sendEmail } from '@/lib/resend'
 
-const APP_URL    = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
-const BUFFER_URL = 'https://api.bufferapp.com/graphql'
+const APP_URL               = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
+const BUFFER_URL_LEGACY     = 'https://api.bufferapp.com/graphql'  // ContentAI's own legacy token
+const BUFFER_URL_OAUTH      = 'https://api.buffer.com'             // customer OAuth tokens
+// Set CONTENTAI_OWNER_USER_ID in Vercel if internal marketing posts are queued with the owner's user_id.
+// Posts with user_id = null are always treated as internal regardless of this var.
+const OWNER_USER_ID  = process.env.CONTENTAI_OWNER_USER_ID ?? null
 
-// Buffer channel IDs mapped from platform name
+// ContentAI's own Buffer channel IDs (used for Twitter, LinkedIn, and internal marketing posts only)
 const BUFFER_CHANNELS: Record<string, string> = {
   twitter:  '6a43c20b5ab6d2f1068ad84a',
   linkedin: '6a43c2ee5ab6d2f1068adcdd',
@@ -24,8 +28,207 @@ interface MarketingPost {
   content: string
   platform: string
   asset_url: string | null
+  asset_type: string | null
   scheduled_for: string | null
   user_id: string | null
+}
+
+// All platforms routed through Buffer for customers
+const BUFFER_PLATFORM_LIST = ['facebook', 'instagram', 'twitter', 'linkedin', 'tiktok', 'pinterest', 'youtube']
+
+// Platforms that require media before publishing
+const REQUIRES_MEDIA = new Set(['instagram', 'tiktok', 'youtube', 'pinterest'])
+
+function validateMediaForPlatform(platform: string, post: MarketingPost): void {
+  if (REQUIRES_MEDIA.has(platform) && !post.asset_url) {
+    throw new Error(`${platform} requires an image or video — no asset_url provided for this post`)
+  }
+}
+
+interface SocialConn {
+  access_token: string
+  refresh_token: string | null
+  channel_id: string | null
+  token_expires_at: string | null
+}
+
+const BUFFER_TOKEN_URL   = 'https://auth.buffer.com/token'
+const REFRESH_BUFFER_MS  = 5 * 60 * 1000  // refresh if expiring within 5 minutes
+
+async function refreshBufferToken(
+  supabase: ReturnType<typeof getServiceClient>,
+  userId: string,
+  platform: string,
+  currentRefreshToken: string,
+): Promise<Pick<SocialConn, 'access_token' | 'refresh_token' | 'token_expires_at'>> {
+  const clientId     = process.env.BUFFER_CLIENT_ID
+  const clientSecret = process.env.BUFFER_CLIENT_SECRET
+  if (!clientId || !clientSecret) throw new Error('Buffer credentials not configured — contact support')
+
+  const tokenRes = await fetch(BUFFER_TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id:     clientId,
+      client_secret: clientSecret,
+      grant_type:    'refresh_token',
+      refresh_token: currentRefreshToken,
+    }),
+  })
+
+  const rawText = await tokenRes.text()
+
+  if (!tokenRes.ok) {
+    console.error(`[buffer/refresh] HTTP ${tokenRes.status} for ${userId}/${platform}: ${rawText}`)
+    // Null out refresh_token on all Buffer-connected platforms — the OAuth grant is gone
+    await supabase
+      .from('social_connections')
+      .update({ refresh_token: null })
+      .eq('user_id', userId)
+      .in('platform', BUFFER_PLATFORM_LIST)
+    // Notify the customer to reconnect
+    const { data: userRow } = await supabase.auth.admin.getUserById(userId)
+    const userEmail = (userRow as { user?: { email?: string } } | null)?.user?.email
+    if (userEmail) {
+      await sendEmail({
+        from: 'ContentAI <support@contentai.ca>',
+        to: userEmail,
+        subject: '[ContentAI] Action required: reconnect your social channels via Buffer',
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:520px">
+          <p style="font-size:15px">Your Buffer connection to ContentAI has expired and could not be automatically renewed.</p>
+          <p style="font-size:15px">One or more scheduled posts could not be published as a result.</p>
+          <p><a href="${APP_URL}/social" style="background:#0D7377;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;font-size:14px">Reconnect via Buffer →</a></p>
+          <p style="color:#9ca3af;font-size:13px">Go to Social Connections and click Connect via Buffer.</p>
+        </div>`,
+      }).catch(e => console.error('[buffer/refresh] Reconnect email error:', e))
+    }
+    throw new Error(
+      `Buffer token refresh failed for ${platform} — reconnect via Buffer from Social Connections`
+    )
+  }
+
+  let tokens: { access_token?: string; refresh_token?: string; expires_in?: number }
+  try {
+    tokens = JSON.parse(rawText)
+  } catch {
+    throw new Error(`Buffer refresh response not JSON: ${rawText.slice(0, 200)}`)
+  }
+
+  if (!tokens.access_token || !tokens.refresh_token) {
+    throw new Error(`Buffer refresh response missing tokens: ${rawText.slice(0, 200)}`)
+  }
+
+  const tokenExpiresAt = new Date(
+    Date.now() + (tokens.expires_in ?? 3600) * 1000
+  ).toISOString()
+
+  // All Buffer-connected platforms share the same OAuth grant — update them all
+  await supabase
+    .from('social_connections')
+    .update({
+      access_token:     tokens.access_token,
+      refresh_token:    tokens.refresh_token,
+      token_expires_at: tokenExpiresAt,
+    })
+    .eq('user_id', userId)
+    .in('platform', BUFFER_PLATFORM_LIST)
+
+  console.log(`[buffer/refresh] Refreshed token for ${userId}/${platform}, expires ${tokenExpiresAt}`)
+
+  return {
+    access_token:     tokens.access_token,
+    refresh_token:    tokens.refresh_token,
+    token_expires_at: tokenExpiresAt,
+  }
+}
+
+async function publishViaLinkedIn(post: MarketingPost, conn: SocialConn): Promise<string> {
+  if (!conn.channel_id) throw new Error('LinkedIn person URN missing — reconnect LinkedIn')
+
+  if (conn.token_expires_at && new Date(conn.token_expires_at) <= new Date()) {
+    throw new Error('LinkedIn token expired — reconnect LinkedIn from Social Connections')
+  }
+
+  const body = {
+    author: conn.channel_id,
+    lifecycleState: 'PUBLISHED',
+    specificContent: {
+      'com.linkedin.ugc.ShareContent': {
+        shareCommentary: { text: post.content },
+        shareMediaCategory: 'NONE',
+      },
+    },
+    visibility: {
+      'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
+    },
+  }
+
+  const res = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${conn.access_token}`,
+      'Content-Type': 'application/json',
+      'X-Restli-Protocol-Version': '2.0.0',
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`LinkedIn API error ${res.status}: ${text}`)
+  }
+
+  const json = await res.json() as { id?: string }
+  return json.id ?? 'linkedin-ok'
+}
+
+async function publishViaCustomerBuffer(post: MarketingPost, conn: SocialConn): Promise<string> {
+  if (!conn.channel_id) {
+    throw new Error(`Buffer channel ID missing for ${post.platform} — reconnect via Buffer`)
+  }
+
+  // Determine media type: video platforms need { video } input, image platforms need { picture }
+  const isVideo = post.asset_type === 'video' ||
+    /\.(mp4|mov|avi|webm|m4v)(\?|$)/i.test(post.asset_url ?? '')
+  const mediaInput = post.asset_url
+    ? (isVideo ? { video: post.asset_url } : { picture: post.asset_url })
+    : undefined
+
+  const mutation = `
+    mutation CreatePost($input: PostInput!) {
+      createPost(input: $input) {
+        post { id status }
+      }
+    }
+  `
+  const variables = {
+    input: {
+      profileIds: [conn.channel_id],
+      text: post.content,
+      ...(mediaInput ? { media: mediaInput } : {}),
+    },
+  }
+
+  const res = await fetch(BUFFER_URL_OAUTH, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${conn.access_token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query: mutation, variables }),
+  })
+
+  const json = await res.json() as {
+    data?: { createPost?: { post?: { id: string } } }
+    errors?: Array<{ message: string }>
+  }
+
+  if (!res.ok) throw new Error(`Buffer HTTP ${res.status}`)
+  if (json.errors?.length) throw new Error(json.errors.map(e => e.message).join('; '))
+
+  const postId = json.data?.createPost?.post?.id
+  if (!postId) throw new Error(`Buffer returned no post ID: ${JSON.stringify(json)}`)
+  return postId
 }
 
 async function publishViaBuffer(post: MarketingPost): Promise<string> {
@@ -60,7 +263,7 @@ async function publishViaBuffer(post: MarketingPost): Promise<string> {
     },
   }
 
-  const res = await fetch(BUFFER_URL, {
+  const res = await fetch(BUFFER_URL_LEGACY, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -82,6 +285,106 @@ async function publishViaBuffer(post: MarketingPost): Promise<string> {
 
   return bufferPostId
 }
+
+async function refreshTwitterToken(
+  supabase: ReturnType<typeof getServiceClient>,
+  userId: string,
+  currentRefreshToken: string,
+): Promise<Pick<SocialConn, 'access_token' | 'refresh_token' | 'token_expires_at'>> {
+  const clientId     = process.env.TWITTER_CLIENT_ID
+  const clientSecret = process.env.TWITTER_CLIENT_SECRET
+  if (!clientId || !clientSecret) throw new Error('Twitter credentials not configured')
+
+  const tokenRes = await fetch('https://api.twitter.com/2/oauth2/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization:  `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+    },
+    body: new URLSearchParams({
+      grant_type:    'refresh_token',
+      refresh_token: currentRefreshToken,
+      client_id:     clientId,
+    }),
+  })
+
+  const rawText = await tokenRes.text()
+
+  if (!tokenRes.ok) {
+    console.error(`[twitter/refresh] HTTP ${tokenRes.status} for ${userId}: ${rawText}`)
+    await supabase
+      .from('social_connections')
+      .update({ refresh_token: null })
+      .eq('user_id', userId)
+      .eq('platform', 'twitter')
+    const { data: userRow } = await supabase.auth.admin.getUserById(userId)
+    const userEmail = (userRow as { user?: { email?: string } } | null)?.user?.email
+    if (userEmail) {
+      await sendEmail({
+        from: 'ContentAI <support@contentai.ca>',
+        to: userEmail,
+        subject: '[ContentAI] Action required: reconnect your Twitter/X account',
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:520px">
+          <p style="font-size:15px">Your Twitter/X connection to ContentAI has expired and could not be automatically renewed.</p>
+          <p style="font-size:15px">One or more scheduled posts could not be published as a result.</p>
+          <p><a href="${APP_URL}/social" style="background:#0D7377;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;font-size:14px">Reconnect Twitter/X →</a></p>
+          <p style="color:#9ca3af;font-size:13px">Go to Social Connections and click Connect next to Twitter/X.</p>
+        </div>`,
+      }).catch(e => console.error('[twitter/refresh] Reconnect email error:', e))
+    }
+    throw new Error('Twitter token refresh failed — reconnect Twitter/X from Social Connections')
+  }
+
+  let tokens: { access_token?: string; refresh_token?: string; expires_in?: number }
+  try {
+    tokens = JSON.parse(rawText)
+  } catch {
+    throw new Error(`Twitter refresh response not JSON: ${rawText.slice(0, 200)}`)
+  }
+
+  if (!tokens.access_token || !tokens.refresh_token) {
+    throw new Error(`Twitter refresh missing tokens: ${rawText.slice(0, 200)}`)
+  }
+
+  const tokenExpiresAt = new Date(
+    Date.now() + (tokens.expires_in ?? 7200) * 1000
+  ).toISOString()
+
+  await supabase
+    .from('social_connections')
+    .update({
+      access_token:     tokens.access_token,
+      refresh_token:    tokens.refresh_token,
+      token_expires_at: tokenExpiresAt,
+    })
+    .eq('user_id', userId)
+    .eq('platform', 'twitter')
+
+  console.log(`[twitter/refresh] Refreshed token for ${userId}, expires ${tokenExpiresAt}`)
+
+  return {
+    access_token:     tokens.access_token,
+    refresh_token:    tokens.refresh_token,
+    token_expires_at: tokenExpiresAt,
+  }
+}
+
+// ── Dormant backup: direct Twitter API (requires paid $100/month API tier) ──
+// Twitter/X is now published via Buffer's Twitter integration instead.
+// Kept here in case Buffer drops Twitter support and we need to fall back.
+//
+// async function publishViaCustomerTwitter(post: MarketingPost, conn: SocialConn): Promise<string> {
+//   const res = await fetch('https://api.twitter.com/2/tweets', {
+//     method: 'POST',
+//     headers: { Authorization: `Bearer ${conn.access_token}`, 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ text: post.content }),
+//   })
+//   if (!res.ok) { const text = await res.text(); throw new Error(`Twitter API error ${res.status}: ${text}`) }
+//   const json = await res.json() as { data?: { id: string } }
+//   const tweetId = json.data?.id
+//   if (!tweetId) throw new Error(`Twitter returned no tweet ID: ${JSON.stringify(json)}`)
+//   return tweetId
+// }
 
 async function sendSummaryEmail(posted: number, failed: number, pending: number) {
   if (!process.env.RESEND_API_KEY) return
@@ -131,7 +434,11 @@ async function sendSummaryEmail(posted: number, failed: number, pending: number)
 export async function POST(req: NextRequest) {
   // Verify Vercel cron secret
   const auth = req.headers.get('authorization')
-  if (process.env.CRON_SECRET && auth !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!process.env.CRON_SECRET) {
+    console.error('[marketing/publish] CRON_SECRET is not set — refusing to run unprotected')
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+  }
+  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -149,7 +456,7 @@ export async function POST(req: NextRequest) {
   // Fetch posts ready to publish
   const { data: readyPosts, error: fetchErr } = await supabase
     .from('marketing_posts')
-    .select('id, content, platform, asset_url, scheduled_for, user_id')
+    .select('id, content, platform, asset_url, asset_type, scheduled_for, user_id')
     .eq('approval_status', 'approved')
     .eq('status', 'draft')
     .lte('scheduled_for', now)
@@ -222,13 +529,64 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      const bufferPostId = await publishViaBuffer(post)
+      let platformId: string
+      const platform = post.platform.toLowerCase()
+      const isInternal = !post.user_id || post.user_id === OWNER_USER_ID
+
+      if (isInternal) {
+        // ContentAI's own marketing posts → use ContentAI's internal Buffer token
+        platformId = await publishViaBuffer(post)
+        console.log(`[marketing/publish] ✓ ${post.id} → ContentAI Buffer (${platform} internal) ${platformId}`)
+      } else {
+        // Customer post — route through their Buffer connection with auto_post_enabled=true
+        const { data: conn } = await supabase
+          .from('social_connections')
+          .select('access_token, refresh_token, channel_id, token_expires_at')
+          .eq('user_id', post.user_id)
+          .eq('platform', platform)
+          .eq('auto_post_enabled', true)
+          .single()
+
+        if (!conn?.access_token || !conn?.channel_id) {
+          throw new Error(
+            `No ${platform} connection with auto-posting enabled — go to Social Connections to connect via Buffer and enable auto-posting`
+          )
+        }
+
+        let activeConn = conn as SocialConn
+
+        // Refresh Buffer token if expired or expiring within the next 5 minutes
+        if (activeConn.token_expires_at) {
+          const expiresAt = new Date(activeConn.token_expires_at).getTime()
+          if (expiresAt - Date.now() < REFRESH_BUFFER_MS) {
+            if (!activeConn.refresh_token) {
+              throw new Error(
+                `${platform} token is expired — reconnect via Buffer from Social Connections`
+              )
+            }
+            const refreshed = await refreshBufferToken(
+              supabase,
+              post.user_id as string,
+              platform,
+              activeConn.refresh_token,
+            )
+            activeConn = { ...activeConn, ...refreshed }
+          }
+        }
+
+        // Validate media requirements (skip this post rather than failing whole run)
+        validateMediaForPlatform(platform, post)
+
+        platformId = await publishViaCustomerBuffer(post, activeConn)
+        console.log(`[marketing/publish] ✓ ${post.id} → customer Buffer (${platform}) ${platformId}`)
+      }
+
       await supabase
         .from('marketing_posts')
         .update({
           status: 'posted',
           posted_at: now,
-          posted_platform_id: bufferPostId,
+          posted_platform_id: platformId,
         })
         .eq('id', post.id)
 
@@ -248,7 +606,6 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      console.log(`[marketing/publish] ✓ ${post.platform} post ${post.id} → Buffer ${bufferPostId}`)
       posted++
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)

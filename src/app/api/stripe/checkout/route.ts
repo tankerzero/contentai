@@ -6,6 +6,12 @@ import { sanitizeShort } from '@/lib/sanitize'
 
 export async function POST(req: NextRequest) {
   console.log('[checkout] called')
+  if (process.env.NEXT_PUBLIC_WAITLIST_MODE === 'true') {
+    return NextResponse.json(
+      { error: 'ContentAI is not yet open for payments. Join the waitlist at contentai.ca!' },
+      { status: 503 }
+    )
+  }
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()

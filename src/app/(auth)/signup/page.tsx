@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import GoogleButton from '@/components/GoogleButton'
 import { useUILang, type UILang } from '@/contexts/UILanguageContext'
+import WaitlistModal from '@/components/WaitlistModal'
+
+const WAITLIST_MODE = process.env.NEXT_PUBLIC_WAITLIST_MODE === 'true'
 
 const UI = {
   en: {
@@ -106,6 +109,15 @@ export default function SignupPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
+
+  if (WAITLIST_MODE) {
+    return (
+      <div className={`min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+        <Link href="/" className="text-2xl font-bold text-brand-700 mb-8">ContentAI</Link>
+        <WaitlistModal lang={lang} source="signup-page" onClose={() => { window.location.href = '/' }} />
+      </div>
+    )
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

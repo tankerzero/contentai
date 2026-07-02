@@ -83,6 +83,10 @@ function approvalEmailHtml(opts: {
     ? `<div style="margin:20px 0"><img src="${asset_url}" alt="Post asset" style="width:100%;max-width:520px;border-radius:12px;display:block" /></div>`
     : ''
   const planLabel = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Free'
+  const isTwitter = platform.toLowerCase() === 'twitter'
+  const reviewNote = isTwitter
+    ? 'A new version was generated. Approve and it publishes automatically to Twitter/X.'
+    : `A new version was generated. Approve to save it, then copy and paste on ${platformLabel(platform)} to publish.`
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>New version ready — ContentAI</title></head>
@@ -95,7 +99,7 @@ function approvalEmailHtml(opts: {
 </td></tr>
 <tr><td style="padding:32px 36px 24px">
   <h1 style="margin:0 0 6px;font-size:20px;font-weight:700;color:#111827">🔄 Here's your new ${platformLabel(platform)} post</h1>
-  <p style="margin:0 0 20px;font-size:14px;color:#6b7280">A new version was generated. Review before it publishes.</p>
+  <p style="margin:0 0 20px;font-size:14px;color:#6b7280">${reviewNote}</p>
   <div style="margin-bottom:20px">
     <span style="display:inline-block;background:#f0fdf4;color:#15803d;font-size:13px;font-weight:600;padding:4px 12px;border-radius:20px;margin-right:8px;border:1px solid #bbf7d0">${platformLabel(platform)}</span>
     <span style="display:inline-block;background:#fafafa;color:#6b7280;font-size:13px;padding:4px 12px;border-radius:20px;border:1px solid #e5e7eb">📅 Scheduled: ${formatSchedule(scheduled_for)}</span>
@@ -163,7 +167,8 @@ export async function GET(req: NextRequest) {
 
     const pId = ((profile as { plan?: string } | null)?.plan ?? 'free') as PlanId
     userPlan = pId
-    const plan = PLANS[pId]
+    const plan = PLANS[pId] ?? PLANS['free']
+    if (!PLANS[pId]) console.warn(`[regenerate] Unknown plan value '${(profile as { plan?: string } | null)?.plan}' for user ${userId} — defaulting to free`)
     const extraCredits = ((profile as { extra_credits?: number } | null)?.extra_credits ?? 0)
 
     const now = new Date()

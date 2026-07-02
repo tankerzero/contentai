@@ -5,7 +5,8 @@ import { cookies } from 'next/headers'
 import crypto from 'crypto'
 
 const TWITTER_CLIENT_ID = process.env.TWITTER_CLIENT_ID
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://contentai.ca'
+const TWITTER_REDIRECT_URI = 'https://contentai.ca/api/social/twitter/callback'
 
 function generateCodeVerifier(): string {
   return crypto.randomBytes(32).toString('base64url')
@@ -18,7 +19,7 @@ function generateCodeChallenge(verifier: string): string {
 // GET: initiate Twitter OAuth 2.0 PKCE flow
 export async function GET() {
   if (!TWITTER_CLIENT_ID) {
-    return NextResponse.json({ error: 'Twitter OAuth not configured' }, { status: 501 })
+    return NextResponse.redirect(`${APP_URL}/social?error=twitter_not_configured`)
   }
 
   const supabase = await createClient()
@@ -51,7 +52,7 @@ export async function GET() {
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: TWITTER_CLIENT_ID,
-    redirect_uri: `${APP_URL}/api/social/twitter/callback`,
+    redirect_uri: TWITTER_REDIRECT_URI,
     scope: 'tweet.read tweet.write users.read offline.access',
     state,
     code_challenge: codeChallenge,
