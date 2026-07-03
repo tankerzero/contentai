@@ -101,10 +101,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: msg }, { status: 502 })
   }
 
-  // Mark as posted
+  // Mark as posted — save Buffer post ID and timestamp
   await supabase
     .from('marketing_posts')
-    .update({ status: 'posted' })
+    .update({
+      status: 'posted',
+      posted_platform_id: platformPostId,
+      posted_at: new Date().toISOString(),
+    })
     .eq('id', post_id)
 
   console.log(`[marketing/post-now] ✓ post ${post_id} → ${platform} ${platformPostId}`)
