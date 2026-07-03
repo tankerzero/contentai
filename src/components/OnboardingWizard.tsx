@@ -271,11 +271,12 @@ interface Props {
   plan: string
   onboardingCompleted: boolean
   onComplete: () => void
+  forceOpen?: boolean
 }
 
 // ── Wizard component ──────────────────────────────────────────────────────────
 
-export default function OnboardingWizard({ plan, onboardingCompleted, onComplete }: Props) {
+export default function OnboardingWizard({ plan, onboardingCompleted, onComplete, forceOpen = false }: Props) {
   const { lang, isRTL } = useUILang()
   const t = T[lang]
   const defaults = getSmartDefaults(lang)
@@ -299,14 +300,26 @@ export default function OnboardingWizard({ plan, onboardingCompleted, onComplete
 
   const isPaid = plan !== 'free'
 
-  // Don't show wizard if already completed or user is free
-  if (onboardingCompleted || !isPaid) return null
+  // Free users never see the wizard
+  if (!isPaid) return null
 
-  // Check if dismissed this session
-  if (typeof window !== 'undefined' && sessionStorage.getItem('wizard_dismissed') === '1') return null
+  // Already completed: only show if explicitly force-opened via Setup Guide
+  if (!forceOpen && onboardingCompleted) return null
 
-  function dismiss() {
-    if (typeof window !== 'undefined') sessionStorage.setItem('wizard_dismissed', '1')
+  // Dismissed this session: skip check when force-opened
+  if (!forceOpen && typeof window !== 'undefined' && sessionStorage.getItem('wizard_dismissed') === '1') return null
+
+  async function dismiss() {
+    // Write to DB so the wizard doesn't reappear on next login
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id)
+    }
+    // Only set sessionStorage for normal dismissals, not force-opened wizard
+    if (!forceOpen && typeof window !== 'undefined') {
+      sessionStorage.setItem('wizard_dismissed', '1')
+    }
     onComplete()
   }
 

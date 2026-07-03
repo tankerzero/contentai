@@ -37,6 +37,7 @@ const UI = {
     noGenCta: 'Create your first one →',
     stats: { total: 'Total generations', month: 'This month', plan: 'Plan' },
     welcome: 'Welcome back',
+    setupGuide: 'Setup Guide',
   },
   fr: {
     autoHub: {
@@ -66,6 +67,7 @@ const UI = {
     noGenCta: 'Créez votre première →',
     stats: { total: 'Total générations', month: 'Ce mois', plan: 'Forfait' },
     welcome: 'Bon retour',
+    setupGuide: 'Guide de configuration',
   },
   ar: {
     autoHub: {
@@ -95,6 +97,7 @@ const UI = {
     noGenCta: 'أنشئ أول توليد →',
     stats: { total: 'إجمالي التوليدات', month: 'هذا الشهر', plan: 'الخطة' },
     welcome: 'أهلاً بعودتك',
+    setupGuide: 'دليل الإعداد',
   },
   es: {
     autoHub: {
@@ -124,6 +127,7 @@ const UI = {
     noGenCta: 'Crea la primera →',
     stats: { total: 'Total generaciones', month: 'Este mes', plan: 'Plan' },
     welcome: 'Bienvenido de nuevo',
+    setupGuide: 'Guía de configuración',
   },
   zh: {
     autoHub: {
@@ -153,6 +157,7 @@ const UI = {
     noGenCta: '创建第一篇 →',
     stats: { total: '总生成数', month: '本月', plan: '套餐' },
     welcome: '欢迎回来',
+    setupGuide: '设置向导',
   },
 }
 
@@ -217,6 +222,7 @@ export default function DashboardPage() {
   const [nextScheduled, setNextScheduled] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [showWizard, setShowWizard] = useState(false)
+  const [forceOpenWizard, setForceOpenWizard] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
@@ -266,14 +272,21 @@ export default function DashboardPage() {
       setMonthCount(month ?? 0)
       const p = prof as Profile | null
       setProfile(p)
-      setConnections((conns as SocialConnection[]) ?? [])
+      const connList = (conns as SocialConnection[]) ?? []
+      setConnections(connList)
       setRecentPosts((posts as MarketingPost[]) ?? [])
       setScheduledCount(scheduled ?? 0)
       setNextScheduled((nextPost?.[0] as { scheduled_for?: string } | undefined)?.scheduled_for ?? null)
       setLoading(false)
-      // Show wizard for paid users who haven't completed onboarding
-      if (p && p.plan !== 'free' && !p.onboarding_completed) {
-        setShowWizard(true)
+
+      if (p && !p.onboarding_completed) {
+        if (connList.length > 0) {
+          // User has real connections — silently mark onboarding done, never show wizard
+          await supabase.from('profiles').update({ onboarding_completed: true }).eq('id', user.id)
+          setProfile(prev => prev ? { ...prev, onboarding_completed: true } : prev)
+        } else if (p.plan !== 'free') {
+          setShowWizard(true)
+        }
       }
     }
 
@@ -313,10 +326,27 @@ export default function DashboardPage() {
       <OnboardingWizard
         plan={plan}
         onboardingCompleted={profile?.onboarding_completed ?? false}
-        onComplete={() => { setShowWizard(false); setProfile(p => p ? { ...p, onboarding_completed: true } : p) }}
+        forceOpen={forceOpenWizard}
+        onComplete={() => {
+          setShowWizard(false)
+          setForceOpenWizard(false)
+          setProfile(p => p ? { ...p, onboarding_completed: true } : p)
+        }}
       />
     )}
     <div className={`p-6 max-w-4xl space-y-6 ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+
+      {/* ── Setup Guide re-open ────────────────────────── */}
+      {isPaid && (
+        <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'}`}>
+          <button
+            onClick={() => { setForceOpenWizard(true); setShowWizard(true) }}
+            className="text-xs text-gray-400 hover:text-[#026676] transition-colors flex items-center gap-1.5"
+          >
+            📋 {ui.setupGuide}
+          </button>
+        </div>
+      )}
 
       {/* ── Auto-Post Hub ──────────────────────────────── */}
       <section className="rounded-2xl overflow-hidden shadow-sm border border-gray-200">
